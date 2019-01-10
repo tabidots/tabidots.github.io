@@ -1,0 +1,75 @@
+@import url('https://fonts.googleapis.com/css?family=Inconsolata:400,700');
+
+body {
+  font-size: 1em;
+}
+
+code, tt, pre {
+  font-family: 'Inconsolata', monospace, sans-serif;
+}
+pre {
+  font-family: 'Inconsolata', monospace, sans-serif;
+}
+
+kbd,
+pre,
+samp {
+    line-height: 1.66em
+}
+
+.highlight pre {
+  padding: 15px 20px;
+}
+
+.math .mi, .math .mo {
+  color: black;
+}
+
+.wrapper {
+  table-layout: fixed;
+}
+
+.table-bordered td {
+  border-right: 1px solid black;
+}
+
+.table-bordered td:last-child {
+  border-right: none;
+}
+
+code {
+  display: inline-block;
+  background-color: #343642;
+  border-radius: 3px;
+  padding: 3px 5px;
+  color: white;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-size: .9em;
+  line-height: normal;
+  border: 1px #999 solid;
+}
+
+a.headerlink {
+  margin-left: 5px;
+}
+
+h2, h3 {
+  line-height: 1.2;
+}
+
+article.summary {
+  border-top: 1px solid #eee;
+  border-bottom: 1px solid #eee;
+  padding-top: 20px;
+  margin-bottom: 0;
+}
+
+article.summary:hover {
+  border-top: 1px solid #4271AE;
+  border-bottom: 1px solid #4271AE;
+}
+
+article.summary h2 a {
+  border: none;
+}

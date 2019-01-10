@@ -1,0 +1,761 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8"/>
+	<title>The Loopless Loop - Judo Salt Genius 🥋🧂🧠</title>
+	<meta name="author" content="Justin Douglas">
+
+
+  <meta name="description" content="In which I discover that the purpose of linear algebra is not to just manipulate spreadsheets and move vectors around but to make your code faster and cleaner—in other words, to give it a Zen uppercut.">
+
+
+
+	<link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
+
+
+
+
+    <!-- CSS specified by the user -->
+
+
+    <link href="/mystyle.css" type="text/css" rel="stylesheet" />
+
+
+    <link href="/monokai.css" type="text/css" rel="stylesheet" />
+</head>
+
+<body>
+
+    <div class="container">
+
+	  <header>
+	    <div class="feeds">
+	    </div>
+		<a href="/" class="title">Judo Salt Genius 🥋🧂🧠</a>
+      </header>
+
+	  <div class="wrapper">
+
+		  <div role="main" class="content">
+	<article class="full">
+
+		<h1>The Loopless Loop</h1>
+
+<div class="metadata">
+  <time datetime="2019-01-10T19:00:46+07:00">Thu 10 January 2019</time>
+  in <a href="/category/misc">misc</a>
+</div>
+    <h2>Table of contents</h2>
+    <div class="col-lg-3 hidden-xs hidden-sm">
+        <div class="toc">
+<ul>
+<li><a href="#my-linear-algebra-a-ha-moment">My linear algebra a-ha moment</a></li>
+<li><a href="#how-to-make-a-computer-explode">How to make a computer explode</a></li>
+<li><a href="#meeting-a-zen-master-on-the-road">Meeting a Zen master on the road</a></li>
+<li><a href="#linear-regressionan-easy-reviewprimer">Linear regression—an easy review/primer</a></li>
+<li><a href="#multiple-linear-regression-and-some-basic-code">Multiple linear regression (and some basic code)</a></li>
+<li><a href="#gimme-summa-dat-sweet-sweet-code">Gimme summa dat sweet, sweet code</a></li>
+<li><a href="#einstein-notation-or-a-single-sample-is-not-a-dataset">Einstein notation (or, a single sample is not a dataset)</a></li>
+<li><a href="#how-accurate-are-our-predictions">How accurate are our predictions?</a><ul>
+<li><a href="#error">Error</a></li>
+<li><a href="#squared-error">Squared error</a></li>
+<li><a href="#mean-squared-error">Mean squared error</a></li>
+</ul>
+</li>
+<li><a href="#how-much-effect-does-each-weight-have">How much effect does each weight have?</a></li>
+<li><a href="#my-multivariable-calculus-a-ha-moment-move-this">My multivariable calculus a-ha moment (move this)</a></li>
+<li><a href="#stochastic-gradient-descent">Stochastic gradient descent</a></li>
+<li><a href="#enter-the-matrix-or-at-least-linear-algebra">Enter the Matrix (or at least linear algebra)</a></li>
+<li><a href="#summary">Summary</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+    </div>
+
+		
+<p>As I embarked on my journey to learn the math side of machine learning, all of the blog posts seemed to point to linear algebra as the starting point. The problem was, nothing I read made it immediately clear <em>how</em> linear algebra played a role in machine learning.</p>
+<p>Worse yet, the whole discussion of vectors, matrices, linear combinations, and linear transformations seemed completely disconnected from my layman’s understanding of machine learning.</p>
+<p>The Khan Academy videos on linear algebra are quite tedious and I didn’t feel I was getting anywhere. <a href="https://www.youtube.com/watch?v=fNk_zzaMoSs&amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab">3blue1brown’s LA series</a> is much more engaging and lucid, but I was still getting bogged down in the theory without seeing the application.</p>
+<p>Needless to say, it was pretty slow going.</p>
+<h2 id="my-linear-algebra-a-ha-moment">My linear algebra <em>a-ha</em> moment</h2>
+<p>It wasn’t until I switched gears and decided, on a whim, to tackle <em>linear regression</em> that linear algebra really started to click for me. On a practical level, code that uses linear-algebraic methods simplifies work for the computer by orders of magnitude, making it possible to process massive datasets—and process them rapidly. This is obviously a critical requirement in the age of Big Data.</p>
+<p>And on a conceptual level, it gave me my first mathematical <em>a-ha</em> moment:</p>
+<p><strong>By manipulating matrices and vectors, you can achieve the same outcome as a loop without explicitly looping—a loopless loop</strong>.</p>
+<p><em>That</em> is why linear algebra is the cornerstone of machine learning.</p>
+<p>The only thing is, no single resource I found on the internet seemed to really clarify the mathematical and programmatic aspects <em>at the same time</em> without getting too abstract on the math side of things.</p>
+<p>As a self-taught and formerly math-phobic coder, I needed a guide that progressed from from inelegant code (which I could understand) and inelegant math to (mind-blowingly) elegant math, which would then lay the groundwork for writing extremely elegant—and performant—code (which is incomprehensible without understanding the math).</p>
+<p>This is that guide, created from my notes from Week 1 of my machine learning journey. I’ve split it up into multiple posts, since it’s quite long.</p>
+<h2 id="how-to-make-a-computer-explode">How to make a computer explode</h2>
+<p>I always thought that for-loops were simply a fact of life.</p>
+<p>While I understood the basic principle behind stochastic gradient descent, I had never implemented it myself before. If I had tried my hand at it before learning the math involved, I probably would have come up with this monster:</p>
+<div class="highlight"><pre><span></span><span class="c1"># DON'T TRY THIS</span>
+
+<span class="n">samples</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span> <span class="p">(</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">lists</span><span class="p">)</span> <span class="p">]</span> <span class="p">]</span>
+<span class="n">actual</span> <span class="o">=</span> <span class="p">[</span> <span class="o">...</span> <span class="p">]</span>
+<span class="k">def</span> <span class="nf">gradient_descent</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">actual</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="c1"># 0 to start</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+            <span class="n">summation_part_of_cost</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">samples</span><span class="p">):</span>
+                <span class="n">sum_of_sq_errs</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">hypothesis</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">))</span> <span class="o">-</span> <span class="n">actual</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span>
+                <span class="n">summation_part_of_cost</span> <span class="o">+=</span> <span class="n">sum_of_sq_errs</span> <span class="o">*</span> <span class="n">sample</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+            <span class="n">partial_deriv</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">)))</span> <span class="o">*</span> <span class="n">summation_part_of_cost</span>
+            <span class="n">weights</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">partial_deriv</span>
+    <span class="k">return</span> <span class="n">weights</span>
+
+<span class="c1"># I REALLY HOPE YOU DIDN'T TRY THIS</span>
+</pre></div>
+<p>Okay, maybe not. (It would be pretty hard to write this without understanding the math involved.)</p>
+<p>Count those loops—<em>three</em>, to be exact! Terrifying. Now, being handy with Python, I could probably have calculated <code>partial_deriv</code> in one line with an even more terrifying list comprehension, just to show off:</p>
+<div class="highlight"><pre><span></span><span class="n">partial_deriv</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">samples</span><span class="p">)))</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">([</span><span class="n">sample</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">sum</span><span class="p">(</span><span class="n">hypothesis</span><span class="p">(</span><span class="n">sample</span><span class="p">,</span> <span class="n">weights</span><span class="p">))</span> <span class="o">-</span> <span class="n">actual</span><span class="p">[</span><span class="n">i</span><span class="p">])</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">samples</span><span class="p">)])</span>
+</pre></div>
+<p>...which shaves off four lines, at the expense of all readability. But bigger problems remain:</p>
+<ul>
+<li><strong>The time complexity of this program is off the charts.</strong> In <a href="https://en.wikipedia.org/wiki/Time_complexity">Big-O time complexity</a> terms, it is <em>at least</em> <span class="math">\(O(n^3)\)</span>, if not more, which is cubic time, or (literally) <em>exponentially <a href="http://bigocheatsheet.com/">horrible</a></em>.</li>
+<li><strong>It just doesn’t work.</strong> Even with a dataset of unremarkable size, you’re bound to get a <code>RuntimeWarning: overflow encountered in square error</code>, unless you set the <code>learning_rate</code> to a very small value.</li>
+</ul>
+<p>Is there any way beyond this impasse?</p>
+<h2 id="meeting-a-zen-master-on-the-road">Meeting a Zen master on the road</h2>
+<p>In Zen Buddhism, there is a famous book called <em>The Gateless Gate</em>, which is a collection of <em>koans</em>. A Zen <em>koan</em> is a riddle that cannot be approached with the rational mind. For example:</p>
+<blockquote>
+<p><em>Goso said: "When you meet a Zen master on the road, you cannot talk to him, but neither can you face him with silence. What are you going to do?"</em></p>
+</blockquote>
+<p>To solve it, you have to transcend the duality of <em>this</em> and <em>not-this</em>.</p>
+<blockquote>
+<p><em>Give him an uppercut<br/>
+And you will be called one who understands Zen.</em><br/>
+—The Gateless Gate, Koan #36</p>
+</blockquote>
+<p>As you might imagine, linear algebra—<strong>the loopless loop</strong>—is the Zen uppercut of coding. What, then is the target of our uppercut?</p>
+<h2 id="linear-regressionan-easy-reviewprimer">Linear regression—an easy review/primer</h2>
+<p>Basically, linear regression is used to make predictions about a <em>thing</em> based on its characteristics, assuming that</p>
+<ul>
+<li>that there is some correlation among those characteristics and</li>
+<li>that you have plenty of data about other <em>things</em>.</li>
+</ul>
+<p>The intuition here can be explained with middle school algebra. Imagine you know the square footage and price of 200 houses and you want to estimate the price of a house with a given square footage.</p>
+<p>Obviously, this is an oversimplified correlation for the sake of example. (And for some reason, everyone seems to explain this concept using houses, so why reinvent the wheel?)</p>
+<p>If you were to make a scatter plot of that data, with the area along the x-axis and the price along the y-axis, the pattern might roughly look like it follows a line—not perfectly linear, but linear <em>enough</em> to predict the price of a house with <span class="math">\(x\)</span> square footage. You can use linear regression to work backward from the data to determine this line, <strong>the line of best fit</strong>.</p>
+<p>In middle school algebra, lines are written in the form</p>
+<div class="math">$$ y = \color{magenta}{m}\color{teal}{x} + \color{orange}{b} $$</div>
+<p>where <span class="math">\(\color{teal}{x}\)</span> is the input, <span class="math">\(\color{magenta}{m}\)</span> is the slope of the line, <span class="math">\(\color{orange}{b}\)</span> moves the line up and down on the graph, and <span class="math">\(y\)</span> is the height of the line at point <span class="math">\(\color{teal}{x}\)</span>.</p>
+<p>Our house problem can also be framed as a line, where <span class="math">\(\color{teal}{x}\)</span> is the square footage, which influences the price by some value <span class="math">\(\color{magenta}{m}\)</span>, to which we add some kind of base price to bring us to the final price, <span class="math">\(y\)</span>.</p>
+<p>Well, that was easy enough, right?</p>
+<h2 id="multiple-linear-regression-and-some-basic-code">Multiple linear regression (and some basic code)</h2>
+<p>In the real world, of course, area is not the only factor that decides the price of a house. There are many others. Can we still adapt our middle school equation to this problem if each house has 3 features—say, area, nearby property values, and age of the building?</p>
+<div class="math">$$ y = \color{magenta}{m}\color{teal}{x} + \color{magenta}{n}\color{teal}{z} + \color{magenta}{o}\color{teal}{a} + \color{orange}{b} $$</div>
+<p>We can, but it’s messy. (It’s also no longer a line, but let’s ignore that for now.) First, let’s rewrite that “base price” as <span class="math">\(b \cdot 1\)</span>.</p>
+<div class="math">$$ y = \color{magenta}{m}\color{teal}{x} + \color{magenta}{n}\color{teal}{z} + \color{magenta}{o}\color{teal}{a} + \color{magenta}{b}\cdot\color{teal}{1} $$</div>
+<p>This gives us a nice symmetry: Notice that all of the teal variables are features, which are multiplied by their degree of influence (called a <em>coefficient</em> in statistics, or a <em>weight</em> in machine learning). When you add all these together, you get the price of the house.</p>
+<p>This is called <strong>multiple linear regression</strong>. Most people wouldn’t skip directly to multiple LR after introducing single LR, but single LR is pretty easy to digest if you can understand high school calculus (derivatives), so it didn’t level up my math knowledge.</p>
+<p>Now, let’s code our equation, putting all the feature values into a <em>list</em> <code>features</code> and the weights into another <em>list</em> <code>weights</code>. In Python, in increasing order of elegance, we can write the following:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Using completely random numbers just to show the code</span>
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="c1"># 3 features; first value is the “dummy feature”</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">]</span>
+
+<span class="c1"># Brute-force addition</span>
+<span class="n">price</span> <span class="o">=</span> <span class="n">features</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">weights</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">features</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">weights</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">features</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">*</span> <span class="n">weights</span> <span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+</span> <span class="n">features</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">*</span> <span class="n">weights</span> <span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+</pre></div>
+<p>If we use <span class="math">\(x\)</span>s to denote our features, <span class="math">\(θ\)</span>s to denote our weights, and subscript numbers to denote the position of each item in a list (series), then we can rewrite our equation in a slightly more organized way:</p>
+<div class="math">$$ h_θ(x) = \color{magenta}{θ_0}\color{lightgray}{x_0} + \color{magenta}{θ_1}\color{teal}{x_1} + \cdots + \color{magenta}{θ_n}\color{teal}{x_n}  $$</div>
+<p>which just happens to be the <strong>generalized form of linear regression</strong>—<em>general</em> in the sense that it can accommodate any number of features, whether that’s 1 or 1,000.</p>
+<p>Here, <span class="math">\(x\)</span> is the collection of all feature values <span class="math">\(\color{teal}{x_1}\)</span> through <span class="math">\(\color{teal}{x_n}\)</span>, where <span class="math">\(n\)</span> is the number of features. (And <span class="math">\(x_{1000}\)</span> actually isn’t too crazy in terms of real-world datasets!) It also includes the dummy feature <span class="math">\(\color{lightgray}{x_0} = 1\)</span>. Likewise, <span class="math">\(θ\)</span> is the collection of all weights, including <span class="math">\(\color{magenta}{θ_0}\)</span>, the “base price” in our example. In machine learning, this is called the <em>bias</em> value.</p>
+<h2 id="gimme-summa-dat-sweet-sweet-code">Gimme summa dat sweet, sweet code</h2>
+<p>If you know anything about programming, you know that the last line of code above is no way to write a program. Accommodating 100 features would be a chore, and accommodating a variable number of features would be impossible. Naturally, we would use the magic of iteration:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Super-basic iteration over the lists</span>
+<span class="n">price</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">len</span><span class="p">(</span><span class="n">features</span><span class="p">):</span>
+  <span class="n">price</span> <span class="o">+=</span> <span class="n">features</span><span class="p">[</span><span class="n">j</span><span class="p">]</span> <span class="o">*</span> <span class="n">weights</span><span class="p">[</span><span class="n">j</span><span class="p">]</span>
+</pre></div>
+<p>No one actually writes the linear regression formula like this, but if you wanted to, you could express the above code in math using a <em>summation</em>:</p>
+<div class="math">$$ h_θ(x) = \sum_{j=0}^n \color{magenta}{θ_j}\color{teal}{x_j} $$</div>
+<p>That Greek letter <span class="math">\(\sum\)</span> (sigma) means <em>summation</em>. Basically, run a for-loop that adds the result of the following expression for each sample (house) starting at <span class="math">\(j=0\)</span> until <span class="math">\(j=n\)</span>.</p>
+<p>The function notation <span class="math">\(h_θ(x)\)</span> indicates that this is the <strong>hypothesis</strong> for item (house) <span class="math">\(x\)</span> given the collection of weights <span class="math">\(θ\)</span>. If you know Python better than you know math (as I did), then you might try further refactoring the code:</p>
+<div class="highlight"><pre><span></span><span class="c1"># Functional programming version</span>
+<span class="n">price</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+  <span class="n">price</span> <span class="o">+=</span> <span class="n">f</span> <span class="o">*</span> <span class="n">w</span>
+
+<span class="c1"># More Pythonic version of the above</span>
+<span class="n">price</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span> <span class="o">*</span> <span class="n">w</span> <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">weights</span><span class="p">)]</span>
+</pre></div>
+<p>I didn’t realize this when I wrote the first draft of this post, but even expressing the simple Python function <code>zip(x, y)</code> in math requires linear algebra. I’ll get back to the non-fancy version of linear regression in just a minute, but for sake of thoroughness, if <span class="math">\(x\)</span> and <span class="math">\(θ\)</span> are both vectors, then</p>
+<div class="math">$$ \begin{align}
+\vec x = \begin{bmatrix} x_0 \\ x_1 \\ \vdots \\ x_n \end{bmatrix} &amp; \qquad{}
+\vec θ = \begin{bmatrix} θ_0 \\ θ_1 \\ \vdots \\ θ_n \end{bmatrix} &amp; \quad{}
+z(\vec x, \vec θ) = \vec θ\vec x \end{align} $$</div>
+<p>Similarly, we can rewrite our equation as a function in Python, too. Let’s leave vectors aside for now, but keep the <code>zip</code> and encapsulate it into a function, because it’s clean and easy to understand.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">hypothesis</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">f</span> <span class="o">*</span> <span class="n">w</span> <span class="k">for</span> <span class="n">f</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">weights</span><span class="p">)]</span>
+</pre></div>
+<h2 id="einstein-notation-or-a-single-sample-is-not-a-dataset">Einstein notation (or, a single sample is not a dataset)</h2>
+<p>This is all great if there’s only one <span class="math">\(x\)</span> (house). But we will need tons of houses to make a decent prediction. Our list <code>houses</code> needs to be changed into a <em>list of lists</em>. For the sake of example, if we had three houses and three features, <code>houses</code> would look like this (remember the dummy feature):</p>
+<div class="highlight"><pre><span></span><span class="n">houses</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+          <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span>
+          <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">]]</span> <span class="c1"># random values</span>
+</pre></div>
+<p>This also allows us to refer to specific features of specific houses using two indexes, <code>houses[i][j]</code>. How do we do this in math, though? Enter <strong>Einstein notation</strong>.</p>
+<div class="math">$$ h_θ(x^i) = θ_0x_0^i + θ_1x_1^i + \cdots + θ_nx_n^i  $$</div>
+<p>The superscript numbers here <em>aren’t</em> exponents. You would think Einstein, of all people, could come up with something less confusing, but that is the convention, so it’s important to become familiar with it.</p>
+<p>Just remember that in linear regression, there are conventional choices for the variable names. <span class="math">\(i\)</span> denotes the <span class="math">\(i\)</span>th house, and <span class="math">\(j\)</span> the <span class="math">\(j\)</span>th feature.</p>
+<div class="math">$$ x^{\color{orange}{i \textrm{th sample}}}_{\color{blue}{j \textrm{th feature}}} $$</div>
+<p>So if we were to start describing each hypothesis for our dataset individually,</p>
+<div class="math">$$ h_θ(x^i) = \left\{\begin{array}{ll}
+h_θ(x^0) = θ_0x_0^0 + θ_1x_1^0 + \cdots + θ_nx_n^0 \\
+h_θ(x^1) = θ_0x_0^1 + θ_1x_1^1 + \cdots + θ_nx_n^1 \\
+h_θ(x^2) = θ_0x_0^2 + θ_1x_1^2 + \cdots + θ_nx_n^2 \\
+h_θ(x^3) = θ_0x_0^2 + θ_1x_1^2 + \cdots + θ_nx_n^2
+\end{array}\right. $$</div>
+<div class="highlight"><pre><span></span><span class="n">hypothesis</span><span class="p">(</span><span class="n">houses</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">weights</span><span class="p">)</span>
+<span class="n">hypothesis</span><span class="p">(</span><span class="n">houses</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">weights</span><span class="p">)</span>
+<span class="n">hypothesis</span><span class="p">(</span><span class="n">houses</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">weights</span><span class="p">)</span>
+<span class="n">hypothesis</span><span class="p">(</span><span class="n">houses</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">weights</span><span class="p">)</span>
+
+<span class="n">hyps</span> <span class="o">=</span> <span class="p">[</span><span class="n">hypothesis</span><span class="p">(</span><span class="n">houses</span><span class="p">[</span><span class="n">house</span><span class="p">],</span> <span class="n">weights</span><span class="p">)</span> <span class="k">for</span> <span class="n">house</span> <span class="ow">in</span> <span class="n">houses</span><span class="p">]</span>
+</pre></div>
+<h2 id="how-accurate-are-our-predictions">How accurate are our predictions?</h2>
+<p>Seeing as the goal of linear regression is to come up with a line that best fits the data, we need some way to evaluate a line’s <strong>goodness of fit</strong> to the data. One measure of that is the <strong>mean squared error</strong>.</p>
+<h3 id="error">Error</h3>
+<p><em>Error</em> is how far the prediction for one sample (house) is from its actual value.</p>
+<div class="math">$$ \begin{align}
+\textrm{error}_i &amp;= \textrm{prediction}_i - \textrm{actual}_i\\
+&amp;= \hat{Y}_i - Y_i
+\end{align} $$</div>
+<blockquote>
+<p><em>Note</em>: The subscript <span class="math">\(i\)</span> here is <strong>not</strong> Einstein notation, because these are just lists of values, not a “spreadsheet” of rows and columns. The Einstein notation in this discussion of linear regression only applies to <span class="math">\(x\)</span>.</p>
+</blockquote>
+<p><span class="math">\(\hat Y\)</span> is read “Y-hat,” which is just a statistical convention. It can be substituted with our function <span class="math">\(h_θ(x^i)\)</span>.</p>
+<div class="math">$$ \textrm{error}_i = h_θ(x^i) - Y_i $$</div>
+<div class="highlight"><pre><span></span><span class="n">actual_values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span> <span class="c1"># 3 houses; random values</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.75</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">error</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">hypothesis</span><span class="p">(</span><span class="n">houses</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">weights</span><span class="p">)</span> <span class="o">-</span> <span class="n">actual_values</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+</pre></div>
+<h3 id="squared-error">Squared error</h3>
+<p>We <em>square</em> it so that (1) all values are positive, preventing underestimates and overestimates from canceling each other out; and (2) larger errors are considered proportionally “more erroneous” than smaller errors.</p>
+<div class="math">$$ \begin{align}
+\textrm{SE}_i &amp;= \textrm{error}^2\\
+&amp;= (\hat{Y}_i - Y_i)^2\\
+&amp;= (h_θ(x^i) - Y_i)^2
+\end{align} $$</div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">se</span><span class="p">(</span><span class="n">i</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">error</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+</pre></div>
+<h3 id="mean-squared-error">Mean squared error</h3>
+<p>The <em>mean</em> value of the squared error for all samples can give us an idea about our line’s goodness of fit.</p>
+<div class="math">$$ \begin{align}
+\textrm{MSE} &amp;= \frac{\textrm{SE}_\color{red}{1} \color{blue}{+ \cdots + } \textrm{ SE}_\color{red}{\textrm{number of samples}}}{\textrm{number of samples}}\\
+&amp;= \frac{\color{blue}{\sum}_{\color{red}{i=1}}^{\color{red}{m}} \textrm{SE}}{m}\\
+&amp;= \frac{\sum_{\color{red}{i=1}}^{\color{red}{m}} (\hat{Y}_{\color{red}i} - Y_{\color{red}i})^2}{m}\\
+&amp;= \frac{1}{m} \sum_{\color{red}{i=1}}^{\color{red}{m}} (\hat{Y}_{\color{red}i} - Y_{\color{red}i})^2\\
+&amp;= \frac{1}{m} \sum_{\color{red}{i=1}}^{\color{red}{m}} (h_θ(x^{\color{red}i}) - Y_{\color{red}i})^2
+\end{align} $$</div>
+<div class="highlight"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">houses</span><span class="p">)</span>
+<span class="n">total_se</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">m</span><span class="p">:</span>
+    <span class="n">total_se</span> <span class="o">+=</span> <span class="n">se</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="n">mse</span> <span class="o">=</span> <span class="n">total_se</span> <span class="o">/</span> <span class="n">m</span>
+
+<span class="c1"># More Pythonic and more similar to the actual math notation</span>
+<span class="n">mse</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">([</span><span class="n">se</span><span class="p">(</span><span class="n">house</span><span class="p">)</span> <span class="k">for</span> <span class="n">house</span> <span class="ow">in</span> <span class="n">houses</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">houses</span><span class="p">)</span>
+</pre></div>
+<blockquote>
+<p><em>Note</em>: MSE gives us an indication of goodness of fit, but it’s difficult to tie that value directly to the data. You can use the RMSE (root mean squared error), which is just the square root of the MSE, to reframe the average error in terms of the data. In this case, the RMSE would tell us how much (in dollars) that our prediction line was off by.</p>
+</blockquote>
+<p>Let’s use the mean squared error to rewrite this equation as a function of the collection of weights. Every time we change the weights, we will obtain a different line with a different goodness of fit (MSE), and this relationship can be illustrated by a function called the <em>cost function</em>.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+    <span class="nb">sum</span><span class="p">([</span><span class="n">se</span><span class="p">(</span><span class="n">house</span><span class="p">)</span> <span class="k">for</span> <span class="n">house</span> <span class="ow">in</span> <span class="n">houses</span><span class="p">])</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">houses</span><span class="p">)</span>
+</pre></div>
+<p>Well, almost. This function is conventionally named <span class="math">\(J\)</span>:</p>
+<div class="math">$$ J(θ) = \frac{1}{\color{magenta}{2}m} \sum_{i=1}^m (h_θ(x^i) - Y_i)^2 $$</div>
+<p>Where did that <span class="math">\(\color{magenta}{2}\)</span> come from? Again, this is just a matter of convention. The <span class="math">\(\color{magenta}{2}\)</span> will cancel out in the the next step.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+    <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">houses</span><span class="p">))</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">([</span><span class="n">se</span><span class="p">(</span><span class="n">house</span><span class="p">)</span> <span class="k">for</span> <span class="n">house</span> <span class="ow">in</span> <span class="n">houses</span><span class="p">])</span>
+</pre></div>
+<p>Keep in mind that <span class="math">\(θ\)</span> and <span class="math">\(Y\)</span> are lists and <span class="math">\(x\)</span> is a list of lists. What this means is that in a situation with two features (plus the dummy feature),</p>
+<div class="math">$$ \begin{align} h_{θ_\color{teal}{0}, θ_\color{teal}{1}, θ_\color{teal}{2}}(x) &amp;= h_{θ_\color{teal}{0}}(x_\color{teal}{0}) + h_{θ_\color{teal}{1}}(x_\color{teal}{1}) + h_{θ_2}(x_\color{teal}{2}) \\
+h_{θ_\color{teal}{0}, θ_\color{teal}{1}, θ_\color{teal}{2}}(x^\color{red}{i}) &amp;= h_{θ_\color{teal}{0}}(x_\color{teal}{0}^\color{red}{i}) + h_{θ_\color{teal}{1}}(x_\color{teal}{1}^\color{red}{i}) + h_{θ_\color{teal}{2}}(x_\color{teal}{2}^\color{red}{i}) \\
+J(θ_\color{teal}{0}, θ_\color{teal}{1}, θ_\color{teal}{2}) &amp;= \frac{1}{2m} \sum_{\color{red}{i=1}}^\color{red}{m} \Big[h_{θ_\color{teal}{0}}(x_\color{teal}{0}^\color{red}{i}) + h_{θ_\color{teal}{1}}(x_\color{teal}{1}^\color{red}{i}) + h_{θ_\color{teal}{2}}(x_\color{teal}{2}^\color{red}{i}) - Y_{\color{red}i}\Big]^2
+\end{align} $$</div>
+<p>Numbers in teal represent feature numbers; numbers in red represent sample numbers.</p>
+<h2 id="how-much-effect-does-each-weight-have">How much effect does each weight have?</h2>
+<p>Now, imagine each feature as knobs on a radio. Increasing or decreasing the weight of each feature is like turning up or down the knob for that feature. We want to “tune” our line to be as close to the data as possible by “dialing” the features up and down. In order to do this, we need to determine the effect that a given combination of knob settings has on the final output.</p>
+<p>In math terms, this is akin to asking “How much does <span class="math">\(J\)</span> change when <span class="math">\(θ\)</span> changes?” Sounds like derivatives from high school calculus.</p>
+<div class="math">$$ \begin{align} f(x) &amp;= 5x^2 \\
+\frac{df}{dx} &amp;= 5\cdot2x^{2-1} \\
+&amp;= 10x
+\end{align}
+$$</div>
+<h2 id="my-multivariable-calculus-a-ha-moment-move-this">My multivariable calculus <em>a-ha</em> moment (move this)</h2>
+<p>Our function <span class="math">\(J\)</span> is actually one function inside of another, so the chain rule applies. Bonus points if you remember that from high school—I didn’t.</p>
+<div class="math">$$ \begin{align}
+J(θ) &amp;= \color{purple}{\frac{1}{2m}} \color{purple}{\sum_{i=1}^m} \color{purple}{\Big[} \color{orange}{h_θ(x^i)} \color{purple}{- Y_i)\Big]^2} \\
+\frac{dJ(θ)}{dθ} &amp;= d_\color{purple}{\textrm{outer}} \cdot d_\color{orange}{\textrm{inner}}
+\end{align} $$</div>
+<div class="math">$$ \require{cancel}
+\begin{align*}
+\color{purple}{\textrm{outer}} &amp;= \color{purple}{\frac{1}{2m}} \color{purple}{\sum_{i=1}^m} \color{purple}{(} \color{orange}{\textrm{inner}} \color{purple}{- Y_i)^2} &amp;
+\color{orange}{\textrm{inner}} &amp;= \color{magenta}{θ_0}\color{teal}{x_0} + \color{magenta}{θ_1}\color{teal}{x_1} + \cdots + \color{magenta}{θ_n}\color{teal}{x_n} \\
+d_\color{purple}{\textrm{outer}} &amp;= \color{purple}{\frac{\cancel{2}}{\cancel{2}m}} \color{purple}{\sum_{i=1}^m} \color{purple}{\Big[} \color{orange}{h_θ(x^i)} \color{purple}{{- Y_i\Big]}^2} &amp; d_\color{orange}{\textrm{inner}} &amp;= ???
+\end{align*}
+$$</div>
+<p>This is where I got stuck. <span class="math">\(θ\)</span> is a collection of values, not just a single value. Each knob on our radio affects the output individually, and we have to determine the individual effect of each knob.</p>
+<p>It helps to start by breaking down what the chain rule is actually saying.</p>
+<div class="math">$$ \frac{d[\color{purple}{\textrm{outer}}(\color{orange}{\textrm{inner}}(x))]}{dx} = \frac{d_\color{purple}{\textrm{outer}}}{d_\color{orange}{\textrm{inner}}} \cdot \frac{d_\color{orange}{inner}}{dx} $$</div>
+<p>This means our “outer derivative” <span class="math">\(d_\color{purple}{\textrm{outer}}\)</span> tells us how much our cost function <span class="math">\(J(θ)\)</span> changes in response to a given change in our hypothesis <span class="math">\(h(x)\)</span>. We now need to find the “inner derivative” <span class="math">\(d_{\color{orange}{\textrm{inner}}}\)</span>, which tells us how much our hypothesis <span class="math">\(h(x)\)</span> changes in response to a given change in our weights <span class="math">\(θ\)</span>.</p>
+<p>But since <span class="math">\(θ\)</span> is a collection of values, there isn’t a single derivative, but rather several <em>partial derivatives</em>, which indicate how much our hypothesis <span class="math">\(h(x^i)\)</span> for a specific sample (house) <span class="math">\(x^i\)</span> changes in response to a given change in <em>each</em> of the weights <span class="math">\(θ_j\)</span>.</p>
+<blockquote>
+<p><em>Note</em>: Another labeling convention—just as <span class="math">\(i\)</span> is used to refer to, or “index,” samples from <span class="math">\(1\)</span> through <span class="math">\(m\)</span>, the total number of samples, lowercase <span class="math">\(j\)</span> is used to index features from <span class="math">\(0\)</span> through <span class="math">\(n\)</span>, the total number of features. To return to our Einstein notation,
+<div class="math">$$ x^{1 \&gt; \leq \&gt; i^\textrm{th} \textrm{ sample} \&gt; \leq \&gt; m \textrm{ samples}}_{0 \&gt; \leq \&gt; j^\textrm{th} \textrm{ feature} \&gt; \leq \&gt; n \textrm{ features}} $$</div>
+</p>
+</blockquote>
+<p>Now we are in the land of <strong>multivariable calculus</strong>. In math notation, this is written with a funny “d” called a “del,” <span class="math">\(\partial\)</span>, like this:</p>
+<div class="math">$$ \frac{\partial h_θ(x^i)}{\partial θ_j} $$</div>
+<p>This looks crazy, but the process of finding these partial derivatives is really the same as finding a normal derivative, except you <em>treat all the other variables as constant</em>, effectively ignoring them. So, for we now only have to concern ourselves with</p>
+<div class="math">$$ h_{θ_j}(x^i) = \begin{cases}
+\color{magenta}{θ_0}\color{teal}{x_0^i} \color{lightgray}{+θ_1x_1^i + θ_2x_2^i} &amp; \text{when } j=0 \\
+\color{lightgray}{θ_0x_0^i} \color{lightgray}{+} \color{magenta}{θ_1}\color{teal}{x_1^i} \color{lightgray}{+θ_2x_2^i} &amp; \text{when } j=1 \\
+\color{lightgray}{θ_0x_0^i + θ_1x_1^i} \color{lightgray}{+} \color{magenta}{θ_2}\color{teal}{x_2^i} &amp; \text{when } j=2 \\
+\end{cases} $$</div>
+<p>The derivative of a variable times something else is just the <em>something else</em>. (For a line <span class="math">\(y = 2x\)</span>, <span class="math">\(\frac{dy}{dx}\)</span> is just <span class="math">\(2\)</span>, since its slope will be 2 at every point along the line.) Thus,</p>
+<div class="math">$$ \frac{\partial h_θ(x)}{\partial θ_j} = \begin{cases}
+\frac{\partial h_θ(x)}{\partial θ_0} &amp;= \color{lightgray}{θ_0} \color{teal}{x_0^i} &amp; \text{when } j=0 \\
+\frac{\partial h_θ(x)}{\partial θ_1} &amp;= \color{lightgray}{θ_1} \color{teal}{x_1^i} &amp; \text{when } j=1 \\
+\frac{\partial h_θ(x)}{\partial θ_2} &amp;= \color{lightgray}{θ_2} \color{teal}{x_2^i} &amp; \text{when } j=2
+\end{cases} $$</div>
+<p>Or just</p>
+<div class="math">$$ \frac{\partial h_θ(x)}{\partial θ_j} = \left\{\begin{array}{lr}
+x_0^i &amp; \text{when } j=0 \\
+x_1^i &amp; \text{when } j=1 \\
+x_2^i &amp; \text{when } j=2
+\end{array}\right\}
+= \color{red}{x_j^i} $$</div>
+<p>That’s <span class="math">\(d_{\color{orange}{\textrm{inner}}}\)</span>.</p>
+<div class="math">$$ \begin{align}
+\frac{\partial{J(θ)}}{\partial{θ_j}} &amp;= d_\color{purple}{\textrm{outer}} \cdot d_\color{orange}{\textrm{inner}} \\
+&amp;= \frac{1}{m} \sum_{i=1}^m (h_θ(x^i) - Y_i) \cdot \color{red}{x_j^i}
+\end{align} $$</div>
+<p>Phew! That was a lot of abstract math. Finally, we have something that can be translated into code.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">effect_of_weight</span><span class="p">(</span><span class="n">which_weight</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="nb">sum</span><span class="p">([</span><span class="n">error</span><span class="p">(</span><span class="n">house</span><span class="p">)</span> <span class="o">*</span> <span class="n">weights</span><span class="p">[</span><span class="n">which_weight</span><span class="p">]</span> <span class="k">for</span> <span class="n">house</span> <span class="ow">in</span> <span class="n">houses</span><span class="p">])</span>
+
+<span class="n">effect_of_all_weights</span> <span class="o">=</span> <span class="p">[</span><span class="n">effect_of_weight</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">]</span>
+</pre></div>
+<h2 id="stochastic-gradient-descent">Stochastic gradient descent</h2>
+<p>Strictly speaking, <span class="math">\(\frac{1}{m} \sum_{i=1}^m (h_θ(x^i) - Y_i) \cdot x_j^i\)</span> is not a derivative, but a <strong>gradient</strong>—a collection of partial derivatives. In high school calculus, the derivative at a given point is visualized as the line that is tangent to the graph’s curve at that point. In multivariable calculus, the gradient at a given point is visualized as the <em>plane</em> that is tangent to the graph’s surface at the point.</p>
+<p>In more concrete terms, imagine running a small piece of cardboard around the sides of a coffee mug so that the cardboard follows the curvature of the mug. Every point on the surface of the mug corresponds to some combination of weights, and the closer we are to the top of the mug, the greater the value of our cost function is, and so the more inaccurate our prediction is. We want to find the bottom of the mug, where the piece of cardboard is parallel to the ground, because that is where the value of the cost function is as low as possible.</p>
+<p>When that value is zero, the line would fit our data perfectly. However, that’s not possible for real-world data, so we will settle for the lowest value—that is, we want to <em>minimize</em> the cost function.</p>
+<div class="math">$$ \underset{θ}{\arg\min} \, J(θ) $$</div>
+<p>In the language of math (and neural networks), this is called <strong>stochastic gradient descent</strong>.</p>
+<ul>
+<li>The <em>gradient</em> is the thing we’re trying to minimize.</li>
+<li>This process is <em>stochastic</em> (random) because we start with random weights (all zeros), which puts us at a random point on the mug.</li>
+<li>It is a <em>descent</em> because we want to move down to a progressively flatter region of the mug with each attempt (combination of weights).</li>
+</ul>
+<p>The descent occurs in “steps.” Imagine, for a moment, a basic parabola <span class="math">\(f(x) = x^2\)</span> instead of a mug. The derivative at any point <span class="math">\(x\)</span> is <span class="math">\(2x\)</span>. Positive <span class="math">\(x\)</span> values give us positive derivatives and negative <span class="math">\(x\)</span> values give us negative derivatives. If we started at some point to the right of 0 and wanted to follow the parabola to its trough, we could do that by subtracting something from <span class="math">\(x\)</span>. Likewise, if we started at some point to the left of 0, we’d want to add something to <span class="math">\(x\)</span>—or rather, subtract a negative value.</p>
+<p>This means that if we start at any point <span class="math">\(x\)</span> and subtract <span class="math">\(\frac{dy}{dx}\)</span>, we will tend toward the trough. We don’t necessarily know exactly what our new <span class="math">\(x\)</span> value will be, but we can assume that subtracting <span class="math">\(\frac{dy}{dx}\)</span> again will take us closer to the trough, although slightly less closer. Each step brings us increasingly closer but in progressively smaller steps. At some point, we will reach <strong>convergence</strong>, or a point that is close enough to minimum.</p>
+<p>The same applies to gradients. The gradient for any set of weights <span class="math">\(θ\)</span> tells us the <em>opposite</em> direction we should go in to find the bottom of the mug. That means that if we start with some initial collection of weights <span class="math">\(θ\)</span> and keep subtracting the gradient, which is notated <span class="math">\(\nabla J\)</span>, we should eventually arrive at the bottom.</p>
+<div class="math">$$ \textrm{repeat } θ := θ - \nabla J \textrm{ until convergence} $$</div>
+<p>But try translating this into Python.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gradient_of_cost</span><span class="p">(</span><span class="n">my_weights</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">effect_of_weight</span><span class="p">(</span><span class="n">j</span><span class="p">)</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">weights</span><span class="p">]</span>
+
+<span class="n">my_weights</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">last_weights</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">]</span>
+<span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+    <span class="n">my_weights</span> <span class="o">-=</span> <span class="n">gradient_of_cost</span><span class="p">(</span><span class="n">last_weights</span><span class="p">)</span> <span class="c1"># ???</span>
+    <span class="n">last_weights</span> <span class="o">=</span> <span class="n">my_weights</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">convergence</span><span class="p">):</span> <span class="c1"># ???</span>
+        <span class="k">break</span>
+
+<span class="n">minimum</span> <span class="o">=</span> <span class="n">my_weights</span> <span class="c1"># ???</span>
+</pre></div>
+<p>In doing so, a few questions arise:</p>
+<ul>
+<li>How do you compare weights so that you can know which of two collections is “lesser” and which is “greater”?</li>
+<li>How do you know when you’ve reached convergence?</li>
+<li>There are many functions and loops running inside one another. Isn’t this too cumbersome for large datasets?</li>
+</ul>
+<p>It‘s clear that we have more or less come as far as we can with the level of math and coding that we have used so far.</p>
+<h2 id="enter-the-matrix-or-at-least-linear-algebra">Enter the Matrix (or at least linear algebra)</h2>
+<p>All of the blog posts I read about machine learning said that linear algebra was the starting point for learning the requisite math. The problem was, nothing I read made it immediately clear <em>how</em> linear algebra played a role in machine learning, and the whole discussion of vectors, matrices, linear combinations, and linear transformations seemed completely disconnected from basically everything else, let alone stochastic gradient descent.</p>
+<p>However, the truth is that vectors and matrices make it possible to do complex loop operations in one go—effectively a <em>loopless loop</em>, which reduces computing overhead, in addition to being just plain magical. On top of that, computers are really good and really fast at manipulating vectors and matrices, even with a mind-boggling number of <em>x</em> variables.</p>
+<p>I won’t go into the mechanics of vector and matrix operations here; they are too tedious to write about, and I’m certainly not the best person to explain them. What I’m more interested in is the concept of <strong>vectorization</strong>: the “translation” (pun intended) of the algebra and calculus above into linear algebra and multivariable calculus, as well as what that looks like in Python (using NumPy).</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+</pre></div>
+<p>Ninja mode activated! First of all, let’s convert all lists to <em>vectors</em> and all lists of lists to <em>matrices</em>.</p>
+<div class="math">$$ \begin{align}
+\textbf X =
+\begin{bmatrix}
+  x_1^1 &amp; x_2^1 &amp; \dots  &amp; x_n^1 \\
+  x_1^2 &amp; x_2^2 &amp; \dots  &amp; x_n^2 \\
+  \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+  x_1^m &amp; x_2^m &amp; \dots  &amp; x_n^m
+\end{bmatrix} \qquad{}
+&amp; \vec θ = \begin{bmatrix} θ_0 \\ θ_1 \\ θ_2 \\ \vdots \\ θ_n \end{bmatrix}
+&amp; \vec y = \begin{bmatrix} y_0 \\ y_1 \\ \vdots \\ y_m \end{bmatrix}
+\end{align}$$</div>
+<p>Let’s use <code>scikit-learn</code> to generate a suitable dataset for us. Since we won’t have to do any of the computations by hand, let’s go wild with the number of features and samples. We also need a vector with our initial weights (all zeros).</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn.datasets</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">make_regression</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span> <span class="c1"># as many rows as X has columns, and 1 column</span>
+</pre></div>
+<p>One important thing to note is that the dummy feature <span class="math">\(x_0\)</span> needs to be added to the data. Also, <code>scikit-learn</code> generates a <code>y</code> array that doesn’t have the proper dimensions of a vector for some reason.</p>
+<div class="highlight"><pre><span></span><span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">X</span><span class="p">))</span> <span class="c1"># padding for bias column</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="c1"># this just fixes a quirk of sklearn's output</span>
+</pre></div>
+<div class="math">$$ \begin{align} \textbf X =
+\begin{bmatrix}
+  \color{red}1 &amp; x_1^1 &amp; x_2^1 &amp; \dots &amp; x_n^1 \\
+  \color{red}1 &amp; x_1^2 &amp; x_2^2 &amp; \dots &amp; x_n^2 \\
+  \color{red}\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+  \color{red}1 &amp; x_1^m &amp; x_2^m &amp; \dots &amp; x_n^m
+\end{bmatrix} \qquad{}
+&amp; \vec θ = \begin{bmatrix} θ_0 \\ θ_1 \\ θ_2 \\ \vdots \\ θ_n \end{bmatrix}
+\end{align} $$</div>
+<p>The hypothesis function <span class="math">\(h_θ(x^i)\)</span> can now be written succinctly as the product of the “houses” matrix <span class="math">\(\textbf X\)</span> and the weights vector <span class="math">\(\vec θ\)</span>. I’ve written out the <span class="math">\(θ\)</span> vector above again to make it easier to visualize the multiplication.</p>
+<div class="math">$$ \begin{align}
+h_θ(x^i) &amp;= \color{magenta}{θ_0}\color{teal}{x_0^i} + \color{magenta}{θ_1}\color{teal}{x_1^i} + \cdots + \color{magenta}{θ_n}\color{teal}{x_n^i} \\
+h_θ(\textbf X) &amp;= \textbf X\vec θ
+\end{align} $$</div>
+<div class="highlight"><pre><span></span><span class="n">hypothesis</span> <span class="o">=</span> <span class="n">X</span> <span class="err">@</span> <span class="n">theta</span> <span class="c1"># @ is short for matrix multiplication</span>
+</pre></div>
+<p>This makes it easy to express the error as the difference between the hypothesis and the actual value:</p>
+<div class="math">$$ \begin{align}
+\textrm{error} &amp;= \hat{Y}_i - Y_i \\
+&amp;= h_θ(x^i) - y_i \\
+\vec e &amp;= \textbf X\vec θ - \vec y
+\end{align} $$</div>
+<div class="highlight"><pre><span></span><span class="n">errors</span> <span class="o">=</span> <span class="n">hypothesis</span> <span class="o">-</span> <span class="n">y</span>
+</pre></div>
+<p>Recall that the cost function involves the sum of squared errors. In linear algebra, summation can be expressed as the product of a transposed vector of ones and a vector with the values to be summed, which struck me as a very clever manipulation.</p>
+<div class="math">$$ \begin{align}
+\vec o = \begin{bmatrix} 1 \\ 1 \\ \vdots \\ 1 \end{bmatrix}
+&amp; \quad{} \vec e = \begin{bmatrix} e_1 \\ e_2 \\ \vdots \\ e_m \end{bmatrix}
+= \begin{bmatrix} h_θ(x^1) - y_1 \\ h_θ(x^2) - y_2 \\ \vdots \\ h_θ(x^m) - y_m \end{bmatrix}
+\end{align} $$</div>
+<div class="math">$$
+\begin{align}
+\vec o^T\vec e = \begin{bmatrix} 1 &amp; 1 &amp; \cdots &amp; 1 \end{bmatrix} \begin{bmatrix} e_1 \\ e_2 \\ \vdots \\ e_m \end{bmatrix}
+&amp;= \color{lightgray}1 \cdot e_1 + \color{lightgray}1 \cdot e_2 + \cdots + \color{lightgray}1 \cdot e_m = \sum_{i=1}^m e_i
+\end{align} $$</div>
+<p>The cost function then becomes:</p>
+<div class="math">$$ J(θ) = \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 = \frac{1}{2m}\sum_{i=1}^m {(e_i)}^2 = \frac{1}{2m} \vec o^T \vec e^2 $$</div>
+<div class="highlight"><pre><span></span><span class="n">num_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+<span class="n">cost</span> <span class="o">=</span> <span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">T</span> <span class="err">@</span> <span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">num_samples</span><span class="p">)</span>
+</pre></div>
+<p>At this point, it’s helpful to turn our cost function into a Python function that takes <span class="math">\(\textbf X, \vec y, \vec θ\)</span> as its inputs. This will make it easier to evaluate our model later.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="n">num_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">num_samples</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">X</span> <span class="err">@</span> <span class="n">weights</span> <span class="o">-</span> <span class="n">y</span>
+    <span class="n">cost_array</span> <span class="o">=</span> <span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">T</span> <span class="err">@</span> <span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">num_samples</span><span class="p">)</span> <span class="c1"># 1x1 matrix</span>
+    <span class="k">return</span> <span class="n">cost_array</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># plain number</span>
+</pre></div>
+<p>It should be noted here that <code>o.T @ (errors ** 2))</code> (that is, <span class="math">\(\vec o^T\vec e^2\)</span>) is about 35% faster than <code>np.sum(errors ** 2)</code> (that is, <span class="math">\(\sum_{i=1}^m (e_i)^2\)</span>), at least as far as I have tested.</p>
+<p>On to the gradient. This is where linear algebra really kicks this thing into high gear.</p>
+<div class="math">$$ \begin{align}
+\nabla J = \frac{\partial J(θ)}{\partial θ_j} &amp;= \Bigg\{\frac{\partial J(θ)}{\partial θ_0}, \frac{\partial J(θ)}{\partial θ_1}, \cdots, \frac{\partial J(θ)}{\partial θ_n}\Bigg\} \\
+&amp;= \frac{1}{m} \sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \cdot x_j^i \qquad{} \textrm{for } 0 \leq j \leq n \\
+&amp;= \frac{1}{m} \sum_{i=1}^m {(e_i)}^2 x_j^i \qquad{}\qquad{}\qquad{}\qquad{} 〞〞\\
+&amp;= \frac{1}{m} \sum_{i=1}^m x_j^i {(e_i)}^2 \qquad{}\qquad{}\qquad{}\qquad{} 〞〞\\
+&amp;= \Bigg\{ \color{teal}{
+  \frac{1}{m} \sum_{i=1}^m x_0^i {(e_i)}^2, \frac{1}{m} \sum_{i=1}^m x_1^i {(e_i)}^2, \cdots, \frac{1}{m} \sum_{i=1}^m x_n^i {(e_i)}^2
+  }\Bigg\}
+\end{align} $$</div>
+<p>Transposing <span class="math">\(\textbf X\)</span> and squaring <span class="math">\(\vec e\)</span> gives us:</p>
+<div class="math">$$ \begin{align}
+\textbf X^T = \begin{bmatrix}
+  x_0^1 &amp; x_0^2 &amp; \dots &amp; x_0^m \\
+  x_1^1 &amp; x_1^2 &amp; \dots &amp; x_1^m \\
+  \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+  x_n^1 &amp; x_n^2 &amp; \dots  &amp; x_n^m
+\end{bmatrix} &amp; \quad{} \vec e^2 = \begin{bmatrix} {(e_1)}^2 \\ {(e_2)}^2 \\ \vdots \\ {(e_m)}^2 \end{bmatrix}
+\end{align} $$</div>
+<div class="math">$$ \textbf X^T \vec e^2 = \begin{bmatrix}
+  x_0^1 {(e_1)}^2 + x_0^2 {(e_2)}^2 + x_0^3 {(e_3)}^2 + \cdots + x_0^m {(e_m)}^2 \\
+  x_1^1 {(e_1)}^2 + x_1^2 {(e_2)}^2 + x_1^3 {(e_3)}^2 + \cdots + x_1^m {(e_m)}^2 \\
+  \vdots \\
+  x_n^1 {(e_1)}^2 + x_n^2 {(e_2)}^2 + x_n^3 {(e_3)}^2 + \cdots + x_n^m {(e_m)}^2
+\end{bmatrix} = \begin{bmatrix}
+  \sum_{i=1}^m x_0^i{(e_1)}^2 \\
+  \sum_{i=1}^m x_1^i{(e_1)}^2 \\
+  \vdots \\
+  \sum_{i=1}^m x_n^i{(e_1)}^2 \\
+\end{bmatrix} $$</div>
+<p>Notice how multiplying this result by <span class="math">\(\frac{1}{m}\)</span> gives us a vector containing the same values highlight above in teal.</p>
+<div class="math">$$ \frac{1}{m} \textbf X^T \vec e^2 = \frac{1}{m} \begin{bmatrix}
+  \sum_{i=1}^m x_0^i{(e_1)}^2 \\
+  \sum_{i=1}^m x_1^i{(e_1)}^2 \\
+  \vdots \\
+  \sum_{i=1}^m x_n^i{(e_1)}^2 \\
+\end{bmatrix} = \begin{bmatrix}
+  \color{teal}{ \frac{1}{m} \sum_{i=1}^m x_0^i{(e_1)}^2 } \\
+  \color{teal}{ \frac{1}{m} \sum_{i=1}^m x_1^i{(e_1)}^2 } \\
+  \color{teal}{ \vdots } \\
+  \color{teal}{ \frac{1}{m} \sum_{i=1}^m x_n^i{(e_1)}^2 } \\
+\end{bmatrix} = \begin{bmatrix}
+  \frac{\partial J(θ)}{\partial θ_0} \\
+  \frac{\partial J(θ)}{\partial θ_1} \\
+  \vdots \\
+  \frac{\partial J(θ)}{\partial θ_n}
+\end{bmatrix} $$</div>
+<p>Astonishingly, that gigantic mess can be expressed as</p>
+<div class="math">$$ \nabla J = \frac{1}{m} \textbf X^T \vec e^2 $$</div>
+<div class="highlight"><pre><span></span><span class="n">num_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">gradient</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="err">@</span> <span class="n">e</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_samples</span>
+</pre></div>
+<p><em>Finally</em>, we can work out the last function, the gradient descent function:</p>
+<div class="math">$$ \vec θ := \vec θ - α\frac{1}{m} \textbf X^T \vec e^2 \\
+\textrm{repeat until convergence} $$</div>
+<p>Hey, where’d that <span class="math">\(α\)</span> come from? That’s the <strong>learning rate</strong>, a small number that adjusts the size of each training step. Too large and you jump right over the minimum; too small and you never reach the minimum.</p>
+<p>For now, let’s choose an arbitrary value for <span class="math">\(α\)</span> and disregard the whole bit about convergence. If we wanted to perform stochastic gradient descent with 100 steps, this is how we’d do it:</p>
+<div class="highlight"><pre><span></span><span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">100</span><span class="p">):</span>
+    <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">X</span> <span class="err">@</span> <span class="n">weights</span> <span class="o">-</span> <span class="n">y</span>
+    <span class="n">num_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">step_distance</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="err">@</span> <span class="n">errors</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_samples</span>
+    <span class="n">weights</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">step_distance</span>
+</pre></div>
+<p>Let’s refactor this as a function <code>gradient_descent</code> that takes <span class="math">\(\textbf X, \vec y\)</span>, and the number of steps (training epochs) as its inputs, and outputs the weights <span class="math">\(\vec θ\)</span>. Along the way, let’s have it tell us the cost. If all goes well, we should see that number approach zero as training progresses.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="p">):</span>
+    <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">num_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="n">X</span> <span class="err">@</span> <span class="n">weights</span> <span class="o">-</span> <span class="n">y</span>
+        <span class="n">step_distance</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="err">@</span> <span class="n">errors</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_samples</span>
+        <span class="n">weights</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">step_distance</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">cost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">weights</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># dot products are single values, but NumPy returns them as 1x1 matrices</span>
+    <span class="k">return</span> <span class="n">weights</span>
+
+<span class="n">weights_300_epochs</span> <span class="o">=</span> <span class="n">gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+</pre></div>
+<p>Now, we can predict the output for a random set of feature values.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">X</span> <span class="err">@</span> <span class="n">weights</span>
+
+<span class="n">mystery_input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">mystery_input</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">mystery_input</span><span class="p">))</span> <span class="c1"># dummy feature</span>
+<span class="n">predict</span><span class="p">(</span><span class="n">mystery_input</span><span class="p">,</span> <span class="n">weights_300_epochs</span><span class="p">)</span>
+</pre></div>
+<h2 id="summary">Summary</h2>
+<table>
+<thead>
+<tr>
+<th></th>
+<th align="center">Broke</th>
+<th align="center">Woke</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Givens</td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr>
+<td>Linear regression model</td>
+<td align="center">
+<div class="math">$$h_θ(x) = θ_0x_0 + θ_1x_1 + \cdots + θ_nx_n$$</div>
+</td>
+<td align="center">
+<div class="math">$$h_θ(\textbf X) = \textbf X\vec θ$$</div>
+</td>
+</tr>
+<tr>
+<td>Cost function</td>
+<td align="center">
+<div class="math">$$J(θ) = \frac{1}{2m}\sum_{i=1}^m{\Big[h_θ(x^i) - y_i\Big]}^2$$</div>
+</td>
+<td align="center">
+<div class="math">$$\vec e = h_θ(\textbf X) - \vec y \\ J(θ) = \frac{1}{2m}\vec o^T\vec e^2$$</div>
+</td>
+</tr>
+<tr>
+<td>Gradient of cost function</td>
+<td align="center">
+<div class="math">$$ \frac{\partial J(θ)}{\partial θ_j} = \frac{1}{m}\sum_{i=1}^m\Big[h_θ(x^i) - y_i\Big]x_j^i $$</div>
+</td>
+<td align="center">
+<div class="math">$$ \nabla J = \frac{1}{m}\textbf X^T\vec e $$</div>
+</td>
+</tr>
+<tr>
+<td>Gradient descent function</td>
+<td align="center">
+<div class="math">$$ θ_j := θ_j - α\frac{1}{m}\sum_{i=1}^m\Big[h_θ(x^i) - y_i\Big]x_j^i $$</div>
+</td>
+<td align="center">
+<div class="math">$$ \vec θ := \vec θ - α\frac{1}{m} \textbf X^T \vec e^2 $$</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Such complex math can be applied to a linear regression model trained in just 20 lines of Python!</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">sklearn.datasets</span>
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">make_regression</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+
+<span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">X</span><span class="p">))</span> <span class="c1"># padding for bias column</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="c1"># this just fixes a quirk of sklearn's output</span>
+
+<span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="n">num_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">num_samples</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">errors</span> <span class="o">=</span> <span class="n">X</span> <span class="err">@</span> <span class="n">weights</span> <span class="o">-</span> <span class="n">y</span>
+    <span class="n">cost_array</span> <span class="o">=</span> <span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">T</span> <span class="err">@</span> <span class="p">(</span><span class="n">errors</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">num_samples</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cost_array</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="p">):</span>
+    <span class="n">learning_rate</span> <span class="o">=</span> <span class="mf">0.01</span>
+    <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">num_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="n">X</span> <span class="err">@</span> <span class="n">weights</span> <span class="o">-</span> <span class="n">y</span>
+        <span class="n">step_distance</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="err">@</span> <span class="n">errors</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_samples</span>
+        <span class="n">weights</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">step_distance</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">"Completed {epochs} epochs of training."</span><span class="p">)</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">"Final cost: {cost(X, y, weights)}"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">weights</span>
+
+<span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">X</span> <span class="err">@</span> <span class="n">weights</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">expand_model_latex</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+    <span class="n">terms</span> <span class="o">=</span> <span class="p">[</span><span class="n">f</span><span class="s2">"{round(w[0], 2)}x_{i}"</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">w</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">weights</span><span class="p">)]</span>
+    <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s2">"$$ h_0(x) </span><span class="se">\a</span><span class="s2">pprox {' + '.join(terms)} $$"</span><span class="p">)</span>
+</pre></div>
+<div class="math">$$ h_0(x) \approx -2.36x_0 + 63.26x_1 + 61.15x_2 + 88.99x_3 + 0.82x_4 + 58.95x_5 $$</div>
+<h2 id="references">References</h2>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=fNk_zzaMoSs&amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab">The Essence of Linear Algebra</a> (video series), Grant Sanderson</li>
+<li><a href="https://towardsdatascience.com/linear-regression-using-python-b136c91bf0a2">Linear Regression using Python</a>, Animesh Agarwal</li>
+<li><a href="https://www.ritchieng.com/multi-variable-linear-regression/">Linear Regression with Multiple Variables</a>, Ritchie Ng</li>
+<li><a href="http://anwarruff.com/the-linear-regression-cost-function-in-matrix-form/">The Linear Regression Cost Function in Matrix Form</a>, Anwar Ruff</li>
+</ul>
+<script type="text/javascript">if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
+    var align = "center",
+        indent = "0em",
+        linebreak = "false";
+
+    if (false) {
+        align = (screen.width < 768) ? "left" : align;
+        indent = (screen.width < 768) ? "0em" : indent;
+        linebreak = (screen.width < 768) ? 'true' : linebreak;
+    }
+
+    var mathjaxscript = document.createElement('script');
+    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
+    mathjaxscript.type = 'text/javascript';
+    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
+
+    var configscript = document.createElement('script');
+    configscript.type = 'text/x-mathjax-config';
+    configscript[(window.opera ? "innerHTML" : "text")] =
+        "MathJax.Hub.Config({" +
+        "    config: ['MMLorHTML.js']," +
+        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
+        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
+        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
+        "    displayAlign: '"+ align +"'," +
+        "    displayIndent: '"+ indent +"'," +
+        "    showMathMenu: true," +
+        "    messageStyle: 'normal'," +
+        "    tex2jax: { " +
+        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
+        "        displayMath: [ ['$$','$$'] ]," +
+        "        processEscapes: true," +
+        "        preview: 'TeX'," +
+        "    }, " +
+        "    'HTML-CSS': { " +
+        "        fonts: ['Latin-Modern','TeX']," +
+        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
+        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
+        "    }, " +
+        "}); " +
+        "if ('default' !== 'default') {" +
+            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
+                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
+                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
+                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
+                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
+                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
+            "});" +
+        "}";
+
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
+    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
+}
+</script>
+
+	</article>
+
+
+
+		  </div>
+
+		  <div class="sidebar">
+		    <div class="sidebar-container" >
+
+	            <aside>
+	              <h2>About</h2>
+			      <p>
+                    <p>Hi, I’m Justin, armchair linguist and self-taught coder.</p>
+                         <p>This is a record of my battle with math phobia as I learn the numerical nuts and bolts of machine learning.</p>
+                         <p>The title is just an anagram of my name—these notes will prove that I’m no genius 😅.</p>
+			      </p>
+			    </aside>
+
+  	          <nav>
+	            <h2>Categories</h2>
+	            <ul>
+	                <li class="active"><a href="/category/misc">misc</a></li>
+	            </ul>
+	          </nav>
+
+	            <aside>
+	            <h2>Social</h2>
+			      <ul class="social">
+				    <li><a href="http://www.github.com/tabidots">GitHub</a><i></i></li>
+				    <li><a href="#">Another social link</a><i></i></li>
+			      </ul>
+			    </aside>
+
+	            <aside>
+	              <h2>Work</h2>
+	              <ul>
+	                  <li><a href="http://learnengli.sh">Claire</a></li>
+	                  <li><a href="#">Zoopdog</a></li>
+	              </ul>
+	            </aside>
+	        </div>
+		  </div>
+
+	  </div>
+
+      <footer>
+		<p role="contentinfo">
+		  Justin Douglas - Proudly powered by <a href="http://alexis.notmyidea.org/pelican/">pelican</a>. Theme <a href="https://github.com/fle/pelican-sober">pelican-sober</a>.
+    	</p>
+
+	  </footer>
+
+	</div>
+			<!-- Script specified by the user -->
+			<script type="text/javascript"  src="/tweaks.js"></script>
+</body>
+</html>
