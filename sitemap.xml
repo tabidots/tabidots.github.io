@@ -4,42 +4,42 @@ xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitem
 xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
-<loc>/</loc>
-<lastmod>2019-01-10T20:19:28-00:00</lastmod>
+<loc>https://tabidots.github.io/</loc>
+<lastmod>2019-01-10T20:26:34-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/archives.html</loc>
-<lastmod>2019-01-10T20:19:28-00:00</lastmod>
+<loc>https://tabidots.github.io/archives.html</loc>
+<lastmod>2019-01-10T20:26:34-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/tags.html</loc>
-<lastmod>2019-01-10T20:19:28-00:00</lastmod>
+<loc>https://tabidots.github.io/tags.html</loc>
+<lastmod>2019-01-10T20:26:34-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/2019/01/loopless-loop.html</loc>
+<loc>https://tabidots.github.io/2019/01/loopless-loop.html</loc>
 <lastmod>2019-01-10T19:00:46+07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/category/misc</loc>
+<loc>https://tabidots.github.io/category/misc</loc>
 <lastmod>2019-01-10T19:00:46+07:07</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>/author/justin-douglas</loc>
+<loc>https://tabidots.github.io/author/justin-douglas</loc>
 <lastmod>2019-01-10T19:00:46+07:07</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
