@@ -608,13 +608,13 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;19&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;timeit&lt;/span&gt; &lt;span class="n"&gt;vectorized_gradient_descent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.00001&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="mf"&gt;2.28&lt;/span&gt; &lt;span class="n"&gt;ms&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="mf"&gt;64.9&lt;/span&gt; &lt;span class="err"&gt;µ&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="n"&gt;per&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="n"&gt;runs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt; &lt;span class="n"&gt;loops&lt;/span&gt; &lt;span class="n"&gt;each&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id="remaining-questions-for-future-posts-links-will-be-included-upon-publication"&gt;Remaining questions for future posts (links will be included upon publication)&lt;/h2&gt;
+&lt;h1 id="remaining-questions-for-future-posts-links-will-be-included-upon-publication"&gt;Remaining questions for future posts (links will be included upon publication)&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;Are there any other simple techniques to speed this us? (Mean normalization)&lt;/li&gt;
 &lt;li&gt;How do we know when we’ve reached convergence? (Epsilon)&lt;/li&gt;
 &lt;li&gt;How can &lt;em&gt;linear&lt;/em&gt; (as opposed to &lt;em&gt;logistic&lt;/em&gt;) regression be applied to language tasks? (General backpropagation of neural networks)&lt;/li&gt;
 &lt;/ul&gt;
-&lt;h2 id="references"&gt;References&lt;/h2&gt;
+&lt;h1 id="references"&gt;References&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=fNk_zzaMoSs&amp;amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab"&gt;The Essence of Linear Algebra&lt;/a&gt; (video series), Grant Sanderson&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://towardsdatascience.com/linear-regression-using-python-b136c91bf0a2"&gt;Linear Regression using Python&lt;/a&gt;, Animesh Agarwal&lt;/li&gt;

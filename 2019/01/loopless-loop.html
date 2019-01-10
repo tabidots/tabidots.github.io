@@ -67,6 +67,41 @@
                 </header>
             </section>
 
+                <nav class="toc">
+                <div class="toc">
+<ul>
+<li><a href="#part-1-ugly-math-ugly-code">Part 1: Ugly math, ugly code</a><ul>
+<li><a href="#my-linear-algebra-a-ha-moment">My linear algebra a-ha moment</a></li>
+<li><a href="#how-to-make-a-computer-explode">How to make a computer explode</a></li>
+<li><a href="#meeting-a-zen-master-on-the-road">Meeting a Zen master on the road</a></li>
+<li><a href="#linear-regression-a-basic-overview">Linear regression: A basic overview</a></li>
+<li><a href="#multiple-linear-regression-because-more-is-better-or-something">Multiple linear regression: Because more is better (or something)</a></li>
+<li><a href="#how-to-python-in-math-lesson-1">How to Python in math (Lesson 1)</a></li>
+<li><a href="#einstein-notation-making-math-less-confusing-by-making-it-more-confusing">Einstein notation: Making math less confusing by making it more confusing</a></li>
+<li><a href="#cost-function-how-accurate-are-our-predictions">Cost function: How accurate are our predictions?</a><ul>
+<li><a href="#error">Error</a></li>
+<li><a href="#squared-error">Squared error</a></li>
+<li><a href="#mean-squared-error">Mean squared error</a></li>
+</ul>
+</li>
+<li><a href="#multivariable-calculus-how-much-effect-does-each-weight-have">Multivariable calculus: How much effect does each weight have?</a></li>
+<li><a href="#stochastic-gradient-descent-making-regression-lines-fit-again">Stochastic gradient descent: Making regression lines fit again</a></li>
+</ul>
+</li>
+<li><a href="#part-2-crazy-math-beautiful-code">Part 2: Crazy math, beautiful code</a><ul>
+<li><a href="#vectorize-all-the-things">Vectorize all the things!!!</a></li>
+<li><a href="#vectorizing-the-cost-function-so-fresh-so-clean">Vectorizing the cost function: So fresh, so clean</a></li>
+<li><a href="#vectorizing-the-gradient-ninja-mode-on-overdrive">Vectorizing the gradient: Ninja mode on overdrive</a></li>
+<li><a href="#summary-so-far">Summary so far</a></li>
+<li><a href="#comparison-of-performance">Comparison of performance</a></li>
+</ul>
+</li>
+<li><a href="#remaining-questions-for-future-posts-links-will-be-included-upon-publication">Remaining questions for future posts (links will be included upon publication)</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+                </nav>
+
             
 <h1 id="part-1-ugly-math-ugly-code">Part 1: Ugly math, ugly code</h1>
 <p>As I embarked on my journey to learn the math side of machine learning, all of the blog posts seemed to point to linear algebra as the starting point. The problem was, nothing I read made it immediately clear <em>how</em> linear algebra played a role in machine learning.</p>
@@ -676,13 +711,13 @@ J(θ) &amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 <span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">vectorized_gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mf">0.00001</span><span class="p">)</span>
 <span class="mf">2.28</span> <span class="n">ms</span> <span class="err">±</span> <span class="mf">64.9</span> <span class="err">µ</span><span class="n">s</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
 </pre></div>
-<h2 id="remaining-questions-for-future-posts-links-will-be-included-upon-publication">Remaining questions for future posts (links will be included upon publication)</h2>
+<h1 id="remaining-questions-for-future-posts-links-will-be-included-upon-publication">Remaining questions for future posts (links will be included upon publication)</h1>
 <ul>
 <li>Are there any other simple techniques to speed this us? (Mean normalization)</li>
 <li>How do we know when we’ve reached convergence? (Epsilon)</li>
 <li>How can <em>linear</em> (as opposed to <em>logistic</em>) regression be applied to language tasks? (General backpropagation of neural networks)</li>
 </ul>
-<h2 id="references">References</h2>
+<h1 id="references">References</h1>
 <ul>
 <li><a href="https://www.youtube.com/watch?v=fNk_zzaMoSs&amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab">The Essence of Linear Algebra</a> (video series), Grant Sanderson</li>
 <li><a href="https://towardsdatascience.com/linear-regression-using-python-b136c91bf0a2">Linear Regression using Python</a>, Animesh Agarwal</li>
