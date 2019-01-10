@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Judo Salt Genius 🥋🧂🧠</title><link href="http://tabidots.github.io/" rel="alternate"></link><link href="http://tabidots.github.io/feeds/all.atom.xml" rel="self"></link><id>http://tabidots.github.io/</id><updated>2019-01-10T19:00:46+07:00</updated><entry><title>The Loopless Loop (or How I made my code run 7,000 times faster)</title><link href="http://tabidots.github.io/2019/01/loopless-loop.html" rel="alternate"></link><published>2019-01-10T19:00:46+07:00</published><updated>2019-01-10T19:00:46+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-10:/2019/01/loopless-loop.html</id><summary type="html">&lt;p&gt;In which I (1) discover that the purpose of linear algebra is not to just manipulate spreadsheets and move vectors around but to make your code faster and cleaner—in other words, to give it a Zen uppercut; and (2) learn LaTeX and start a blog just to see syntax-highlighted code and properly typeset math on the same page.&lt;/p&gt;</summary><content type="html">
-&lt;h1 id="part-1-ugly-math-ugly-code"&gt;Part 1: Ugly math, ugly code&lt;/h1&gt;
-&lt;p&gt;As I embarked on my journey to learn the math side of machine learning, all of the blog posts seemed to point to linear algebra as the starting point. The problem was, nothing I read made it immediately clear &lt;em&gt;how&lt;/em&gt; linear algebra played a role in machine learning.&lt;/p&gt;
-&lt;p&gt;Worse yet, the whole discussion of vectors, matrices, linear combinations, and linear transformations seemed completely disconnected from my layman’s understanding of machine learning.&lt;/p&gt;
-&lt;p&gt;The Khan Academy videos on linear algebra are quite tedious and I didn’t feel I was getting anywhere. &lt;a href="https://www.youtube.com/watch?v=fNk_zzaMoSs&amp;amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab"&gt;3blue1brown’s LA series&lt;/a&gt; is much more engaging and lucid, but I was still getting bogged down in the theory without seeing the application.&lt;/p&gt;
-&lt;p&gt;Needless to say, it was pretty slow going.&lt;/p&gt;
-&lt;h2 id="my-linear-algebra-a-ha-moment"&gt;My linear algebra &lt;em&gt;a-ha&lt;/em&gt; moment&lt;/h2&gt;
-&lt;p&gt;It wasn’t until I switched gears and decided, on a whim, to tackle &lt;em&gt;linear regression&lt;/em&gt; that linear algebra really started to click for me. On a practical level, code that uses linear-algebraic methods simplifies work for the computer by orders of magnitude, making it possible to process massive datasets—and process them rapidly. This is obviously a critical requirement in the age of Big Data.&lt;/p&gt;
-&lt;p&gt;And on a conceptual level, it gave me my first mathematical &lt;em&gt;a-ha&lt;/em&gt; moment:&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Judo Salt Genius</title><link href="http://tabidots.github.io/" rel="alternate"></link><link href="http://tabidots.github.io/feeds/all.atom.xml" rel="self"></link><id>http://tabidots.github.io/</id><updated>2019-01-10T19:00:46+07:00</updated><entry><title>The Loopless Loop (or How I made my code run 7,000 times faster)</title><link href="http://tabidots.github.io/2019/01/loopless-loop.html" rel="alternate"></link><published>2019-01-10T19:00:46+07:00</published><updated>2019-01-10T19:00:46+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-10:/2019/01/loopless-loop.html</id><summary type="html">&lt;p&gt;In which I (1) discover that the purpose of linear algebra is not to just manipulate spreadsheets and move vectors around but to make your code faster and cleaner—in other words, to give it a Zen uppercut; and (2) learn LaTeX and start a blog just to see syntax-highlighted code and properly typeset math on the same&amp;nbsp;page.&lt;/p&gt;</summary><content type="html">
+&lt;h1 id="part-1-ugly-math-ugly-code"&gt;Part 1: Ugly math, ugly code&lt;/h1&gt;
+&lt;p&gt;As I embarked on my journey to learn the math side of machine learning, all of the blog posts seemed to point to linear algebra as the starting point. The problem was, nothing I read made it immediately clear &lt;em&gt;how&lt;/em&gt; linear algebra played a role in machine learning.&lt;/p&gt;
+&lt;p&gt;Worse yet, the whole discussion of vectors, matrices, linear combinations, and linear transformations seemed completely disconnected from my layman’s understanding of machine learning.&lt;/p&gt;
+&lt;p&gt;The Khan Academy videos on linear algebra are quite tedious and I didn’t feel I was getting anywhere. &lt;a href="https://www.youtube.com/watch?v=fNk_zzaMoSs&amp;amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab"&gt;3blue1brown’s &lt;span class="caps"&gt;LA&lt;/span&gt; series&lt;/a&gt; is much more engaging and lucid, but I was still getting bogged down in the theory without seeing the application.&lt;/p&gt;
+&lt;p&gt;Needless to say, it was pretty slow going.&lt;/p&gt;
+&lt;h2 id="my-linear-algebra-a-ha-moment"&gt;My linear algebra &lt;em&gt;a-ha&lt;/em&gt; moment&lt;/h2&gt;
+&lt;p&gt;It wasn’t until I switched gears and decided, on a whim, to tackle &lt;em&gt;linear regression&lt;/em&gt; that linear algebra really started to click for me. On a practical level, code that uses linear-algebraic methods simplifies work for the computer by orders of magnitude, making it possible to process massive datasets—and process them rapidly. This is obviously a critical requirement in the age of Big Data.&lt;/p&gt;
+&lt;p&gt;And on a conceptual level, it gave me my first mathematical &lt;em&gt;a-ha&lt;/em&gt; moment:&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;By manipulating matrices and vectors, you can achieve the same outcome as a loop without explicitly looping—a loopless loop&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;That&lt;/em&gt; is why linear algebra is the cornerstone of machine learning.&lt;/p&gt;
-&lt;p&gt;The only thing is, no single resource I found on the internet seemed to really clarify the mathematical and programmatic aspects &lt;em&gt;at the same time&lt;/em&gt; without getting too abstract on the math side of things.&lt;/p&gt;
-&lt;p&gt;As a self-taught and formerly math-phobic coder, I needed a guide that progressed from from inelegant code (which I could understand) and inelegant math to (mind-blowingly) elegant math, which would then lay the groundwork for writing extremely elegant—and performant—code (which is incomprehensible without understanding the math).&lt;/p&gt;
-&lt;p&gt;This is that guide, created from my notes from Week 1 of my machine learning journey. I’ve split it up into multiple posts, since it’s quite long.&lt;/p&gt;
-&lt;h2 id="how-to-make-a-computer-explode"&gt;How to make a computer explode&lt;/h2&gt;
-&lt;p&gt;I always thought that for-loops were simply a fact of life.&lt;/p&gt;
-&lt;p&gt;While I understood the basic principle behind stochastic gradient descent, I had never implemented it myself before. If I had tried my hand at it before learning the math involved, I probably would have come up with this monster:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;That&lt;/em&gt; is why linear algebra is the cornerstone of machine learning.&lt;/p&gt;
+&lt;p&gt;The only thing is, no single resource I found on the internet seemed to really clarify the mathematical and programmatic aspects &lt;em&gt;at the same time&lt;/em&gt; without getting too abstract on the math side of things.&lt;/p&gt;
+&lt;p&gt;As a self-taught and formerly math-phobic coder, I needed a guide that progressed from from inelegant code (which I could understand) and inelegant math to (mind-blowingly) elegant math, which would then lay the groundwork for writing extremely elegant—and performant—code (which is incomprehensible without understanding the math).&lt;/p&gt;
+&lt;p&gt;This is that guide, created from my notes from Week 1 of my machine learning journey. I’ve split it up into multiple posts, since it’s quite long.&lt;/p&gt;
+&lt;h2 id="how-to-make-a-computer-explode"&gt;How to make a computer explode&lt;/h2&gt;
+&lt;p&gt;I always thought that for-loops were simply a fact of life.&lt;/p&gt;
+&lt;p&gt;While I understood the basic principle behind stochastic gradient descent, I had never implemented it myself before. If I had tried my hand at it before learning the math involved, I probably would have come up with this monster:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# DON'T TRY THIS&lt;/span&gt;
 
 &lt;span class="n"&gt;samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="nb"&gt;list&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="n"&gt;lists&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
@@ -34,50 +34,50 @@
 
 &lt;span class="c1"&gt;# I REALLY HOPE YOU DIDN'T TRY THIS&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Okay, maybe not. (It would be pretty hard to write this without understanding the math involved.)&lt;/p&gt;
-&lt;p&gt;Count those loops—&lt;em&gt;three&lt;/em&gt;, to be exact! Terrifying. Now, being handy with Python, I could probably have calculated &lt;code&gt;partial_deriv&lt;/code&gt; in one line with an even more terrifying list comprehension, just to show off:&lt;/p&gt;
+&lt;p&gt;Okay, maybe not. (It would be pretty hard to write this without understanding the math involved.)&lt;/p&gt;
+&lt;p&gt;Count those loops—&lt;em&gt;three&lt;/em&gt;, to be exact! Terrifying. Now, being handy with Python, I could probably have calculated &lt;code&gt;partial_deriv&lt;/code&gt; in one line with an even more terrifying list comprehension, just to show off:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;partial_deriv&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;samples&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;sample&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;j&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hypothesis&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sample&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;actual&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sample&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;enumerate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;samples&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;...which shaves off four lines, at the expense of all readability. But bigger problems remain:&lt;/p&gt;
+&lt;p&gt;…which shaves off four lines, at the expense of all readability. But bigger problems remain:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;The time complexity of this program is off the charts.&lt;/strong&gt; In &lt;a href="https://en.wikipedia.org/wiki/Time_complexity"&gt;Big-O time complexity&lt;/a&gt; terms, it is &lt;em&gt;at least&lt;/em&gt; &lt;span class="math"&gt;\(O(n^3)\)&lt;/span&gt;, if not more, which is cubic time, or (literally) &lt;em&gt;exponentially &lt;a href="http://bigocheatsheet.com/"&gt;horrible&lt;/a&gt;&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;It doesn’t even work.&lt;/strong&gt; Even with a dataset of unremarkable size, you’re bound to get a &lt;code&gt;RuntimeWarning: overflow encountered in square error&lt;/code&gt; that can’t be avoided even if you set the &lt;code&gt;learning_rate&lt;/code&gt; to an impractically small value like &lt;code&gt;0.00001&lt;/code&gt;. Trust me, I’ve tried.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;It doesn’t even work.&lt;/strong&gt; Even with a dataset of unremarkable size, you’re bound to get a &lt;code&gt;RuntimeWarning: overflow encountered in square error&lt;/code&gt; that can’t be avoided even if you set the &lt;code&gt;learning_rate&lt;/code&gt; to an impractically small value like &lt;code&gt;0.00001&lt;/code&gt;. Trust me, I’ve tried.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;Is there any way beyond this impasse?&lt;/p&gt;
-&lt;h2 id="meeting-a-zen-master-on-the-road"&gt;Meeting a Zen master on the road&lt;/h2&gt;
-&lt;p&gt;In Zen Buddhism, there is a famous book called &lt;em&gt;The Gateless Gate&lt;/em&gt;, which is a collection of &lt;em&gt;koans&lt;/em&gt;. A Zen &lt;em&gt;koan&lt;/em&gt; is a riddle that cannot be approached with the rational mind. For example:&lt;/p&gt;
+&lt;p&gt;Is there any way beyond this impasse?&lt;/p&gt;
+&lt;h2 id="meeting-a-zen-master-on-the-road"&gt;Meeting a Zen master on the road&lt;/h2&gt;
+&lt;p&gt;In Zen Buddhism, there is a famous book called &lt;em&gt;The Gateless Gate&lt;/em&gt;, which is a collection of &lt;em&gt;koans&lt;/em&gt;. A Zen &lt;em&gt;koan&lt;/em&gt; is a riddle that cannot be approached with the rational mind. For example:&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;em&gt;Goso said: "When you meet a Zen master on the road, you cannot talk to him, but neither can you face him with silence. What are you going to do?"&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Goso said: “When you meet a Zen master on the road, you cannot talk to him, but neither can you face him with silence. What are you going to do?”&lt;/em&gt;&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;p&gt;To solve it, you have to transcend the duality of &lt;em&gt;this&lt;/em&gt; and &lt;em&gt;not-this&lt;/em&gt;.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;em&gt;Give him an uppercut&lt;br/&gt;
 And you will be called one who understands Zen.&lt;/em&gt;&lt;br/&gt;
-—The Gateless Gate, Koan #36&lt;/p&gt;
+—The Gateless Gate, Koan #36&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;As you might imagine, linear algebra—&lt;strong&gt;the loopless loop&lt;/strong&gt;—is the Zen uppercut of coding. What, then is the target of our uppercut?&lt;/p&gt;
-&lt;h2 id="linear-regression-a-basic-overview"&gt;Linear regression: A basic overview&lt;/h2&gt;
-&lt;p&gt;Basically, linear regression is used to make predictions about a &lt;em&gt;thing&lt;/em&gt; based on its characteristics, assuming that&lt;/p&gt;
+&lt;p&gt;As you might imagine, linear algebra—&lt;strong&gt;the loopless loop&lt;/strong&gt;—is the Zen uppercut of coding. What, then is the target of our uppercut?&lt;/p&gt;
+&lt;h2 id="linear-regression-a-basic-overview"&gt;Linear regression: A basic overview&lt;/h2&gt;
+&lt;p&gt;Basically, linear regression is used to make predictions about a &lt;em&gt;thing&lt;/em&gt; based on its characteristics, assuming that&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;that there is some correlation among those characteristics and&lt;/li&gt;
+&lt;li&gt;that there is some correlation among those characteristics and&lt;/li&gt;
 &lt;li&gt;that you have plenty of data about other &lt;em&gt;things&lt;/em&gt;.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;The intuition here can be explained with middle school algebra. Imagine you know the square footage and price of 200 houses and you want to estimate the price of a house with a given square footage.&lt;/p&gt;
-&lt;p&gt;Obviously, this is an oversimplified correlation for the sake of example. (And for some reason, everyone seems to explain this concept using houses, so why reinvent the wheel?)&lt;/p&gt;
+&lt;p&gt;The intuition here can be explained with middle school algebra. Imagine you know the square footage and price of 200 houses and you want to estimate the price of a house with a given square footage.&lt;/p&gt;
+&lt;p&gt;Obviously, this is an oversimplified correlation for the sake of example. (And for some reason, everyone seems to explain this concept using houses, so why reinvent the wheel?)&lt;/p&gt;
 &lt;p&gt;If you were to make a scatter plot of that data, with the area along the x-axis and the price along the y-axis, the pattern might roughly look like it follows a line—not perfectly linear, but linear &lt;em&gt;enough&lt;/em&gt; to predict the price of a house with &lt;span class="math"&gt;\(x\)&lt;/span&gt; square footage. You can use linear regression to work backward from the data to determine this line, &lt;strong&gt;the line of best fit&lt;/strong&gt;.&lt;/p&gt;
-&lt;p&gt;In middle school algebra, lines are written in the form&lt;/p&gt;
-&lt;div class="math"&gt;$$ y = \color{magenta}{m}\color{teal}{x} + \color{orange}{b} $$&lt;/div&gt;
-&lt;p&gt;where &lt;span class="math"&gt;\(\color{teal}{x}\)&lt;/span&gt; is the input, &lt;span class="math"&gt;\(\color{magenta}{m}\)&lt;/span&gt; is the slope of the line, &lt;span class="math"&gt;\(\color{orange}{b}\)&lt;/span&gt; moves the line up and down on the graph, and &lt;span class="math"&gt;\(y\)&lt;/span&gt; is the height of the line at point &lt;span class="math"&gt;\(\color{teal}{x}\)&lt;/span&gt;.&lt;/p&gt;
-&lt;p&gt;Our house problem can also be framed as a line, where &lt;span class="math"&gt;\(\color{teal}{x}\)&lt;/span&gt; is the square footage, which influences the price by some value &lt;span class="math"&gt;\(\color{magenta}{m}\)&lt;/span&gt;, to which we add some kind of base price to bring us to the final price, &lt;span class="math"&gt;\(y\)&lt;/span&gt;.&lt;/p&gt;
-&lt;p&gt;Well, that was easy enough, right?&lt;/p&gt;
-&lt;h2 id="multiple-linear-regression-because-more-is-better-or-something"&gt;Multiple linear regression: Because more is better (or something)&lt;/h2&gt;
-&lt;p&gt;In the real world, of course, area is not the only factor that decides the price of a house. There are many others. Can we still adapt our middle school equation to this problem if each house has 3 features—say, area, nearby property values, and age of the building?&lt;/p&gt;
-&lt;div class="math"&gt;$$ y = \color{magenta}{m}\color{teal}{x} + \color{magenta}{n}\color{teal}{z} + \color{magenta}{o}\color{teal}{a} + \color{orange}{b} $$&lt;/div&gt;
+&lt;p&gt;In middle school algebra, lines are written in the form&lt;/p&gt;
+&lt;div class="math"&gt;$$ y = \textcolor{magenta}{m}\textcolor{teal}{x} + \textcolor{orange}{b} $$&lt;/div&gt;
+&lt;p&gt;where &lt;span class="math"&gt;\(\textcolor{teal}{x}\)&lt;/span&gt; is the input, &lt;span class="math"&gt;\(\textcolor{magenta}{m}\)&lt;/span&gt; is the slope of the line, &lt;span class="math"&gt;\(\textcolor{orange}{b}\)&lt;/span&gt; moves the line up and down on the graph, and &lt;span class="math"&gt;\(y\)&lt;/span&gt; is the height of the line at point &lt;span class="math"&gt;\(\textcolor{teal}{x}\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Our house problem can also be framed as a line, where &lt;span class="math"&gt;\(\textcolor{teal}{x}\)&lt;/span&gt; is the square footage, which influences the price by some value &lt;span class="math"&gt;\(\textcolor{magenta}{m}\)&lt;/span&gt;, to which we add some kind of base price to bring us to the final price, &lt;span class="math"&gt;\(y\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Well, that was easy enough, right?&lt;/p&gt;
+&lt;h2 id="multiple-linear-regression-because-more-is-better-or-something"&gt;Multiple linear regression: Because more is better (or something)&lt;/h2&gt;
+&lt;p&gt;In the real world, of course, area is not the only factor that decides the price of a house. There are many others. Can we still adapt our middle school equation to this problem if each house has 3 features—say, area, nearby property values, and age of the building?&lt;/p&gt;
+&lt;div class="math"&gt;$$ y = \textcolor{magenta}{m}\textcolor{teal}{x} + \textcolor{magenta}{n}\textcolor{teal}{z} + \textcolor{magenta}{o}\textcolor{teal}{a} + \textcolor{orange}{b} $$&lt;/div&gt;
 &lt;p&gt;We can, but it’s messy. (It’s also no longer a line, but let’s ignore that for now.) First, let’s rewrite that “base price” as &lt;span class="math"&gt;\(b \cdot 1\)&lt;/span&gt;.&lt;/p&gt;
-&lt;div class="math"&gt;$$ y = \color{magenta}{m}\color{teal}{x} + \color{magenta}{n}\color{teal}{z} + \color{magenta}{o}\color{teal}{a} + \color{magenta}{b}\cdot\color{teal}{1} $$&lt;/div&gt;
-&lt;p&gt;This gives us a nice symmetry: Notice that all of the teal variables are features, which are multiplied by their degree of influence (called a &lt;em&gt;coefficient&lt;/em&gt; in statistics, or a &lt;em&gt;weight&lt;/em&gt; in machine learning). When you add all these together, you get the price of the house.&lt;/p&gt;
-&lt;p&gt;This is called &lt;strong&gt;multiple linear regression&lt;/strong&gt;. Most people wouldn’t skip directly to multiple LR after introducing single LR, but single LR is pretty easy to digest if you can understand high school calculus (derivatives), so it didn’t level up my math knowledge.&lt;/p&gt;
-&lt;p&gt;Now, let’s code our equation, putting all the feature values into a &lt;em&gt;list&lt;/em&gt; &lt;code&gt;features&lt;/code&gt; and the weights into another &lt;em&gt;list&lt;/em&gt; &lt;code&gt;weights&lt;/code&gt;. In Python, in increasing order of elegance, we can write the following:&lt;/p&gt;
+&lt;div class="math"&gt;$$ y = \textcolor{magenta}{m}\textcolor{teal}{x} + \textcolor{magenta}{n}\textcolor{teal}{z} + \textcolor{magenta}{o}\textcolor{teal}{a} + \textcolor{magenta}{b}\cdot\textcolor{teal}{1} $$&lt;/div&gt;
+&lt;p&gt;This gives us a nice symmetry: Notice that all of the teal variables are features, which are multiplied by their degree of influence (called a &lt;em&gt;coefficient&lt;/em&gt; in statistics, or a &lt;em&gt;weight&lt;/em&gt; in machine learning). When you add all these together, you get the price of the house.&lt;/p&gt;
+&lt;p&gt;This is called &lt;strong&gt;multiple linear regression&lt;/strong&gt;. Most people wouldn’t skip directly to multiple &lt;span class="caps"&gt;LR&lt;/span&gt; after introducing single &lt;span class="caps"&gt;LR&lt;/span&gt;, but single &lt;span class="caps"&gt;LR&lt;/span&gt; is pretty easy to digest if you can understand high school calculus (derivatives), so it didn’t level up my math knowledge.&lt;/p&gt;
+&lt;p&gt;Now, let’s code our equation, putting all the feature values into a &lt;em&gt;list&lt;/em&gt; &lt;code&gt;features&lt;/code&gt; and the weights into another &lt;em&gt;list&lt;/em&gt; &lt;code&gt;weights&lt;/code&gt;. In Python, in increasing order of elegance, we can write the following:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Using completely random numbers just to show the code&lt;/span&gt;
 &lt;span class="n"&gt;features&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;# 3 features; first value is the “dummy feature”&lt;/span&gt;
 &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mf"&gt;0.6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.75&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
@@ -85,22 +85,22 @@ And you will be called one who understands Zen.&lt;/em&gt;&lt;br/&gt;
 &lt;span class="c1"&gt;# Brute-force addition&lt;/span&gt;
 &lt;span class="n"&gt;price&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;features&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;features&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;features&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;features&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;If we use &lt;span class="math"&gt;\(x\)&lt;/span&gt;s to denote our features, &lt;span class="math"&gt;\(θ\)&lt;/span&gt;s to denote our weights, and subscript numbers to denote the position of each item in a list (series), then we can rewrite our equation in a slightly more organized way:&lt;/p&gt;
-&lt;div class="math"&gt;$$ h_θ(x) = \color{magenta}{θ_0}\color{lightgray}{x_0} + \color{magenta}{θ_1}\color{teal}{x_1} + \cdots + \color{magenta}{θ_n}\color{teal}{x_n}  $$&lt;/div&gt;
-&lt;p&gt;which just happens to be the &lt;strong&gt;generalized form of linear regression&lt;/strong&gt;—&lt;em&gt;general&lt;/em&gt; in the sense that it can accommodate any number of features, whether that’s 1 or 1,000.&lt;/p&gt;
-&lt;p&gt;Here, &lt;span class="math"&gt;\(x\)&lt;/span&gt; is the collection of all feature values &lt;span class="math"&gt;\(\color{teal}{x_1}\)&lt;/span&gt; through &lt;span class="math"&gt;\(\color{teal}{x_n}\)&lt;/span&gt;, where &lt;span class="math"&gt;\(n\)&lt;/span&gt; is the number of features. (And &lt;span class="math"&gt;\(x_{1000}\)&lt;/span&gt; actually isn’t too crazy in terms of real-world datasets!) It also includes the dummy feature &lt;span class="math"&gt;\(\color{lightgray}{x_0} = 1\)&lt;/span&gt;. Likewise, &lt;span class="math"&gt;\(θ\)&lt;/span&gt; is the collection of all weights, including &lt;span class="math"&gt;\(\color{magenta}{θ_0}\)&lt;/span&gt;, the “base price” in our example. In machine learning, this is called the &lt;em&gt;bias&lt;/em&gt; value.&lt;/p&gt;
+&lt;p&gt;If we use &lt;span class="math"&gt;\(x\)&lt;/span&gt;s to denote our features, &lt;span class="math"&gt;\(θ\)&lt;/span&gt;s to denote our weights, and subscript numbers to denote the position of each item in a list (series), then we can rewrite our equation in a slightly more organized way:&lt;/p&gt;
+&lt;div class="math"&gt;$$ h_θ(x) = \textcolor{magenta}{θ_0}\textcolor{lightgray}{x_0} + \textcolor{magenta}{θ_1}\textcolor{teal}{x_1} + \cdots + \textcolor{magenta}{θ_n}\textcolor{teal}{x_n}  $$&lt;/div&gt;
+&lt;p&gt;which just happens to be the &lt;strong&gt;generalized form of linear regression&lt;/strong&gt;—&lt;em&gt;general&lt;/em&gt; in the sense that it can accommodate any number of features, whether that’s 1 or 1,000.&lt;/p&gt;
+&lt;p&gt;Here, &lt;span class="math"&gt;\(x\)&lt;/span&gt; is the collection of all feature values &lt;span class="math"&gt;\(\textcolor{teal}{x_1}\)&lt;/span&gt; through &lt;span class="math"&gt;\(\textcolor{teal}{x_n}\)&lt;/span&gt;, where &lt;span class="math"&gt;\(n\)&lt;/span&gt; is the number of features. (And &lt;span class="math"&gt;\(x_{1000}\)&lt;/span&gt; actually isn’t too crazy in terms of real-world datasets!) It also includes the dummy feature &lt;span class="math"&gt;\(\textcolor{lightgray}{x_0} = 1\)&lt;/span&gt;. Likewise, &lt;span class="math"&gt;\(θ\)&lt;/span&gt; is the collection of all weights, including &lt;span class="math"&gt;\(\textcolor{magenta}{θ_0}\)&lt;/span&gt;, the “base price” in our example. In machine learning, this is called the &lt;em&gt;bias&lt;/em&gt; value.&lt;/p&gt;
 &lt;p&gt;Finally, the function notation &lt;span class="math"&gt;\(h_θ(x)\)&lt;/span&gt; indicates that this is the &lt;strong&gt;hypothesis&lt;/strong&gt; for item (house) &lt;span class="math"&gt;\(x\)&lt;/span&gt; given the collection of weights &lt;span class="math"&gt;\(θ\)&lt;/span&gt;.&lt;/p&gt;
-&lt;h2 id="how-to-python-in-math-lesson-1"&gt;How to Python in math (Lesson 1)&lt;/h2&gt;
-&lt;p&gt;If you know anything about programming, you know that the last line of code above is no way to write a program. Accommodating 100 features would be a chore, and accommodating a variable number of features would be impossible. Naturally, we would use the magic of iteration:&lt;/p&gt;
+&lt;h2 id="how-to-python-in-math-lesson-1"&gt;How to Python in math (Lesson 1)&lt;/h2&gt;
+&lt;p&gt;If you know anything about programming, you know that the last line of code above is no way to write a program. Accommodating 100 features would be a chore, and accommodating a variable number of features would be impossible. Naturally, we would use the magic of iteration:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Super-basic iteration over the lists&lt;/span&gt;
 &lt;span class="n"&gt;price&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
 &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;j&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;features&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
   &lt;span class="n"&gt;price&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="n"&gt;features&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;j&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;j&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;No one actually writes the linear regression formula like this, but if you wanted to, you could express the above code in math using a &lt;em&gt;summation&lt;/em&gt;:&lt;/p&gt;
-&lt;div class="math"&gt;$$ h_θ(x) = \sum_{j=0}^n \color{magenta}{θ_j}\color{teal}{x_j} $$&lt;/div&gt;
+&lt;div class="math"&gt;$$ h_θ(x) = \sum_{j=0}^n \textcolor{magenta}{θ_j}\textcolor{teal}{x_j} $$&lt;/div&gt;
 &lt;p&gt;That Greek letter &lt;span class="math"&gt;\(\sum\)&lt;/span&gt; (sigma) means &lt;em&gt;summation&lt;/em&gt;. Basically, run a for-loop that adds the result of the following expression for each sample (house) starting at &lt;span class="math"&gt;\(j=0\)&lt;/span&gt; until &lt;span class="math"&gt;\(j=n\)&lt;/span&gt;.&lt;/p&gt;
-&lt;p&gt;If you know Python better than you know math (as I did), then you might try further refactoring the code:&lt;/p&gt;
+&lt;p&gt;If you know Python better than you know math (as I did), then you might try further refactoring the code:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Functional programming version&lt;/span&gt;
 &lt;span class="n"&gt;price&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
 &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;features&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
@@ -109,27 +109,27 @@ And you will be called one who understands Zen.&lt;/em&gt;&lt;br/&gt;
 &lt;span class="c1"&gt;# More Pythonic version of the above&lt;/span&gt;
 &lt;span class="n"&gt;price&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;features&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;I didn’t realize this when I wrote the first draft of this post, but even expressing the simple Python function &lt;code&gt;zip(x, y)&lt;/code&gt; in math requires linear algebra. I’ll get back to the non-fancy version of linear regression in just a minute, but for sake of thoroughness, if &lt;span class="math"&gt;\(x\)&lt;/span&gt; and &lt;span class="math"&gt;\(θ\)&lt;/span&gt; are both vectors, then&lt;/p&gt;
-&lt;div class="math"&gt;$$ \begin{align}
+&lt;p&gt;I didn’t realize this when I wrote the first draft of this post, but even expressing the simple Python function &lt;code&gt;zip(x, y)&lt;/code&gt; in math requires linear algebra. I’ll get back to the non-fancy version of linear regression in just a minute, but for sake of thoroughness, if &lt;span class="math"&gt;\(x\)&lt;/span&gt; and &lt;span class="math"&gt;\(θ\)&lt;/span&gt; are both vectors, then&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
 \vec x = \begin{bmatrix} x_0 \\ x_1 \\ \vdots \\ x_n \end{bmatrix} &amp;amp; \qquad{}
 \vec θ = \begin{bmatrix} θ_0 \\ θ_1 \\ \vdots \\ θ_n \end{bmatrix} &amp;amp; \quad{}
-z(\vec x, \vec θ) = \vec θ\vec x \end{align} $$&lt;/div&gt;
-&lt;p&gt;Similarly, we can rewrite our equation as a function in Python, too. Let’s leave vectors aside for now, but keep the &lt;code&gt;zip&lt;/code&gt; and encapsulate it into a function, because it’s clean and easy to understand.&lt;/p&gt;
+z(\vec x, \vec θ) = \vec θ\vec x \end{aligned} $$&lt;/div&gt;
+&lt;p&gt;Similarly, we can rewrite our equation as a function in Python, too. Let’s leave vectors aside for now, but keep the &lt;code&gt;zip&lt;/code&gt; and encapsulate it into a function, because it’s clean and easy to understand.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;hypothesis&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;features&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;features&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id="einstein-notation-making-math-less-confusing-by-making-it-more-confusing"&gt;Einstein notation: Making math less confusing by making it more confusing&lt;/h2&gt;
-&lt;p&gt;This is all great if there’s only one &lt;span class="math"&gt;\(x\)&lt;/span&gt; (house). But we will need tons of houses to make a decent prediction. Our list &lt;code&gt;houses&lt;/code&gt; needs to be changed into a &lt;em&gt;list of lists&lt;/em&gt;. For the sake of example, if we had three houses and three features, &lt;code&gt;houses&lt;/code&gt; would look like this (remember the dummy feature):&lt;/p&gt;
+&lt;h2 id="einstein-notation-making-math-less-confusing-by-making-it-more-confusing"&gt;Einstein notation: Making math less confusing by making it more confusing&lt;/h2&gt;
+&lt;p&gt;This is all great if there’s only one &lt;span class="math"&gt;\(x\)&lt;/span&gt; (house). But we will need tons of houses to make a decent prediction. Our list &lt;code&gt;houses&lt;/code&gt; needs to be changed into a &lt;em&gt;list of lists&lt;/em&gt;. For the sake of example, if we had three houses and three features, &lt;code&gt;houses&lt;/code&gt; would look like this (remember the dummy feature):&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;houses&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
           &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
           &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="c1"&gt;# random values&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;This also allows us to refer to specific features of specific houses using two indexes, &lt;code&gt;houses[i][j]&lt;/code&gt;. How do we do this in math, though? Enter &lt;strong&gt;Einstein notation&lt;/strong&gt;.&lt;/p&gt;
 &lt;div class="math"&gt;$$ h_θ(x^i) = θ_0x_0^i + θ_1x_1^i + \cdots + θ_nx_n^i  $$&lt;/div&gt;
-&lt;p&gt;The superscript numbers here &lt;em&gt;aren’t&lt;/em&gt; exponents. You would think Einstein, of all people, could come up with something less confusing, but that is the convention, so it’s important to become familiar with it.&lt;/p&gt;
-&lt;p&gt;Just remember that in linear regression, there are conventional choices for the variable names. &lt;span class="math"&gt;\(i\)&lt;/span&gt; denotes the &lt;span class="math"&gt;\(i\)&lt;/span&gt;th house, and &lt;span class="math"&gt;\(j\)&lt;/span&gt; the &lt;span class="math"&gt;\(j\)&lt;/span&gt;th feature.&lt;/p&gt;
-&lt;div class="math"&gt;$$ x^{\color{orange}{i \textrm{th sample}}}_{\color{blue}{j \textrm{th feature}}} $$&lt;/div&gt;
-&lt;p&gt;So if we were to start describing each hypothesis for our dataset individually,&lt;/p&gt;
+&lt;p&gt;The superscript numbers here &lt;em&gt;aren’t&lt;/em&gt; exponents. You would think Einstein, of all people, could come up with something less confusing, but that is the convention, so it’s important to become familiar with it.&lt;/p&gt;
+&lt;p&gt;Just remember that in linear regression, there are conventional choices for the variable names. &lt;span class="math"&gt;\(i\)&lt;/span&gt; denotes the &lt;span class="math"&gt;\(i\)&lt;/span&gt;th house, and &lt;span class="math"&gt;\(j\)&lt;/span&gt; the &lt;span class="math"&gt;\(j\)&lt;/span&gt;th feature.&lt;/p&gt;
+&lt;div class="math"&gt;$$ x^{\textcolor{orange}{i \textrm{th sample}}}_{\textcolor{blue}{j \textrm{th feature}}} $$&lt;/div&gt;
+&lt;p&gt;So if we were to start describing each hypothesis for our dataset individually,&lt;/p&gt;
 &lt;div class="math"&gt;$$ h_θ(x^i) = \left\{\begin{array}{ll}
 h_θ(x^0) = θ_0x_0^0 + θ_1x_1^0 + \cdots + θ_nx_n^0 \\
 h_θ(x^1) = θ_0x_0^1 + θ_1x_1^1 + \cdots + θ_nx_n^1 \\
@@ -143,14 +143,14 @@ h_θ(x^3) = θ_0x_0^2 + θ_1x_1^2 + \cdots + θ_nx_n^2
 
 &lt;span class="n"&gt;hyps&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;hypothesis&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;houses&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;house&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;house&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;houses&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id="cost-function-how-accurate-are-our-predictions"&gt;Cost function: How accurate are our predictions?&lt;/h2&gt;
+&lt;h2 id="cost-function-how-accurate-are-our-predictions"&gt;Cost function: How accurate are our predictions?&lt;/h2&gt;
 &lt;p&gt;Seeing as the goal of linear regression is to come up with a line that best fits the data, we need some way to evaluate a line’s &lt;strong&gt;goodness of fit&lt;/strong&gt; to the data. One measure of that is the &lt;strong&gt;mean squared error&lt;/strong&gt;.&lt;/p&gt;
 &lt;h3 id="error"&gt;Error&lt;/h3&gt;
-&lt;p&gt;&lt;em&gt;Error&lt;/em&gt; is how far the prediction for one sample (house) is from its actual value.&lt;/p&gt;
-&lt;div class="math"&gt;$$ \begin{align}
+&lt;p&gt;&lt;em&gt;Error&lt;/em&gt; is how far the prediction for one sample (house) is from its actual value.&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
 \textrm{error}_i &amp;amp;= \textrm{prediction}_i - \textrm{actual}_i\\
 &amp;amp;= \hat{Y}_i - Y_i
-\end{align} $$&lt;/div&gt;
+\end{aligned} $$&lt;/div&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;em&gt;Note&lt;/em&gt;: The subscript &lt;span class="math"&gt;\(i\)&lt;/span&gt; here is &lt;strong&gt;not&lt;/strong&gt; Einstein notation, because these are just lists of values, not a “spreadsheet” of rows and columns. The Einstein notation in this discussion of linear regression only applies to &lt;span class="math"&gt;\(x\)&lt;/span&gt;.&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -162,25 +162,25 @@ h_θ(x^3) = θ_0x_0^2 + θ_1x_1^2 + \cdots + θ_nx_n^2
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;hypothesis&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;houses&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;actual_values&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id="squared-error"&gt;Squared error&lt;/h3&gt;
-&lt;p&gt;We &lt;em&gt;square&lt;/em&gt; it so that (1) all values are positive, preventing underestimates and overestimates from canceling each other out; and (2) larger errors are considered proportionally “more erroneous” than smaller errors.&lt;/p&gt;
-&lt;div class="math"&gt;$$ \begin{align}
+&lt;h3 id="squared-error"&gt;Squared error&lt;/h3&gt;
+&lt;p&gt;We &lt;em&gt;square&lt;/em&gt; it so that (1) all values are positive, preventing underestimates and overestimates from canceling each other out; and (2) larger errors are considered proportionally “more erroneous” than smaller errors.&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
 \textrm{SE}_i &amp;amp;= \textrm{error}^2\\
 &amp;amp;= (\hat{Y}_i - Y_i)^2\\
 &amp;amp;= (h_θ(x^i) - Y_i)^2
-\end{align} $$&lt;/div&gt;
+\end{aligned} $$&lt;/div&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;se&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;h3 id="mean-squared-error"&gt;Mean squared error&lt;/h3&gt;
-&lt;p&gt;The &lt;em&gt;mean&lt;/em&gt; value of the squared error for all samples can give us an idea about our line’s goodness of fit.&lt;/p&gt;
-&lt;div class="math"&gt;$$ \begin{align}
-\textrm{MSE} &amp;amp;= \frac{\textrm{SE}_\color{red}{1} \color{blue}{+ \cdots + } \textrm{ SE}_\color{red}{\textrm{number of samples}}}{\textrm{number of samples}}\\
-&amp;amp;= \frac{\color{blue}{\sum}_{\color{red}{i=1}}^{\color{red}{m}} \textrm{SE}}{m}\\
-&amp;amp;= \frac{\sum_{\color{red}{i=1}}^{\color{red}{m}} (\hat{Y}_{\color{red}i} - Y_{\color{red}i})^2}{m}\\
-&amp;amp;= \frac{1}{m} \sum_{\color{red}{i=1}}^{\color{red}{m}} (\hat{Y}_{\color{red}i} - Y_{\color{red}i})^2\\
-&amp;amp;= \frac{1}{m} \sum_{\color{red}{i=1}}^{\color{red}{m}} (h_θ(x^{\color{red}i}) - Y_{\color{red}i})^2
-\end{align} $$&lt;/div&gt;
+&lt;h3 id="mean-squared-error"&gt;Mean squared error&lt;/h3&gt;
+&lt;p&gt;The &lt;em&gt;mean&lt;/em&gt; value of the squared error for all samples can give us an idea about our line’s goodness of fit.&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+\textrm{MSE} &amp;amp;= \frac{\textrm{SE}_\textcolor{red}{1} \textcolor{blue}{+ \cdots + } \textrm{ SE}_\textcolor{red}{\textrm{number of samples}}}{\textrm{number of samples}}\\
+&amp;amp;= \frac{\textcolor{blue}{\sum}_{\textcolor{red}{i=1}}^{\textcolor{red}{m}} \textrm{SE}}{m}\\
+&amp;amp;= \frac{\sum_{\textcolor{red}{i=1}}^{\textcolor{red}{m}} (\hat{Y}_{\textcolor{red}i} - Y_{\textcolor{red}i})^2}{m}\\
+&amp;amp;= \frac{1}{m} \sum_{\textcolor{red}{i=1}}^{\textcolor{red}{m}} (\hat{Y}_{\textcolor{red}i} - Y_{\textcolor{red}i})^2\\
+&amp;amp;= \frac{1}{m} \sum_{\textcolor{red}{i=1}}^{\textcolor{red}{m}} (h_θ(x^{\textcolor{red}i}) - Y_{\textcolor{red}i})^2
+\end{aligned} $$&lt;/div&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;houses&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;total_se&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
 &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
@@ -191,102 +191,102 @@ h_θ(x^3) = θ_0x_0^2 + θ_1x_1^2 + \cdots + θ_nx_n^2
 &lt;span class="n"&gt;mse&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;se&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;house&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;house&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;houses&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;houses&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;blockquote&gt;
-&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;: MSE gives us an indication of goodness of fit, but it’s difficult to tie that value directly to the data. You can use the RMSE (root mean squared error), which is just the square root of the MSE, to reframe the average error in terms of the data. In this case, the RMSE would tell us how much (in dollars) that our prediction line was off by.&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Note&lt;/em&gt;: &lt;span class="caps"&gt;MSE&lt;/span&gt; gives us an indication of goodness of fit, but it’s difficult to tie that value directly to the data. You can use the &lt;span class="caps"&gt;RMSE&lt;/span&gt; (root mean squared error), which is just the square root of the &lt;span class="caps"&gt;MSE&lt;/span&gt;, to reframe the average error in terms of the data. In this case, the &lt;span class="caps"&gt;RMSE&lt;/span&gt; would tell us how much (in dollars) that our prediction line was off by.&lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;Let’s use the mean squared error to rewrite this equation as a function of the collection of weights. Every time we change the weights, we will obtain a different line with a different goodness of fit (MSE), and this relationship can be illustrated by a function called the &lt;em&gt;cost function&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Let’s use the mean squared error to rewrite this equation as a function of the collection of weights. Every time we change the weights, we will obtain a different line with a different goodness of fit (&lt;span class="caps"&gt;MSE&lt;/span&gt;), and this relationship can be illustrated by a function called the &lt;em&gt;cost function&lt;/em&gt;.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;cost&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;se&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;house&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;house&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;houses&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;houses&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Well, almost. This function is conventionally named &lt;span class="math"&gt;\(J\)&lt;/span&gt;:&lt;/p&gt;
-&lt;div class="math"&gt;$$ J(θ) = \frac{1}{\color{magenta}{2}m} \sum_{i=1}^m (h_θ(x^i) - Y_i)^2 $$&lt;/div&gt;
-&lt;p&gt;Where did that &lt;span class="math"&gt;\(\color{magenta}{2}\)&lt;/span&gt; come from? Again, this is just a matter of convention. The &lt;span class="math"&gt;\(\color{magenta}{2}\)&lt;/span&gt; will cancel out in the the next step.&lt;/p&gt;
+&lt;div class="math"&gt;$$ J(θ) = \frac{1}{\textcolor{magenta}{2}m} \sum_{i=1}^m (h_θ(x^i) - Y_i)^2 $$&lt;/div&gt;
+&lt;p&gt;Where did that &lt;span class="math"&gt;\(\textcolor{magenta}{2}\)&lt;/span&gt; come from? Again, this is just a matter of convention. The &lt;span class="math"&gt;\(\textcolor{magenta}{2}\)&lt;/span&gt; will cancel out in the the next step.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;cost&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;houses&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;se&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;house&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;house&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;houses&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Keep in mind that &lt;span class="math"&gt;\(θ\)&lt;/span&gt; and &lt;span class="math"&gt;\(Y\)&lt;/span&gt; are lists and &lt;span class="math"&gt;\(x\)&lt;/span&gt; is a list of lists. What this means is that in a situation with two features (plus the dummy feature),&lt;/p&gt;
-&lt;div class="math"&gt;$$ \begin{align} h_{θ_\color{teal}{0}, θ_\color{teal}{1}, θ_\color{teal}{2}}(x) &amp;amp;= h_{θ_\color{teal}{0}}(x_\color{teal}{0}) + h_{θ_\color{teal}{1}}(x_\color{teal}{1}) + h_{θ_2}(x_\color{teal}{2}) \\
-h_{θ_\color{teal}{0}, θ_\color{teal}{1}, θ_\color{teal}{2}}(x^\color{red}{i}) &amp;amp;= h_{θ_\color{teal}{0}}(x_\color{teal}{0}^\color{red}{i}) + h_{θ_\color{teal}{1}}(x_\color{teal}{1}^\color{red}{i}) + h_{θ_\color{teal}{2}}(x_\color{teal}{2}^\color{red}{i}) \\
-J(θ_\color{teal}{0}, θ_\color{teal}{1}, θ_\color{teal}{2}) &amp;amp;= \frac{1}{2m} \sum_{\color{red}{i=1}}^\color{red}{m} \Big[h_{θ_\color{teal}{0}}(x_\color{teal}{0}^\color{red}{i}) + h_{θ_\color{teal}{1}}(x_\color{teal}{1}^\color{red}{i}) + h_{θ_\color{teal}{2}}(x_\color{teal}{2}^\color{red}{i}) - Y_{\color{red}i}\Big]^2
-\end{align} $$&lt;/div&gt;
-&lt;p&gt;Numbers in teal represent feature numbers; numbers in red represent sample numbers.&lt;/p&gt;
-&lt;h2 id="multivariable-calculus-how-much-effect-does-each-weight-have"&gt;Multivariable calculus: How much effect does each weight have?&lt;/h2&gt;
-&lt;p&gt;Now, imagine each feature as knobs on a radio. Increasing or decreasing the weight of each feature is like turning up or down the knob for that feature. We want to “tune” our line to be as close to the data as possible by “dialing” the features up and down. In order to do this, we need to determine the effect that a given combination of knob settings has on the final output.&lt;/p&gt;
-&lt;p&gt;In math terms, this is akin to asking “How much does &lt;span class="math"&gt;\(J\)&lt;/span&gt; change when &lt;span class="math"&gt;\(θ\)&lt;/span&gt; changes?” Sounds like derivatives from high school calculus.&lt;/p&gt;
-&lt;div class="math"&gt;$$ \begin{align} f(x) &amp;amp;= 5x^2 \\
+&lt;p&gt;Keep in mind that &lt;span class="math"&gt;\(θ\)&lt;/span&gt; and &lt;span class="math"&gt;\(Y\)&lt;/span&gt; are lists and &lt;span class="math"&gt;\(x\)&lt;/span&gt; is a list of lists. What this means is that in a situation with two features (plus the dummy feature),&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned} h_{θ_\textcolor{teal}{0}, θ_\textcolor{teal}{1}, θ_\textcolor{teal}{2}}(x) &amp;amp;= h_{θ_\textcolor{teal}{0}}(x_\textcolor{teal}{0}) + h_{θ_\textcolor{teal}{1}}(x_\textcolor{teal}{1}) + h_{θ_2}(x_\textcolor{teal}{2}) \\
+h_{θ_\textcolor{teal}{0}, θ_\textcolor{teal}{1}, θ_\textcolor{teal}{2}}(x^\textcolor{red}{i}) &amp;amp;= h_{θ_\textcolor{teal}{0}}(x_\textcolor{teal}{0}^\textcolor{red}{i}) + h_{θ_\textcolor{teal}{1}}(x_\textcolor{teal}{1}^\textcolor{red}{i}) + h_{θ_\textcolor{teal}{2}}(x_\textcolor{teal}{2}^\textcolor{red}{i}) \\
+J(θ_\textcolor{teal}{0}, θ_\textcolor{teal}{1}, θ_\textcolor{teal}{2}) &amp;amp;= \frac{1}{2m} \sum_{\textcolor{red}{i=1}}^\textcolor{red}{m} \Big[h_{θ_\textcolor{teal}{0}}(x_\textcolor{teal}{0}^\textcolor{red}{i}) + h_{θ_\textcolor{teal}{1}}(x_\textcolor{teal}{1}^\textcolor{red}{i}) + h_{θ_\textcolor{teal}{2}}(x_\textcolor{teal}{2}^\textcolor{red}{i}) - Y_{\textcolor{red}i}\Big]^2
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;Numbers in teal represent feature numbers; numbers in red represent sample numbers.&lt;/p&gt;
+&lt;h2 id="multivariable-calculus-how-much-effect-does-each-weight-have"&gt;Multivariable calculus: How much effect does each weight have?&lt;/h2&gt;
+&lt;p&gt;Now, imagine each feature as knobs on a radio. Increasing or decreasing the weight of each feature is like turning up or down the knob for that feature. We want to “tune” our line to be as close to the data as possible by “dialing” the features up and down. In order to do this, we need to determine the effect that a given combination of knob settings has on the final output.&lt;/p&gt;
+&lt;p&gt;In math terms, this is akin to asking “How much does &lt;span class="math"&gt;\(J\)&lt;/span&gt; change when &lt;span class="math"&gt;\(θ\)&lt;/span&gt; changes?” Sounds like derivatives from high school calculus.&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned} f(x) &amp;amp;= 5x^2 \\
 \frac{df}{dx} &amp;amp;= 5\cdot2x^{2-1} \\
 &amp;amp;= 10x
-\end{align}
+\end{aligned}
 $$&lt;/div&gt;
-&lt;p&gt;Our function &lt;span class="math"&gt;\(J\)&lt;/span&gt; is actually one function inside of another, so the chain rule applies. Bonus points if you remember that from high school—I didn’t.&lt;/p&gt;
-&lt;div class="math"&gt;$$ \begin{align}
-J(θ) &amp;amp;= \color{purple}{\frac{1}{2m}} \color{purple}{\sum_{i=1}^m} \color{purple}{\Big[} \color{orange}{h_θ(x^i)} \color{purple}{- Y_i)\Big]^2} \\
-\frac{dJ(θ)}{dθ} &amp;amp;= d_\color{purple}{\textrm{outer}} \cdot d_\color{orange}{\textrm{inner}}
-\end{align} $$&lt;/div&gt;
-&lt;div class="math"&gt;$$ \require{cancel}
-\begin{align*}
-\color{purple}{\textrm{outer}} &amp;amp;= \color{purple}{\frac{1}{2m}} \color{purple}{\sum_{i=1}^m} \color{purple}{(} \color{orange}{\textrm{inner}} \color{purple}{- Y_i)^2} &amp;amp;
-\color{orange}{\textrm{inner}} &amp;amp;= \color{magenta}{θ_0}\color{teal}{x_0} + \color{magenta}{θ_1}\color{teal}{x_1} + \cdots + \color{magenta}{θ_n}\color{teal}{x_n} \\
-d_\color{purple}{\textrm{outer}} &amp;amp;= \color{purple}{\frac{\cancel{2}}{\cancel{2}m}} \color{purple}{\sum_{i=1}^m} \color{purple}{\Big[} \color{orange}{h_θ(x^i)} \color{purple}{{- Y_i\Big]}^2} &amp;amp; d_\color{orange}{\textrm{inner}} &amp;amp;= ???
-\end{align*}
+&lt;p&gt;Our function &lt;span class="math"&gt;\(J\)&lt;/span&gt; is actually one function inside of another, so the chain rule applies. Bonus points if you remember that from high school—I didn’t.&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+J(θ) &amp;amp;= \textcolor{purple}{\frac{1}{2m}} \textcolor{purple}{\sum_{i=1}^m} \textcolor{purple}{\Big[} \textcolor{orange}{h_θ(x^i)} \textcolor{purple}{- Y_i)\Big]^2} \\
+\frac{dJ(θ)}{dθ} &amp;amp;= d_\textcolor{purple}{\textrm{outer}} \cdot d_\textcolor{orange}{\textrm{inner}}
+\end{aligned} $$&lt;/div&gt;
+&lt;div class="math"&gt;$$
+\begin{aligned}
+\textcolor{purple}{\textrm{outer}} &amp;amp;= \textcolor{purple}{\frac{1}{2m}} \textcolor{purple}{\sum_{i=1}^m} \textcolor{purple}{(} \textcolor{orange}{\textrm{inner}} \textcolor{purple}{- Y_i)^2} &amp;amp;
+\textcolor{orange}{\textrm{inner}} &amp;amp;= \textcolor{magenta}{θ_0}\textcolor{teal}{x_0} + \textcolor{magenta}{θ_1}\textcolor{teal}{x_1} + \cdots + \textcolor{magenta}{θ_n}\textcolor{teal}{x_n} \\
+d_\textcolor{purple}{\textrm{outer}} &amp;amp;= \textcolor{purple}{\frac{\cancel{2}}{\cancel{2}m}} \textcolor{purple}{\sum_{i=1}^m} \textcolor{purple}{\Big[} \textcolor{orange}{h_θ(x^i)} \textcolor{purple}{{- Y_i\Big]}^2} &amp;amp; d_\textcolor{orange}{\textrm{inner}} &amp;amp;= ???
+\end{aligned}
 $$&lt;/div&gt;
-&lt;p&gt;This is where I got stuck. &lt;span class="math"&gt;\(θ\)&lt;/span&gt; is a collection of values, not just a single value. Each knob on our radio affects the output individually, and we have to determine the individual effect of each knob.&lt;/p&gt;
-&lt;p&gt;It helps to start by breaking down what the chain rule is actually saying.&lt;/p&gt;
-&lt;div class="math"&gt;$$ \frac{d[\color{purple}{\textrm{outer}}(\color{orange}{\textrm{inner}}(x))]}{dx} = \frac{d_\color{purple}{\textrm{outer}}}{d_\color{orange}{\textrm{inner}}} \cdot \frac{d_\color{orange}{inner}}{dx} $$&lt;/div&gt;
-&lt;p&gt;This means our “outer derivative” &lt;span class="math"&gt;\(d_\color{purple}{\textrm{outer}}\)&lt;/span&gt; tells us how much our cost function &lt;span class="math"&gt;\(J(θ)\)&lt;/span&gt; changes in response to a given change in our hypothesis &lt;span class="math"&gt;\(h(x)\)&lt;/span&gt;. We now need to find the “inner derivative” &lt;span class="math"&gt;\(d_{\color{orange}{\textrm{inner}}}\)&lt;/span&gt;, which tells us how much our hypothesis &lt;span class="math"&gt;\(h(x)\)&lt;/span&gt; changes in response to a given change in our weights &lt;span class="math"&gt;\(θ\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;This is where I got stuck. &lt;span class="math"&gt;\(θ\)&lt;/span&gt; is a collection of values, not just a single value. Each knob on our radio affects the output individually, and we have to determine the individual effect of each knob.&lt;/p&gt;
+&lt;p&gt;It helps to start by breaking down what the chain rule is actually saying.&lt;/p&gt;
+&lt;div class="math"&gt;$$ \frac{d[\textcolor{purple}{\textrm{outer}}(\textcolor{orange}{\textrm{inner}}(x))]}{dx} = \frac{d_\textcolor{purple}{\textrm{outer}}}{d_\textcolor{orange}{\textrm{inner}}} \cdot \frac{d_\textcolor{orange}{inner}}{dx} $$&lt;/div&gt;
+&lt;p&gt;This means our “outer derivative” &lt;span class="math"&gt;\(d_\textcolor{purple}{\textrm{outer}}\)&lt;/span&gt; tells us how much our cost function &lt;span class="math"&gt;\(J(θ)\)&lt;/span&gt; changes in response to a given change in our hypothesis &lt;span class="math"&gt;\(h(x)\)&lt;/span&gt;. We now need to find the “inner derivative” &lt;span class="math"&gt;\(d_{\textcolor{orange}{\textrm{inner}}}\)&lt;/span&gt;, which tells us how much our hypothesis &lt;span class="math"&gt;\(h(x)\)&lt;/span&gt; changes in response to a given change in our weights &lt;span class="math"&gt;\(θ\)&lt;/span&gt;.&lt;/p&gt;
 &lt;p&gt;But since &lt;span class="math"&gt;\(θ\)&lt;/span&gt; is a collection of values, there isn’t a single derivative, but rather several &lt;em&gt;partial derivatives&lt;/em&gt;, which indicate how much our hypothesis &lt;span class="math"&gt;\(h(x^i)\)&lt;/span&gt; for a specific sample (house) &lt;span class="math"&gt;\(x^i\)&lt;/span&gt; changes in response to a given change in &lt;em&gt;each&lt;/em&gt; of the weights &lt;span class="math"&gt;\(θ_j\)&lt;/span&gt;.&lt;/p&gt;
 &lt;blockquote&gt;
 &lt;p&gt;&lt;em&gt;Note&lt;/em&gt;: Another labeling convention—just as &lt;span class="math"&gt;\(i\)&lt;/span&gt; is used to refer to, or “index,” samples from &lt;span class="math"&gt;\(1\)&lt;/span&gt; through &lt;span class="math"&gt;\(m\)&lt;/span&gt;, the total number of samples, lowercase &lt;span class="math"&gt;\(j\)&lt;/span&gt; is used to index features from &lt;span class="math"&gt;\(0\)&lt;/span&gt; through &lt;span class="math"&gt;\(n\)&lt;/span&gt;, the total number of features. To return to our Einstein notation,
-&lt;div class="math"&gt;$$ x^{1 \&amp;gt; \leq \&amp;gt; i^\textrm{th} \textrm{ sample} \&amp;gt; \leq \&amp;gt; m \textrm{ samples}}_{0 \&amp;gt; \leq \&amp;gt; j^\textrm{th} \textrm{ feature} \&amp;gt; \leq \&amp;gt; n \textrm{ features}} $$&lt;/div&gt;
+&lt;div class="math"&gt;$$ x^{1 \leq \space i^\textrm{th} \textrm{ sample} \space \leq \space m \textrm{ samples}}_{0 \space \leq \space j^\textrm{th} \textrm{ feature} \space \leq \space n \textrm{ features}} $$&lt;/div&gt;
 &lt;/p&gt;
 &lt;/blockquote&gt;
-&lt;p&gt;In math notation, this is written with a funny “d” called a “del,” &lt;span class="math"&gt;\(\partial\)&lt;/span&gt;, like this:&lt;/p&gt;
+&lt;p&gt;In math notation, this is written with a funny “d” called a “del,” &lt;span class="math"&gt;\(\partial\)&lt;/span&gt;, like this:&lt;/p&gt;
 &lt;div class="math"&gt;$$ \frac{\partial h_θ(x^i)}{\partial θ_j} $$&lt;/div&gt;
-&lt;p&gt;This looks crazy, but the process of finding these partial derivatives is really the same as finding a normal derivative, except you &lt;em&gt;treat all the other variables as constant&lt;/em&gt;, effectively ignoring them. So, for we now only have to concern ourselves with&lt;/p&gt;
+&lt;p&gt;This looks crazy, but the process of finding these partial derivatives is really the same as finding a normal derivative, except you &lt;em&gt;treat all the other variables as constant&lt;/em&gt;, effectively ignoring them. So, for we now only have to concern ourselves with&lt;/p&gt;
 &lt;div class="math"&gt;$$ h_{θ_j}(x^i) = \begin{cases}
-\color{magenta}{θ_0}\color{teal}{x_0^i} \color{lightgray}{+θ_1x_1^i + θ_2x_2^i} &amp;amp; \text{when } j=0 \\
-\color{lightgray}{θ_0x_0^i} \color{lightgray}{+} \color{magenta}{θ_1}\color{teal}{x_1^i} \color{lightgray}{+θ_2x_2^i} &amp;amp; \text{when } j=1 \\
-\color{lightgray}{θ_0x_0^i + θ_1x_1^i} \color{lightgray}{+} \color{magenta}{θ_2}\color{teal}{x_2^i} &amp;amp; \text{when } j=2 \\
+\textcolor{magenta}{θ_0}\textcolor{teal}{x_0^i} \textcolor{lightgray}{+θ_1x_1^i + θ_2x_2^i} &amp;amp; \text{when } j=0 \\
+\textcolor{lightgray}{θ_0x_0^i} \textcolor{lightgray}{+} \textcolor{magenta}{θ_1}\textcolor{teal}{x_1^i} \textcolor{lightgray}{+θ_2x_2^i} &amp;amp; \text{when } j=1 \\
+\textcolor{lightgray}{θ_0x_0^i + θ_1x_1^i} \textcolor{lightgray}{+} \textcolor{magenta}{θ_2}\textcolor{teal}{x_2^i} &amp;amp; \text{when } j=2 \\
 \end{cases} $$&lt;/div&gt;
-&lt;p&gt;The derivative of a variable times something else is just the &lt;em&gt;something else&lt;/em&gt;. (For a line &lt;span class="math"&gt;\(y = 2x\)&lt;/span&gt;, &lt;span class="math"&gt;\(\frac{dy}{dx}\)&lt;/span&gt; is just &lt;span class="math"&gt;\(2\)&lt;/span&gt;, since its slope will be 2 at every point along the line.) Thus,&lt;/p&gt;
+&lt;p&gt;The derivative of a variable times something else is just the &lt;em&gt;something else&lt;/em&gt;. (For a line &lt;span class="math"&gt;\(y = 2x\)&lt;/span&gt;, &lt;span class="math"&gt;\(\frac{dy}{dx}\)&lt;/span&gt; is just &lt;span class="math"&gt;\(2\)&lt;/span&gt;, since its slope will be 2 at every point along the line.) Thus,&lt;/p&gt;
 &lt;div class="math"&gt;$$ \frac{\partial h_θ(x)}{\partial θ_j} = \begin{cases}
-\frac{\partial h_θ(x)}{\partial θ_0} &amp;amp;= \color{lightgray}{θ_0} \color{teal}{x_0^i} &amp;amp; \text{when } j=0 \\
-\frac{\partial h_θ(x)}{\partial θ_1} &amp;amp;= \color{lightgray}{θ_1} \color{teal}{x_1^i} &amp;amp; \text{when } j=1 \\
-\frac{\partial h_θ(x)}{\partial θ_2} &amp;amp;= \color{lightgray}{θ_2} \color{teal}{x_2^i} &amp;amp; \text{when } j=2
+\frac{\partial h_θ(x)}{\partial θ_0} &amp;amp;= \textcolor{lightgray}{θ_0} \textcolor{teal}{x_0^i} &amp;amp; \text{when } j=0 \\
+\frac{\partial h_θ(x)}{\partial θ_1} &amp;amp;= \textcolor{lightgray}{θ_1} \textcolor{teal}{x_1^i} &amp;amp; \text{when } j=1 \\
+\frac{\partial h_θ(x)}{\partial θ_2} &amp;amp;= \textcolor{lightgray}{θ_2} \textcolor{teal}{x_2^i} &amp;amp; \text{when } j=2
 \end{cases} $$&lt;/div&gt;
-&lt;p&gt;Or just&lt;/p&gt;
+&lt;p&gt;Or just&lt;/p&gt;
 &lt;div class="math"&gt;$$ \frac{\partial h_θ(x)}{\partial θ_j} = \left\{\begin{array}{lr}
 x_0^i &amp;amp; \text{when } j=0 \\
 x_1^i &amp;amp; \text{when } j=1 \\
 x_2^i &amp;amp; \text{when } j=2
 \end{array}\right\}
-= \color{red}{x_j^i} $$&lt;/div&gt;
-&lt;p&gt;That’s &lt;span class="math"&gt;\(d_{\color{orange}{\textrm{inner}}}\)&lt;/span&gt;.&lt;/p&gt;
-&lt;div class="math"&gt;$$ \begin{align}
-\frac{\partial{J(θ)}}{\partial{θ_j}} &amp;amp;= d_\color{purple}{\textrm{outer}} \cdot d_\color{orange}{\textrm{inner}} \\
-&amp;amp;= \frac{1}{m} \sum_{i=1}^m (h_θ(x^i) - Y_i) \cdot \color{red}{x_j^i}
-\end{align} $$&lt;/div&gt;
-&lt;p&gt;Phew! That was a lot of abstract math. Finally, we have something that can be translated into code.&lt;/p&gt;
+= \textcolor{red}{x_j^i} $$&lt;/div&gt;
+&lt;p&gt;That’s &lt;span class="math"&gt;\(d_{\textcolor{orange}{\textrm{inner}}}\)&lt;/span&gt;.&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+\frac{\partial{J(θ)}}{\partial{θ_j}} &amp;amp;= d_\textcolor{purple}{\textrm{outer}} \cdot d_\textcolor{orange}{\textrm{inner}} \\
+&amp;amp;= \frac{1}{m} \sum_{i=1}^m (h_θ(x^i) - Y_i) \cdot \textcolor{red}{x_j^i}
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;Phew! That was a lot of abstract math. Finally, we have something that can be translated into code.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;effect_of_weight&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;which_weight&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;m&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;house&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;which_weight&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;house&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;houses&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
 
 &lt;span class="n"&gt;effect_of_all_weights&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;effect_of_weight&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;j&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;j&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id="stochastic-gradient-descent-making-regression-lines-fit-again"&gt;Stochastic gradient descent: Making regression lines fit again&lt;/h2&gt;
-&lt;p&gt;Strictly speaking, &lt;span class="math"&gt;\(\frac{1}{m} \sum_{i=1}^m (h_θ(x^i) - Y_i) \cdot x_j^i\)&lt;/span&gt; is not a derivative, but a &lt;strong&gt;gradient&lt;/strong&gt;—a collection of partial derivatives. In high school calculus, the derivative at a given point is visualized as the line that is tangent to the graph’s curve at that point. In multivariable calculus, the gradient at a given point is visualized as the &lt;em&gt;plane&lt;/em&gt; that is tangent to the graph’s surface at the point.&lt;/p&gt;
-&lt;p&gt;In more concrete terms, imagine running a small piece of cardboard around the sides of a coffee mug so that the cardboard follows the curvature of the mug. Every point on the surface of the mug corresponds to some combination of weights, and the closer we are to the top of the mug, the greater the value of our cost function is, and so the more inaccurate our prediction is. We want to find the bottom of the mug, where the piece of cardboard is parallel to the ground, because that is where the value of the cost function is as low as possible.&lt;/p&gt;
-&lt;p&gt;When that value is zero, the line would fit our data perfectly. However, that’s not possible for real-world data, so we will settle for the lowest value—that is, we want to &lt;em&gt;minimize&lt;/em&gt; the cost function.&lt;/p&gt;
+&lt;h2 id="stochastic-gradient-descent-making-regression-lines-fit-again"&gt;Stochastic gradient descent: Making regression lines fit again&lt;/h2&gt;
+&lt;p&gt;Strictly speaking, &lt;span class="math"&gt;\(\frac{1}{m} \sum_{i=1}^m (h_θ(x^i) - Y_i) \cdot x_j^i\)&lt;/span&gt; is not a derivative, but a &lt;strong&gt;gradient&lt;/strong&gt;—a collection of partial derivatives. In high school calculus, the derivative at a given point is visualized as the line that is tangent to the graph’s curve at that point. In multivariable calculus, the gradient at a given point is visualized as the &lt;em&gt;plane&lt;/em&gt; that is tangent to the graph’s surface at the point.&lt;/p&gt;
+&lt;p&gt;In more concrete terms, imagine running a small piece of cardboard around the sides of a coffee mug so that the cardboard follows the curvature of the mug. Every point on the surface of the mug corresponds to some combination of weights, and the closer we are to the top of the mug, the greater the value of our cost function is, and so the more inaccurate our prediction is. We want to find the bottom of the mug, where the piece of cardboard is parallel to the ground, because that is where the value of the cost function is as low as possible.&lt;/p&gt;
+&lt;p&gt;When that value is zero, the line would fit our data perfectly. However, that’s not possible for real-world data, so we will settle for the lowest value—that is, we want to &lt;em&gt;minimize&lt;/em&gt; the cost function.&lt;/p&gt;
 &lt;div class="math"&gt;$$ \underset{θ}{\arg\min} \, J(θ) $$&lt;/div&gt;
 &lt;p&gt;In the language of math (and neural networks), this is called &lt;strong&gt;stochastic gradient descent&lt;/strong&gt;.&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;The &lt;em&gt;gradient&lt;/em&gt; is the thing we’re trying to minimize.&lt;/li&gt;
-&lt;li&gt;This process is &lt;em&gt;stochastic&lt;/em&gt; (random) because we start with random weights (all zeros), which puts us at a random point on the mug.&lt;/li&gt;
-&lt;li&gt;It is a &lt;em&gt;descent&lt;/em&gt; because we want to move down to a progressively flatter region of the mug with each attempt (combination of weights).&lt;/li&gt;
+&lt;li&gt;The &lt;em&gt;gradient&lt;/em&gt; is the thing we’re trying to minimize.&lt;/li&gt;
+&lt;li&gt;This process is &lt;em&gt;stochastic&lt;/em&gt; (random) because we start with random weights (all zeros), which puts us at a random point on the mug.&lt;/li&gt;
+&lt;li&gt;It is a &lt;em&gt;descent&lt;/em&gt; because we want to move down to a progressively flatter region of the mug with each attempt (combination of weights).&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;The descent occurs in “steps.” Imagine, for a moment, a basic parabola &lt;span class="math"&gt;\(f(x) = x^2\)&lt;/span&gt; instead of a mug. The derivative at any point &lt;span class="math"&gt;\(x\)&lt;/span&gt; is &lt;span class="math"&gt;\(2x\)&lt;/span&gt;. Positive &lt;span class="math"&gt;\(x\)&lt;/span&gt; values give us positive derivatives and negative &lt;span class="math"&gt;\(x\)&lt;/span&gt; values give us negative derivatives. If we started at some point to the right of 0 and wanted to follow the parabola to its trough, we could do that by subtracting something from &lt;span class="math"&gt;\(x\)&lt;/span&gt;. Likewise, if we started at some point to the left of 0, we’d want to add something to &lt;span class="math"&gt;\(x\)&lt;/span&gt;—or rather, subtract a negative value.&lt;/p&gt;
-&lt;p&gt;This means that if we start at any point &lt;span class="math"&gt;\(x\)&lt;/span&gt; and subtract &lt;span class="math"&gt;\(\frac{dy}{dx}\)&lt;/span&gt;, we will tend toward the trough. We don’t necessarily know exactly what our new &lt;span class="math"&gt;\(x\)&lt;/span&gt; value will be, but we can assume that subtracting &lt;span class="math"&gt;\(\frac{dy}{dx}\)&lt;/span&gt; again will take us closer to the trough, although slightly less closer. Each step brings us increasingly closer but in progressively smaller steps. At some point, we will reach &lt;strong&gt;convergence&lt;/strong&gt;, or a point that is close enough to minimum.&lt;/p&gt;
-&lt;p&gt;The same applies to gradients. The gradient for any set of weights &lt;span class="math"&gt;\(θ\)&lt;/span&gt; tells us the &lt;em&gt;opposite&lt;/em&gt; direction we should go in to find the bottom of the mug. That means that if we start with some initial collection of weights &lt;span class="math"&gt;\(θ\)&lt;/span&gt; and keep subtracting the gradient, which is notated &lt;span class="math"&gt;\(\nabla J\)&lt;/span&gt;, we should eventually arrive at the bottom.&lt;/p&gt;
+&lt;p&gt;The descent occurs in “steps.” Imagine, for a moment, a basic parabola &lt;span class="math"&gt;\(f(x) = x^2\)&lt;/span&gt; instead of a mug. The derivative at any point &lt;span class="math"&gt;\(x\)&lt;/span&gt; is &lt;span class="math"&gt;\(2x\)&lt;/span&gt;. Positive &lt;span class="math"&gt;\(x\)&lt;/span&gt; values give us positive derivatives and negative &lt;span class="math"&gt;\(x\)&lt;/span&gt; values give us negative derivatives. If we started at some point to the right of 0 and wanted to follow the parabola to its trough, we could do that by subtracting something from &lt;span class="math"&gt;\(x\)&lt;/span&gt;. Likewise, if we started at some point to the left of 0, we’d want to add something to &lt;span class="math"&gt;\(x\)&lt;/span&gt;—or rather, subtract a negative value.&lt;/p&gt;
+&lt;p&gt;This means that if we start at any point &lt;span class="math"&gt;\(x\)&lt;/span&gt; and subtract &lt;span class="math"&gt;\(\frac{dy}{dx}\)&lt;/span&gt;, we will tend toward the trough. We don’t necessarily know exactly what our new &lt;span class="math"&gt;\(x\)&lt;/span&gt; value will be, but we can assume that subtracting &lt;span class="math"&gt;\(\frac{dy}{dx}\)&lt;/span&gt; again will take us closer to the trough, although slightly less closer. Each step brings us increasingly closer but in progressively smaller steps. At some point, we will reach &lt;strong&gt;convergence&lt;/strong&gt;, or a point that is close enough to minimum.&lt;/p&gt;
+&lt;p&gt;The same applies to gradients. The gradient for any set of weights &lt;span class="math"&gt;\(θ\)&lt;/span&gt; tells us the &lt;em&gt;opposite&lt;/em&gt; direction we should go in to find the bottom of the mug. That means that if we start with some initial collection of weights &lt;span class="math"&gt;\(θ\)&lt;/span&gt; and keep subtracting the gradient, which is notated &lt;span class="math"&gt;\(\nabla J\)&lt;/span&gt;, we should eventually arrive at the bottom.&lt;/p&gt;
 &lt;div class="math"&gt;$$ \textrm{repeat } θ := θ - \nabla J \textrm{ until convergence} $$&lt;/div&gt;
-&lt;p&gt;But try translating this into Python.&lt;/p&gt;
+&lt;p&gt;But try translating this into Python.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;gradient_of_cost&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;my_weights&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;effect_of_weight&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;j&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;j&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 
@@ -300,21 +300,21 @@ x_2^i &amp;amp; \text{when } j=2
 
 &lt;span class="n"&gt;minimum&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;my_weights&lt;/span&gt; &lt;span class="c1"&gt;# ???&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;In doing so, a couple of questions arise (besides the suspicion that there are way too many loops and functions):&lt;/p&gt;
+&lt;p&gt;In doing so, a couple of questions arise (besides the suspicion that there are way too many loops and functions):&lt;/p&gt;
 &lt;ul&gt;
-&lt;li&gt;How do you compare weights so that you can know which of two collections is “lesser” and which is “greater”?&lt;/li&gt;
-&lt;li&gt;How do you know when you’ve reached convergence?&lt;/li&gt;
+&lt;li&gt;How do you compare weights so that you can know which of two collections is “lesser” and which is “greater”?&lt;/li&gt;
+&lt;li&gt;How do you know when you’ve reached convergence?&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;It‘s clear that we have more or less come as far as we can with the level of math and coding that we have used so far.&lt;/p&gt;
-&lt;h1 id="part-2-crazy-math-beautiful-code"&gt;Part 2: Crazy math, beautiful code&lt;/h1&gt;
-&lt;p&gt;When you think about it, it almost seems a little backwards to call linear algebra the starting point of machine learning. After all, we’ve come this far without it. Multivariable calculus strikes me as more fundamental, although I suppose that it might be hard to imagine the output of a two-variable function as a bowl- or mug-shaped object without the concept of vectors.&lt;/p&gt;
-&lt;p&gt;In any case, it’s time for that Zen uppercut.&lt;/p&gt;
-&lt;p&gt;I won’t go into the mechanics of vector and matrix operations here; they are too tedious to write about, and I’m certainly not the best person to explain them. What I’m more interested in is the concept of &lt;strong&gt;vectorization&lt;/strong&gt;: the “translation” (pun intended) of the algebra and calculus above into linear algebra and multivariable calculus, as well as what that looks like in Python (using NumPy).&lt;/p&gt;
-&lt;h2 id="vectorize-all-the-things"&gt;Vectorize all the things!!!&lt;/h2&gt;
+&lt;p&gt;It‘s clear that we have more or less come as far as we can with the level of math and coding that we have used so far.&lt;/p&gt;
+&lt;h1 id="part-2-crazy-math-beautiful-code"&gt;Part 2: Crazy math, beautiful code&lt;/h1&gt;
+&lt;p&gt;When you think about it, it almost seems a little backwards to call linear algebra the starting point of machine learning. After all, we’ve come this far without it. Multivariable calculus strikes me as more fundamental, although I suppose that it might be hard to imagine the output of a two-variable function as a bowl- or mug-shaped object without the concept of vectors.&lt;/p&gt;
+&lt;p&gt;In any case, it’s time for that Zen uppercut.&lt;/p&gt;
+&lt;p&gt;I won’t go into the mechanics of vector and matrix operations here; they are too tedious to write about, and I’m certainly not the best person to explain them. What I’m more interested in is the concept of &lt;strong&gt;vectorization&lt;/strong&gt;: the “translation” (pun intended) of the algebra and calculus above into linear algebra and multivariable calculus, as well as what that looks like in Python (using NumPy).&lt;/p&gt;
+&lt;h2 id="vectorize-all-the-things"&gt;Vectorize all the things!!!&lt;/h2&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Ninja mode activated! (That was easy, eh?) First of all, let’s convert all lists to &lt;em&gt;vectors&lt;/em&gt; and all lists of lists to &lt;em&gt;matrices&lt;/em&gt;.&lt;/p&gt;
-&lt;div class="math"&gt;$$ \begin{align}
+&lt;div class="math"&gt;$$ \begin{aligned}
 \textbf X =
 \begin{bmatrix}
   x_1^1 &amp;amp; x_2^1 &amp;amp; \dots  &amp;amp; x_n^1 \\
@@ -324,76 +324,76 @@ x_2^i &amp;amp; \text{when } j=2
 \end{bmatrix} \qquad{}
 &amp;amp; \vec θ = \begin{bmatrix} θ_0 \\ θ_1 \\ θ_2 \\ \vdots \\ θ_n \end{bmatrix}
 &amp;amp; \vec y = \begin{bmatrix} y_0 \\ y_1 \\ \vdots \\ y_m \end{bmatrix}
-\end{align}$$&lt;/div&gt;
-&lt;p&gt;Let’s use &lt;code&gt;scikit-learn&lt;/code&gt; to generate a suitable dataset for us. Since we won’t have to do any of the computations by hand, let’s go wild with the number of features and samples. We also need a vector with our initial weights (all zeros).&lt;/p&gt;
+\end{aligned}$$&lt;/div&gt;
+&lt;p&gt;Let’s use &lt;code&gt;scikit-learn&lt;/code&gt; to generate a suitable dataset for us. Since we won’t have to do any of the computations by hand, let’s go wild with the number of features and samples. We also need a vector with our initial weights (all zeros).&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sklearn.datasets&lt;/span&gt;
 &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sklearn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;datasets&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make_regression&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_samples&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;500&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;n_features&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="c1"&gt;# as many rows as X has columns, and 1 column&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;One important thing to note is that the dummy feature &lt;span class="math"&gt;\(x_0\)&lt;/span&gt; needs to be added to the data. Also, &lt;code&gt;scikit-learn&lt;/code&gt; generates a &lt;code&gt;y&lt;/code&gt; array that doesn’t have the proper dimensions of a vector for some reason.&lt;/p&gt;
+&lt;p&gt;One important thing to note is that the dummy feature &lt;span class="math"&gt;\(x_0\)&lt;/span&gt; needs to be added to the data. Also, &lt;code&gt;scikit-learn&lt;/code&gt; generates a &lt;code&gt;y&lt;/code&gt; array that doesn’t have the proper dimensions of a vector for some reason.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hstack&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ones&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="c1"&gt;# padding for bias column&lt;/span&gt;
 &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vstack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# this just fixes a quirk of sklearn's output&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;div class="math"&gt;$$ \begin{align} \textbf X =
+&lt;div class="math"&gt;$$ \begin{aligned} \textbf X =
 \begin{bmatrix}
-  \color{red}1 &amp;amp; x_1^1 &amp;amp; x_2^1 &amp;amp; \dots &amp;amp; x_n^1 \\
-  \color{red}1 &amp;amp; x_1^2 &amp;amp; x_2^2 &amp;amp; \dots &amp;amp; x_n^2 \\
-  \color{red}\vdots &amp;amp; \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
-  \color{red}1 &amp;amp; x_1^m &amp;amp; x_2^m &amp;amp; \dots &amp;amp; x_n^m
+  \textcolor{red}1 &amp;amp; x_1^1 &amp;amp; x_2^1 &amp;amp; \dots &amp;amp; x_n^1 \\
+  \textcolor{red}1 &amp;amp; x_1^2 &amp;amp; x_2^2 &amp;amp; \dots &amp;amp; x_n^2 \\
+  \textcolor{red}\vdots &amp;amp; \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
+  \textcolor{red}1 &amp;amp; x_1^m &amp;amp; x_2^m &amp;amp; \dots &amp;amp; x_n^m
 \end{bmatrix} \qquad{}
 &amp;amp; \vec θ = \begin{bmatrix} θ_0 \\ θ_1 \\ θ_2 \\ \vdots \\ θ_n \end{bmatrix}
-\end{align} $$&lt;/div&gt;
+\end{aligned} $$&lt;/div&gt;
 &lt;p&gt;The hypothesis function &lt;span class="math"&gt;\(h_θ(x^i)\)&lt;/span&gt; can now be written succinctly as the product of the “houses” matrix &lt;span class="math"&gt;\(\textbf X\)&lt;/span&gt; and the weights vector &lt;span class="math"&gt;\(\vec θ\)&lt;/span&gt;.&lt;/p&gt;
-&lt;div class="math"&gt;$$ \begin{align} \textbf X\vec θ &amp;amp;= \begin{bmatrix}
-  \color{teal}{x_0^1} &amp;amp; \color{teal}{x_1^1} &amp;amp; \color{teal}{x_2^1} &amp;amp; \dots &amp;amp; \color{teal}{x_n^1} \\
-  \color{teal}{x_0^2} &amp;amp; \color{teal}{x_1^2} &amp;amp; \color{teal}{x_2^2} &amp;amp; \dots &amp;amp; \color{teal}{x_n^2} \\
-  \color{teal}\vdots &amp;amp; \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
-  \color{teal}{x_0^m} &amp;amp; \color{teal}{x_1^m} &amp;amp; \color{teal}{x_2^m} &amp;amp; \dots &amp;amp; \color{teal}{x_n^m}
-\end{bmatrix} \begin{bmatrix} \color{magenta}{θ_0} \\ \color{magenta}{θ_1} \\ \color{magenta}{θ_2} \\ \vdots \\ \color{magenta}{θ_n} \end{bmatrix} \\
+&lt;div class="math"&gt;$$ \begin{aligned} \textbf X\vec θ &amp;amp;= \begin{bmatrix}
+  \textcolor{teal}{x_0^1} &amp;amp; \textcolor{teal}{x_1^1} &amp;amp; \textcolor{teal}{x_2^1} &amp;amp; \dots &amp;amp; \textcolor{teal}{x_n^1} \\
+  \textcolor{teal}{x_0^2} &amp;amp; \textcolor{teal}{x_1^2} &amp;amp; \textcolor{teal}{x_2^2} &amp;amp; \dots &amp;amp; \textcolor{teal}{x_n^2} \\
+  \textcolor{teal}\vdots &amp;amp; \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
+  \textcolor{teal}{x_0^m} &amp;amp; \textcolor{teal}{x_1^m} &amp;amp; \textcolor{teal}{x_2^m} &amp;amp; \dots &amp;amp; \textcolor{teal}{x_n^m}
+\end{bmatrix} \begin{bmatrix} \textcolor{magenta}{θ_0} \\ \textcolor{magenta}{θ_1} \\ \textcolor{magenta}{θ_2} \\ \vdots \\ \textcolor{magenta}{θ_n} \end{bmatrix} \\
 &amp;amp;= \begin{bmatrix}
-  \color{magenta}{θ_0}\color{teal}{x_0^1} &amp;amp; \color{magenta}{θ_1}\color{teal}{x_1^1} &amp;amp; \color{magenta}{θ_2}\color{teal}{x_2^1} &amp;amp; \dots &amp;amp; \color{magenta}{θ_n}\color{teal}{x_n^1} \\
-  \color{magenta}{θ_0}\color{teal}{x_0^2} &amp;amp; \color{magenta}{θ_1}\color{teal}{x_1^2} &amp;amp; \color{magenta}{θ_2}\color{teal}{x_2^2} &amp;amp; \dots &amp;amp; \color{magenta}{n_2}\color{teal}{x_n^2} \\
+  \textcolor{magenta}{θ_0}\textcolor{teal}{x_0^1} &amp;amp; \textcolor{magenta}{θ_1}\textcolor{teal}{x_1^1} &amp;amp; \textcolor{magenta}{θ_2}\textcolor{teal}{x_2^1} &amp;amp; \dots &amp;amp; \textcolor{magenta}{θ_n}\textcolor{teal}{x_n^1} \\
+  \textcolor{magenta}{θ_0}\textcolor{teal}{x_0^2} &amp;amp; \textcolor{magenta}{θ_1}\textcolor{teal}{x_1^2} &amp;amp; \textcolor{magenta}{θ_2}\textcolor{teal}{x_2^2} &amp;amp; \dots &amp;amp; \textcolor{magenta}{n_2}\textcolor{teal}{x_n^2} \\
   \vdots &amp;amp; \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
-  \color{magenta}{θ_0}\color{teal}{x_0^m} &amp;amp; \color{magenta}{θ_1}\color{teal}{x_1^m} &amp;amp; \color{magenta}{θ_2}\color{teal}{x_2^m} &amp;amp; \dots &amp;amp; \color{magenta}{θ_n}\color{teal}{x_n^m}
-\end{bmatrix} \end{align}
+  \textcolor{magenta}{θ_0}\textcolor{teal}{x_0^m} &amp;amp; \textcolor{magenta}{θ_1}\textcolor{teal}{x_1^m} &amp;amp; \textcolor{magenta}{θ_2}\textcolor{teal}{x_2^m} &amp;amp; \dots &amp;amp; \textcolor{magenta}{θ_n}\textcolor{teal}{x_n^m}
+\end{bmatrix} \end{aligned}
 $$&lt;/div&gt;
-&lt;p&gt;Here is the generalized form of linear regression before and after vectorization, followed by the vectorized NumPy version.&lt;/p&gt;
+&lt;p&gt;Here is the generalized form of linear regression before and after vectorization, followed by the vectorized NumPy version.&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;Notice how the non-vectorized version inherently refers to only one sample at a time, with the superscript &lt;span class="math"&gt;\(i\)&lt;/span&gt;. This implies the equation is true for each &lt;span class="math"&gt;\(i\)&lt;/span&gt;, but the vectorized version automatically includes every sample at the same time without us even having to know how many there are. So let’s use the plural &lt;code&gt;hypotheses&lt;/code&gt; to name the result.&lt;/li&gt;
-&lt;li&gt;Look at how simple the math expression and the code become! (Of course, it does rely on a sufficient understanding of matrix multiplication.)&lt;/li&gt;
+&lt;li&gt;Notice how the non-vectorized version inherently refers to only one sample at a time, with the superscript &lt;span class="math"&gt;\(i\)&lt;/span&gt;. This implies the equation is true for each &lt;span class="math"&gt;\(i\)&lt;/span&gt;, but the vectorized version automatically includes every sample at the same time without us even having to know how many there are. So let’s use the plural &lt;code&gt;hypotheses&lt;/code&gt; to name the result.&lt;/li&gt;
+&lt;li&gt;Look at how simple the math expression and the code become! (Of course, it does rely on a sufficient understanding of matrix multiplication.)&lt;/li&gt;
 &lt;/ol&gt;
-&lt;div class="math"&gt;$$ \begin{align}
-h_θ(x^i) &amp;amp;= \color{magenta}{θ_0}\color{teal}{x_0^i} + \color{magenta}{θ_1}\color{teal}{x_1^i} + \cdots + \color{magenta}{θ_n}\color{teal}{x_n^i} \\
+&lt;div class="math"&gt;$$ \begin{aligned}
+h_θ(x^i) &amp;amp;= \textcolor{magenta}{θ_0}\textcolor{teal}{x_0^i} + \textcolor{magenta}{θ_1}\textcolor{teal}{x_1^i} + \cdots + \textcolor{magenta}{θ_n}\textcolor{teal}{x_n^i} \\
 h_θ(\textbf X) &amp;amp;= \textbf X\vec θ
-\end{align} $$&lt;/div&gt;
+\end{aligned} $$&lt;/div&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;hypotheses&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;theta&lt;/span&gt; &lt;span class="c1"&gt;# @ is short for matrix multiplication&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id="vectorizing-the-cost-function-so-fresh-so-clean"&gt;Vectorizing the cost function: So fresh, so clean&lt;/h2&gt;
-&lt;p&gt;This makes it easy to express the error as the difference between the hypothesis and the actual value:&lt;/p&gt;
-&lt;div class="math"&gt;$$ \begin{align}
+&lt;h2 id="vectorizing-the-cost-function-so-fresh-so-clean"&gt;Vectorizing the cost function: So fresh, so clean&lt;/h2&gt;
+&lt;p&gt;This makes it easy to express the error as the difference between the hypothesis and the actual value:&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
 \textrm{error} &amp;amp;= \hat{Y}_i - Y_i \\
 &amp;amp;= h_θ(x^i) - y_i \\
 \vec e &amp;amp;= \textbf X\vec θ - \vec y
-\end{align} $$&lt;/div&gt;
+\end{aligned} $$&lt;/div&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;errors&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;hypotheses&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Recall that the cost function involves the sum of squared errors. In linear algebra, summation can be expressed as the product of a transposed vector of ones and a vector with the values to be summed, which struck me as a very clever manipulation.&lt;/p&gt;
-&lt;div class="math"&gt;$$ \begin{align}
+&lt;p&gt;Recall that the cost function involves the sum of squared errors. In linear algebra, summation can be expressed as the product of a transposed vector of ones and a vector with the values to be summed, which struck me as a very clever manipulation.&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
 \vec o = \begin{bmatrix} 1 \\ 1 \\ \vdots \\ 1 \end{bmatrix}
 &amp;amp; \quad{} \vec e = \begin{bmatrix} e_1 \\ e_2 \\ \vdots \\ e_m \end{bmatrix}
 = \begin{bmatrix} h_θ(x^1) - y_1 \\ h_θ(x^2) - y_2 \\ \vdots \\ h_θ(x^m) - y_m \end{bmatrix}
-\end{align} $$&lt;/div&gt;
+\end{aligned} $$&lt;/div&gt;
 &lt;div class="math"&gt;$$
-\begin{align}
+\begin{aligned}
 \vec o^T\vec e &amp;amp;= \begin{bmatrix} 1 &amp;amp; 1 &amp;amp; \cdots &amp;amp; 1 \end{bmatrix} \begin{bmatrix} e_1 \\ e_2 \\ \vdots \\ e_m \end{bmatrix} \\
-&amp;amp;= \color{lightgray}1 \cdot e_1 + \color{lightgray}1 \cdot e_2 + \cdots + \color{lightgray}1 \cdot e_m = \sum_{i=1}^m e_i
-\end{align} $$&lt;/div&gt;
-&lt;p&gt;The cost function then becomes:&lt;/p&gt;
-&lt;div class="math"&gt;$$ \begin{align}
+&amp;amp;= \textcolor{lightgray}1 \cdot e_1 + \textcolor{lightgray}1 \cdot e_2 + \cdots + \textcolor{lightgray}1 \cdot e_m = \sum_{i=1}^m e_i
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;The cost function then becomes:&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
 J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &amp;amp;= \frac{1}{2m}\sum_{i=1}^m {(e_i)}^2 \\
 &amp;amp;= \frac{1}{2m} \vec o^T \vec e^2
-\end{align} $$&lt;/div&gt;
+\end{aligned} $$&lt;/div&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;num_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;o&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ones&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="n"&gt;cost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;num_samples&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -407,7 +407,7 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;timeit&lt;/span&gt; &lt;span class="n"&gt;rando&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
 &lt;span class="mf"&gt;1.19&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="mf"&gt;7.01&lt;/span&gt; &lt;span class="n"&gt;ms&lt;/span&gt; &lt;span class="n"&gt;per&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="n"&gt;runs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt; &lt;span class="n"&gt;each&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;and &lt;code&gt;o.T @ np.square(z))&lt;/code&gt; (that is, &lt;span class="math"&gt;\(\vec o^T\textbf Z^2\)&lt;/span&gt;)  blows &lt;code&gt;sum(z ** 2)&lt;/code&gt; (that is, &lt;span class="math"&gt;\(\sum_{i=1}^m (z_i)^2\)&lt;/span&gt;) out of the water:&lt;/p&gt;
+&lt;p&gt;and &lt;code&gt;o.T @ np.square(z))&lt;/code&gt; (that is, &lt;span class="math"&gt;\(\vec o^T\textbf Z^2\)&lt;/span&gt;)  blows &lt;code&gt;sum(z ** 2)&lt;/code&gt; (that is, &lt;span class="math"&gt;\(\sum_{i=1}^m (z_i)^2\)&lt;/span&gt;) out of the water:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;17&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;timeit&lt;/span&gt; &lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rando&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="mf"&gt;1.36&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="mf"&gt;16.3&lt;/span&gt; &lt;span class="n"&gt;ms&lt;/span&gt; &lt;span class="n"&gt;per&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="n"&gt;runs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt; &lt;span class="n"&gt;each&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
@@ -417,7 +417,7 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;19&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;timeit&lt;/span&gt; &lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;row&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;row&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;rando&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="c1"&gt;# because rando has more than 1 column&lt;/span&gt;
 &lt;span class="mf"&gt;25.1&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="mi"&gt;603&lt;/span&gt; &lt;span class="n"&gt;ms&lt;/span&gt; &lt;span class="n"&gt;per&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="n"&gt;runs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt; &lt;span class="n"&gt;each&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;At this point, it’s helpful to turn our cost function into a Python function that takes &lt;span class="math"&gt;\(\textbf X, \vec y, \vec θ\)&lt;/span&gt; as its inputs. This will make it easier to evaluate our model later.&lt;/p&gt;
+&lt;p&gt;At this point, it’s helpful to turn our cost function into a Python function that takes &lt;span class="math"&gt;\(\textbf X, \vec y, \vec θ\)&lt;/span&gt; as its inputs. This will make it easier to evaluate our model later.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;cost&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;num_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
     &lt;span class="n"&gt;o&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ones&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;num_samples&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
@@ -425,27 +425,27 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
     &lt;span class="n"&gt;cost_array&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;num_samples&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# 1x1 matrix&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;cost_array&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;# plain number&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id="vectorizing-the-gradient-ninja-mode-on-overdrive"&gt;Vectorizing the gradient: Ninja mode on overdrive&lt;/h2&gt;
-&lt;p&gt;On to the gradient. This is where linear algebra really kicks this thing into high gear.&lt;/p&gt;
-&lt;p&gt;(This is also where I get to show off my LaTeX chops.)&lt;/p&gt;
-&lt;div class="math"&gt;$$ \begin{align}
+&lt;h2 id="vectorizing-the-gradient-ninja-mode-on-overdrive"&gt;Vectorizing the gradient: Ninja mode on overdrive&lt;/h2&gt;
+&lt;p&gt;On to the gradient. This is where linear algebra really kicks this thing into high gear.&lt;/p&gt;
+&lt;p&gt;(This is also where I get to show off my LaTeX chops.)&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
 \nabla J = \frac{\partial J(θ)}{\partial θ_j} &amp;amp;= \Bigg\{\frac{\partial J(θ)}{\partial θ_0}, \frac{\partial J(θ)}{\partial θ_1}, \cdots, \frac{\partial J(θ)}{\partial θ_n}\Bigg\} \\
 &amp;amp;= \frac{1}{m} \sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \cdot x_j^i \qquad{} \textrm{for } 0 \leq j \leq n \\
-&amp;amp;= \frac{1}{m} \sum_{i=1}^m {(e_i)}^2 x_j^i \qquad{}\qquad{}\qquad{}\qquad{} 〞〞\\
-&amp;amp;= \frac{1}{m} \sum_{i=1}^m x_j^i {(e_i)}^2 \qquad{}\qquad{}\qquad{}\qquad{} 〞〞\\
-&amp;amp;= \Bigg\{ \color{teal}{
+&amp;amp;= \frac{1}{m} \sum_{i=1}^m {(e_i)}^2 x_j^i \qquad{}\qquad{}\qquad{}\qquad{}\qquad{}  " \\
+&amp;amp;= \frac{1}{m} \sum_{i=1}^m x_j^i {(e_i)}^2 \qquad{}\qquad{}\qquad{}\qquad{}\qquad{}  " \\
+&amp;amp;= \Bigg\{ \textcolor{teal}{
   \frac{1}{m} \sum_{i=1}^m x_0^i {(e_i)}^2, \frac{1}{m} \sum_{i=1}^m x_1^i {(e_i)}^2, \cdots, \frac{1}{m} \sum_{i=1}^m x_n^i {(e_i)}^2
   }\Bigg\}
-\end{align} $$&lt;/div&gt;
-&lt;p&gt;Transposing &lt;span class="math"&gt;\(\textbf X\)&lt;/span&gt; and squaring &lt;span class="math"&gt;\(\vec e\)&lt;/span&gt; gives us:&lt;/p&gt;
-&lt;div class="math"&gt;$$ \begin{align}
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;Transposing &lt;span class="math"&gt;\(\textbf X\)&lt;/span&gt; and squaring &lt;span class="math"&gt;\(\vec e\)&lt;/span&gt; gives us:&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
 \textbf X^T = \begin{bmatrix}
   x_0^1 &amp;amp; x_0^2 &amp;amp; \dots &amp;amp; x_0^m \\
   x_1^1 &amp;amp; x_1^2 &amp;amp; \dots &amp;amp; x_1^m \\
   \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
   x_n^1 &amp;amp; x_n^2 &amp;amp; \dots  &amp;amp; x_n^m
 \end{bmatrix} &amp;amp; \quad{} \vec e^2 = \begin{bmatrix} {(e_1)}^2 \\ {(e_2)}^2 \\ \vdots \\ {(e_m)}^2 \end{bmatrix}
-\end{align} $$&lt;/div&gt;
+\end{aligned} $$&lt;/div&gt;
 &lt;div class="math"&gt;$$ \textbf X^T \vec e^2 = \begin{bmatrix}
   x_0^1 {(e_1)}^2 + x_0^2 {(e_2)}^2 + x_0^3 {(e_3)}^2 + \cdots + x_0^m {(e_m)}^2 \\
   x_1^1 {(e_1)}^2 + x_1^2 {(e_2)}^2 + x_1^3 {(e_3)}^2 + \cdots + x_1^m {(e_m)}^2 \\
@@ -457,33 +457,33 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
   \vdots \\
   \sum_{i=1}^m x_n^i{(e_1)}^2 \\
 \end{bmatrix} $$&lt;/div&gt;
-&lt;p&gt;Notice how multiplying this result by &lt;span class="math"&gt;\(\frac{1}{m}\)&lt;/span&gt; gives us a vector containing the same values highlighted above in teal.&lt;/p&gt;
+&lt;p&gt;Notice how multiplying this result by &lt;span class="math"&gt;\(\frac{1}{m}\)&lt;/span&gt; gives us a vector containing the same values highlighted above in teal.&lt;/p&gt;
 &lt;div class="math"&gt;$$ \frac{1}{m} \textbf X^T \vec e^2 = \frac{1}{m} \begin{bmatrix}
   \sum_{i=1}^m x_0^i{(e_1)}^2 \\
   \sum_{i=1}^m x_1^i{(e_1)}^2 \\
   \vdots \\
   \sum_{i=1}^m x_n^i{(e_1)}^2 \\
 \end{bmatrix} = \begin{bmatrix}
-  \color{teal}{ \frac{1}{m} \sum_{i=1}^m x_0^i{(e_1)}^2 } \\
-  \color{teal}{ \frac{1}{m} \sum_{i=1}^m x_1^i{(e_1)}^2 } \\
-  \color{teal}{ \vdots } \\
-  \color{teal}{ \frac{1}{m} \sum_{i=1}^m x_n^i{(e_1)}^2 } \\
+  \textcolor{teal}{ \frac{1}{m} \sum_{i=1}^m x_0^i{(e_1)}^2 } \\
+  \textcolor{teal}{ \frac{1}{m} \sum_{i=1}^m x_1^i{(e_1)}^2 } \\
+  \textcolor{teal}{ \vdots } \\
+  \textcolor{teal}{ \frac{1}{m} \sum_{i=1}^m x_n^i{(e_1)}^2 } \\
 \end{bmatrix} = \begin{bmatrix}
   \frac{\partial J(θ)}{\partial θ_0} \\
   \frac{\partial J(θ)}{\partial θ_1} \\
   \vdots \\
   \frac{\partial J(θ)}{\partial θ_n}
 \end{bmatrix} $$&lt;/div&gt;
-&lt;p&gt;Astonishingly, that gigantic mess can be expressed as&lt;/p&gt;
+&lt;p&gt;Astonishingly, that gigantic mess can be expressed as&lt;/p&gt;
 &lt;div class="math"&gt;$$ \nabla J = \frac{1}{m} \textbf X^T \vec e^2 $$&lt;/div&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;num_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
 &lt;span class="n"&gt;gradient&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;num_samples&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;&lt;em&gt;Finally&lt;/em&gt;, we can work out the last function, the gradient descent function:&lt;/p&gt;
-&lt;div class="math"&gt;$$ \vec θ := \vec θ - α\frac{1}{m} \textbf X^T \vec e^2 \\
-\textrm{repeat until convergence} $$&lt;/div&gt;
-&lt;p&gt;Hey, where’d that &lt;span class="math"&gt;\(α\)&lt;/span&gt; come from? That’s the &lt;strong&gt;learning rate&lt;/strong&gt;, a small number that adjusts the size of each training step. Too large and you jump right over the minimum; too small and you never reach the minimum.&lt;/p&gt;
-&lt;p&gt;For now, let’s choose an arbitrary value for &lt;span class="math"&gt;\(α\)&lt;/span&gt; and disregard the whole bit about convergence. If we wanted to perform stochastic gradient descent with 100 steps, this is how we’d do it:&lt;/p&gt;
+&lt;p&gt;&lt;em&gt;Finally&lt;/em&gt;, we can work out the last function, the gradient descent function:&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{gathered} \vec θ := \vec θ - α\frac{1}{m} \textbf X^T \vec e^2 \\
+\textrm{repeat until convergence} \end{gathered} $$&lt;/div&gt;
+&lt;p&gt;Hey, where’d that &lt;span class="math"&gt;\(α\)&lt;/span&gt; come from? That’s the &lt;strong&gt;learning rate&lt;/strong&gt;, a small number that adjusts the size of each training step. Too large and you jump right over the minimum; too small and you never reach the minimum.&lt;/p&gt;
+&lt;p&gt;For now, let’s choose an arbitrary value for &lt;span class="math"&gt;\(α\)&lt;/span&gt; and disregard the whole bit about convergence. If we wanted to perform stochastic gradient descent with 100 steps, this is how we’d do it:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;learning_rate&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mf"&gt;0.01&lt;/span&gt;
     &lt;span class="n"&gt;errors&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
@@ -491,7 +491,7 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
     &lt;span class="n"&gt;step_distance&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;num_samples&lt;/span&gt;
     &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;-=&lt;/span&gt; &lt;span class="n"&gt;learning_rate&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;step_distance&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Let’s refactor this as a function &lt;code&gt;gradient_descent&lt;/code&gt; that takes &lt;span class="math"&gt;\(\textbf X, \vec y\)&lt;/span&gt;, and the number of steps (training epochs) as its inputs, and outputs the weights &lt;span class="math"&gt;\(\vec θ\)&lt;/span&gt;. Along the way, let’s have it tell us the cost. If all goes well, we should see that number approach zero as training progresses.&lt;/p&gt;
+&lt;p&gt;Let’s refactor this as a function &lt;code&gt;gradient_descent&lt;/code&gt; that takes &lt;span class="math"&gt;\(\textbf X, \vec y\)&lt;/span&gt;, and the number of steps (training epochs) as its inputs, and outputs the weights &lt;span class="math"&gt;\(\vec θ\)&lt;/span&gt;. Along the way, let’s have it tell us the cost. If all goes well, we should see that number approach zero as training progresses.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;gradient_descent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;epochs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;learning_rate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.01&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
     &lt;span class="n"&gt;num_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
@@ -504,7 +504,7 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 
 &lt;span class="n"&gt;weights_300_epochs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;gradient_descent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Now, we can predict the output for a random set of feature values.&lt;/p&gt;
+&lt;p&gt;Now, we can predict the output for a random set of feature values.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;predict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;
 
@@ -512,14 +512,14 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &lt;span class="n"&gt;mystery_input&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hstack&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ones&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt; &lt;span class="n"&gt;mystery_input&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="c1"&gt;# dummy feature&lt;/span&gt;
 &lt;span class="n"&gt;predict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mystery_input&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights_300_epochs&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;I like to geek out on math notation and wrote this function to generate LaTeX for the equation of the model:&lt;/p&gt;
+&lt;p&gt;I like to geek out on math notation and wrote this function to generate LaTeX for the equation of the model:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;expand_model_latex&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;terms&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"{round(w[0], 2)}x_{i}"&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;enumerate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
     &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"$$ h_θ(x) &lt;/span&gt;&lt;span class="se"&gt;\a&lt;/span&gt;&lt;span class="s2"&gt;pprox {' + '.join(terms)} $$"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;div class="math"&gt;$$ h_θ(x) \approx -2.36x_0 + 63.26x_1 + 61.15x_2 + 88.99x_3 + 0.82x_4 + 58.95x_5 $$&lt;/div&gt;
-&lt;p&gt;We’re not done with linear regression, but let’s recap so that this post can end.&lt;/p&gt;
-&lt;h2 id="summary-so-far"&gt;Summary so far&lt;/h2&gt;
+&lt;p&gt;We’re not done with linear regression, but let’s recap so that this post can end.&lt;/p&gt;
+&lt;h2 id="summary-so-far"&gt;Summary so far&lt;/h2&gt;
 &lt;table&gt;
 &lt;thead&gt;
 &lt;tr&gt;
@@ -544,7 +544,7 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &lt;div class="math"&gt;$$J(θ) = \frac{1}{2m}\sum_{i=1}^m{\Big[h_θ(x^i) - y_i\Big]}^2$$&lt;/div&gt;
 &lt;/td&gt;
 &lt;td align="center"&gt;
-&lt;div class="math"&gt;$$\vec e = h_θ(\textbf X) - \vec y \\ J(θ) = \frac{1}{2m}\vec o^T\vec e^2$$&lt;/div&gt;
+&lt;div class="math"&gt;$$ \begin{gathered} \vec e = h_θ{\textbf X} - \vec y \\ J(θ) = \frac{1}{2m}\vec o^T\vec e^2 \end{gathered} $$&lt;/div&gt;
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
@@ -559,15 +559,15 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &lt;tr&gt;
 &lt;td&gt;Gradient descent function&lt;/td&gt;
 &lt;td align="center"&gt;
-&lt;div class="math"&gt;$$ θ_j := θ_j - α\frac{1}{m}\sum_{i=1}^m\Big[h_θ(x^i) - y_i\Big]x_j^i $$&lt;/div&gt;
+&lt;div class="math"&gt;$$ θ_j := θ_j - α\frac{\partial J(θ)}{\partial θ_j} $$&lt;/div&gt;
 &lt;/td&gt;
 &lt;td align="center"&gt;
-&lt;div class="math"&gt;$$ \vec θ := \vec θ - α\frac{1}{m} \textbf X^T \vec e^2 $$&lt;/div&gt;
+&lt;div class="math"&gt;$$ \vec θ := \vec θ - α\nabla J $$&lt;/div&gt;
 &lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
-&lt;p&gt;Such complex math can be applied to a linear regression model trained in some 20 lines of Python!&lt;/p&gt;
+&lt;p&gt;Such complex math can be applied to a linear regression model trained in some 20 lines of Python!&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
 &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sklearn.datasets&lt;/span&gt;
 
@@ -599,86 +599,25 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;predict&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id="comparison-of-performance"&gt;Comparison of performance&lt;/h2&gt;
-&lt;p&gt;This is a contrived comparison, but it helps to illustrate very clearly the point of jumping through all of these mathematical hoops.&lt;/p&gt;
-&lt;p&gt;On the 500-sample, 5-feature dataset we’ve been using, the vectorized gradient descent function runs over &lt;strong&gt;7,000 times faster&lt;/strong&gt; than the terrible, monstrous, don’t-say-I-didn’t-warn-you procedural version from the beginning of this post.&lt;/p&gt;
+&lt;h2 id="comparison-of-performance"&gt;Comparison of performance&lt;/h2&gt;
+&lt;p&gt;This is a contrived comparison, but it helps to illustrate very clearly the point of jumping through all of these mathematical hoops.&lt;/p&gt;
+&lt;p&gt;On the 500-sample, 5-feature dataset we’ve been using, the vectorized gradient descent function runs over &lt;strong&gt;7,000 times faster&lt;/strong&gt; than the terrible, monstrous, don’t-say-I-didn’t-warn-you procedural version from the beginning of this post.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;14&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;timeit&lt;/span&gt; &lt;span class="n"&gt;procedural_gradient_descent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.00001&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="mf"&gt;14.2&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="mi"&gt;609&lt;/span&gt; &lt;span class="n"&gt;ms&lt;/span&gt; &lt;span class="n"&gt;per&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="n"&gt;runs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt; &lt;span class="n"&gt;each&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;19&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;timeit&lt;/span&gt; &lt;span class="n"&gt;vectorized_gradient_descent&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;200&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.00001&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="mf"&gt;2.28&lt;/span&gt; &lt;span class="n"&gt;ms&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="mf"&gt;64.9&lt;/span&gt; &lt;span class="err"&gt;µ&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="n"&gt;per&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="n"&gt;runs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt; &lt;span class="n"&gt;loops&lt;/span&gt; &lt;span class="n"&gt;each&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;h2 id="remaining-questions-for-future-posts-links-will-be-included-upon-publication"&gt;Remaining questions for future posts (links will be included upon publication)&lt;/h2&gt;
+&lt;h2 id="remaining-questions-for-future-posts-links-will-be-included-upon-publication"&gt;Remaining questions for future posts (links will be included upon publication)&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;Are there any other simple techniques to speed this us? (Mean normalization)&lt;/li&gt;
-&lt;li&gt;How do we know when we’ve reached convergence? (Epsilon)&lt;/li&gt;
-&lt;li&gt;How can &lt;em&gt;linear&lt;/em&gt; (as opposed to &lt;em&gt;logistic&lt;/em&gt;) regression be applied to language tasks? (General backpropagation of neural networks)&lt;/li&gt;
+&lt;li&gt;Are there any other simple techniques to speed this us? (Mean normalization)&lt;/li&gt;
+&lt;li&gt;How do we know when we’ve reached convergence? (Epsilon)&lt;/li&gt;
+&lt;li&gt;How can &lt;em&gt;linear&lt;/em&gt; (as opposed to &lt;em&gt;logistic&lt;/em&gt;) regression be applied to language tasks? (General backpropagation of neural networks)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h2 id="references"&gt;References&lt;/h2&gt;
 &lt;ul&gt;
-&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=fNk_zzaMoSs&amp;amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab"&gt;The Essence of Linear Algebra&lt;/a&gt; (video series), Grant Sanderson&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://towardsdatascience.com/linear-regression-using-python-b136c91bf0a2"&gt;Linear Regression using Python&lt;/a&gt;, Animesh Agarwal&lt;/li&gt;
-&lt;li&gt;&lt;a href="https://www.ritchieng.com/multi-variable-linear-regression/"&gt;Linear Regression with Multiple Variables&lt;/a&gt;, Ritchie Ng&lt;/li&gt;
-&lt;li&gt;&lt;a href="http://anwarruff.com/the-linear-regression-cost-function-in-matrix-form/"&gt;The Linear Regression Cost Function in Matrix Form&lt;/a&gt;, Anwar Ruff&lt;/li&gt;
-&lt;/ul&gt;
-&lt;script type="text/javascript"&gt;if (!document.getElementById('mathjaxscript_pelican_#%@#$@#')) {
-    var align = "center",
-        indent = "0em",
-        linebreak = "false";
-
-    if (false) {
-        align = (screen.width &lt; 768) ? "left" : align;
-        indent = (screen.width &lt; 768) ? "0em" : indent;
-        linebreak = (screen.width &lt; 768) ? 'true' : linebreak;
-    }
-
-    var mathjaxscript = document.createElement('script');
-    mathjaxscript.id = 'mathjaxscript_pelican_#%@#$@#';
-    mathjaxscript.type = 'text/javascript';
-    mathjaxscript.src = 'https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.3/latest.js?config=TeX-AMS-MML_HTMLorMML';
-
-    var configscript = document.createElement('script');
-    configscript.type = 'text/x-mathjax-config';
-    configscript[(window.opera ? "innerHTML" : "text")] =
-        "MathJax.Hub.Config({" +
-        "    config: ['MMLorHTML.js']," +
-        "    TeX: { extensions: ['AMSmath.js','AMSsymbols.js','noErrors.js','noUndefined.js'], equationNumbers: { autoNumber: 'none' } }," +
-        "    jax: ['input/TeX','input/MathML','output/HTML-CSS']," +
-        "    extensions: ['tex2jax.js','mml2jax.js','MathMenu.js','MathZoom.js']," +
-        "    displayAlign: '"+ align +"'," +
-        "    displayIndent: '"+ indent +"'," +
-        "    showMathMenu: true," +
-        "    messageStyle: 'normal'," +
-        "    tex2jax: { " +
-        "        inlineMath: [ ['\\\\(','\\\\)'] ], " +
-        "        displayMath: [ ['$$','$$'] ]," +
-        "        processEscapes: true," +
-        "        preview: 'TeX'," +
-        "    }, " +
-        "    'HTML-CSS': { " +
-        "        fonts: ['Latin-Modern','TeX']," +
-        "        styles: { '.MathJax_Display, .MathJax .mo, .MathJax .mi, .MathJax .mn': {color: 'inherit ! important'} }," +
-        "        linebreaks: { automatic: "+ linebreak +", width: '90% container' }," +
-        "    }, " +
-        "}); " +
-        "if ('default' !== 'default') {" +
-            "MathJax.Hub.Register.StartupHook('HTML-CSS Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax['HTML-CSS'].FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-            "MathJax.Hub.Register.StartupHook('SVG Jax Ready',function () {" +
-                "var VARIANT = MathJax.OutputJax.SVG.FONTDATA.VARIANT;" +
-                "VARIANT['normal'].fonts.unshift('MathJax_default');" +
-                "VARIANT['bold'].fonts.unshift('MathJax_default-bold');" +
-                "VARIANT['italic'].fonts.unshift('MathJax_default-italic');" +
-                "VARIANT['-tex-mathit'].fonts.unshift('MathJax_default-italic');" +
-            "});" +
-        "}";
-
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(configscript);
-    (document.body || document.getElementsByTagName('head')[0]).appendChild(mathjaxscript);
-}
-&lt;/script&gt;</content></entry></feed>
+&lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=fNk_zzaMoSs&amp;amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab"&gt;The Essence of Linear Algebra&lt;/a&gt; (video series), Grant Sanderson&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://towardsdatascience.com/linear-regression-using-python-b136c91bf0a2"&gt;Linear Regression using Python&lt;/a&gt;, Animesh Agarwal&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.ritchieng.com/multi-variable-linear-regression/"&gt;Linear Regression with Multiple Variables&lt;/a&gt;, Ritchie Ng&lt;/li&gt;
+&lt;li&gt;&lt;a href="http://anwarruff.com/the-linear-regression-cost-function-in-matrix-form/"&gt;The Linear Regression Cost Function in Matrix Form&lt;/a&gt;, Anwar Ruff&lt;/li&gt;
+&lt;/ul&gt;</content></entry></feed>

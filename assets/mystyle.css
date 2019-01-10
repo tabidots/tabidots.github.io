@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css?family=Inconsolata:400,700');
+
+body {
+  font-size: 1em;
+}
+
+code, tt, pre {
+  font-family: 'Inconsolata', monospace, sans-serif;
+}
+
+kbd,
+pre,
+samp {
+    line-height: 1.66em
+}
+
+.table-bordered td {
+  background: #efefef;
+  padding: 10px;
+}
+
+code {
+  display: inline-block;
+  background-color: #343642;
+  border-radius: 3px;
+  padding: 3px 5px;
+  color: white;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  font-size: .9em;
+  line-height: normal;
+  border: 1px #999 solid;
+}
