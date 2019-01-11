@@ -6,8 +6,8 @@
     <meta name="description" content="In which I (1) discover that the purpose of linear algebra is not to just manipulate spreadsheets and move vectors around but to make your code faster and cleaner—in other words, to give it a Zen uppercut; and (2) learn LaTeX and start a blog just to see syntax-highlighted code and properly typeset math on the same page." />
 
     <meta name="twitter:card" content="summary" />
-    <meta name="twitter:site" content="@svenkreiss" />
-    <meta name="twitter:creator" content="@svenkreiss" />
+    <meta name="twitter:site" content="@tabidots" />
+    <meta name="twitter:creator" content="@tabidots" />
     <meta name="twitter:title" content="The Loopless Loop (or How I made my code run 7,000 times faster)" />
     <meta name="twitter:description" content="In which I (1) discover that the purpose of linear algebra is not to just manipulate spreadsheets and move vectors around but to make your code faster and cleaner—in other words, to give it a Zen uppercut; and (2) learn LaTeX and start a blog just to see syntax-highlighted code and properly typeset math on the same page." />
     <meta name="twitter:image:src" content="../../images/phja_den_view.JPG" />
@@ -17,7 +17,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:description" content="In which I (1) discover that the purpose of linear algebra is not to just manipulate spreadsheets and move vectors around but to make your code faster and cleaner—in other words, to give it a Zen uppercut; and (2) learn LaTeX and start a blog just to see syntax-highlighted code and properly typeset math on the same page." />
     <meta property="og:image" content="../../images/phja_den_view.JPG" />
-    <meta property="og:site_name" content="svenkreiss.com" />
+    <meta property="og:site_name" content="judosaltgenius.com" />
     <meta property="og:url" content="../../2019/01/loopless-loop.html" />
 
         <link rel="alternate"  href="http://tabidots.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Judo Salt Genius Full Atom Feed"/>
@@ -123,7 +123,7 @@
 
 <span class="n">samples</span> <span class="o">=</span> <span class="p">[</span> <span class="p">[</span> <span class="p">(</span> <span class="nb">list</span> <span class="n">of</span> <span class="n">lists</span><span class="p">)</span> <span class="p">]</span> <span class="p">]</span>
 <span class="n">actual</span> <span class="o">=</span> <span class="p">[</span> <span class="o">...</span> <span class="p">]</span>
-<span class="k">def</span> <span class="nf">gradient_descent</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">actual</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">train_lr_model</span><span class="p">(</span><span class="n">samples</span><span class="p">,</span> <span class="n">actual</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">learning_rate</span><span class="p">):</span>
     <span class="n">weights</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span> <span class="k">for</span> <span class="n">feature</span> <span class="ow">in</span> <span class="n">samples</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="c1"># 0 to start</span>
     <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
         <span class="k">for</span> <span class="n">j</span><span class="p">,</span> <span class="n">weight</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
@@ -594,8 +594,8 @@ J(θ) &amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
     <span class="n">step_distance</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="err">@</span> <span class="n">errors</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_samples</span>
     <span class="n">weights</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">step_distance</span>
 </pre></div>
-<p>Let’s refactor this as a function <code>gradient_descent</code> that takes <span class="math">\(\textbf X, \vec y\)</span>, and the number of steps (training epochs) as its inputs, and outputs the weights <span class="math">\(\vec θ\)</span>. Along the way, let’s have it tell us the cost. If all goes well, we should see that number approach zero as training progresses.</p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+<p>Let’s refactor this as a function <code>train_lr_model</code> that takes <span class="math">\(\textbf X, \vec y\)</span>, and the number of steps (training epochs) as its inputs, and outputs the weights <span class="math">\(\vec θ\)</span>. Along the way, let’s have it tell us the cost. If all goes well, we should see that number approach zero as training progresses.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train_lr_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
     <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">num_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
@@ -605,7 +605,7 @@ J(θ) &amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
         <span class="k">print</span><span class="p">(</span><span class="n">cost</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">weights</span><span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span> <span class="c1"># dot products are single values, but NumPy returns them as 1x1 matrices</span>
     <span class="k">return</span> <span class="n">weights</span>
 
-<span class="n">weights_300_epochs</span> <span class="o">=</span> <span class="n">gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
+<span class="n">weights_300_epochs</span> <span class="o">=</span> <span class="n">train_lr_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">300</span><span class="p">)</span>
 </pre></div>
 <p>Now, we can predict the output for a random set of feature values.</p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
@@ -688,7 +688,7 @@ J(θ) &amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
     <span class="n">cost_array</span> <span class="o">=</span> <span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">T</span> <span class="err">@</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">errors</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">num_samples</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">cost_array</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
 
-<span class="k">def</span> <span class="nf">gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">train_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">epochs</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
     <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">num_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
@@ -705,15 +705,16 @@ J(θ) &amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 <h2 id="comparison-of-performance">Comparison of performance</h2>
 <p>This is a contrived comparison, but it helps to illustrate very clearly the point of jumping through all of these mathematical hoops.</p>
 <p>On the 500-sample, 5-feature dataset we’ve been using, the vectorized gradient descent function runs over <strong>7,000 times faster</strong> than the terrible, monstrous, don’t-say-I-didn’t-warn-you procedural version from the beginning of this post.</p>
-<div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">procedural_gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mf">0.00001</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">14</span><span class="p">]:</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">train_lr_model_procedurally</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mf">0.00001</span><span class="p">)</span>
 <span class="mf">14.2</span> <span class="n">s</span> <span class="err">±</span> <span class="mi">609</span> <span class="n">ms</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">1</span> <span class="n">loop</span> <span class="n">each</span><span class="p">)</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">vectorized_gradient_descent</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mf">0.00001</span><span class="p">)</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="o">%</span><span class="n">timeit</span> <span class="n">train_lr_model_vectorizedly</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mf">0.00001</span><span class="p">)</span>
 <span class="mf">2.28</span> <span class="n">ms</span> <span class="err">±</span> <span class="mf">64.9</span> <span class="err">µ</span><span class="n">s</span> <span class="n">per</span> <span class="n">loop</span> <span class="p">(</span><span class="n">mean</span> <span class="err">±</span> <span class="n">std</span><span class="o">.</span> <span class="n">dev</span><span class="o">.</span> <span class="n">of</span> <span class="mi">7</span> <span class="n">runs</span><span class="p">,</span> <span class="mi">100</span> <span class="n">loops</span> <span class="n">each</span><span class="p">)</span>
 </pre></div>
 <h1 id="remaining-questions-for-future-posts-links-will-be-included-upon-publication">Remaining questions for future posts (links will be included upon publication)</h1>
 <ul>
-<li>Are there any other simple techniques to speed this us? (Mean normalization)</li>
+<li>Are there any other simple techniques to speed this up? (Mean normalization)</li>
+<li>Are there any complex techniques to speed this up? (Automatic differentiation)</li>
 <li>How do we know when we’ve reached convergence? (Epsilon)</li>
 <li>How can <em>linear</em> (as opposed to <em>logistic</em>) regression be applied to language tasks? (General backpropagation of neural networks)</li>
 </ul>
@@ -727,10 +728,13 @@ J(θ) &amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 
             <p class="post-footer">
                 // filed
-                in <a class="post-category" href="../../category/misc">misc</a>&nbsp;&nbsp;&nbsp;
+under                    <a class="post-category" href="../../tag/multivariable-calculus">multivariable calculus</a>
+                    <a class="post-category" href="../../tag/stochastic-gradient-descent">stochastic gradient descent</a>
+                    <a class="post-category" href="../../tag/linear-algebra">linear algebra</a>
+                in <a class="post-category" href="../../category/math">Math</a>&nbsp;&nbsp;&nbsp;
 
                 <span style="display:inline-block;">
-                // share on <a href="https://twitter.com/share?text=%22The%20Loopless%20Loop%20%28or%20How%20I%20made%20my%20code%20run%207%2C000%20times%C2%A0faster%29%3A%20In%20which%20I%20%281%29%20discover%20that%20the%20purpose%20of%20linear%20algebra%20is%20not%20to%20just%20manipulate%20spreadsheets%20and%20move%20vectors%20around%20but%20to...%22&amp;hashtags=" target="_blank">
+                // share on <a href="https://twitter.com/share?text=%22The%20Loopless%20Loop%20%28or%20How%20I%20made%20my%20code%20run%207%2C000%20times%C2%A0faster%29%3A%20In%20which%20I%20%281%29%20discover%20that%20the%20purpose%20of%20linear%20algebra%20is%20not%20to%20just%20manipulate%20spreadsheets%20and%20move%20vectors%20around%20but%20to...%22&amp;hashtags=multivariablecalculus%2Cstochasticgradientdescent%2Clinearalgebra" target="_blank">
                     <i class="fa fa-twitter fa-lg"></i> Twitter
                 </a>
                 </span>
