@@ -621,4 +621,4 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &lt;li&gt;&lt;a href="https://towardsdatascience.com/linear-regression-using-python-b136c91bf0a2"&gt;Linear Regression using Python&lt;/a&gt;, Animesh Agarwal&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.ritchieng.com/multi-variable-linear-regression/"&gt;Linear Regression with Multiple Variables&lt;/a&gt;, Ritchie Ng&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://anwarruff.com/the-linear-regression-cost-function-in-matrix-form/"&gt;The Linear Regression Cost Function in Matrix Form&lt;/a&gt;, Anwar Ruff&lt;/li&gt;
-&lt;/ul&gt;</content><category term="multivariable calculus"></category><category term="stochastic gradient descent"></category><category term="linear algebra"></category></entry></feed>
+&lt;/ul&gt;</content><category term="koan"></category><category term="multivariable calculus"></category><category term="stochastic gradient descent"></category><category term="linear algebra"></category></entry></feed>

@@ -5,21 +5,28 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/</loc>
-<lastmod>2019-01-11T22:56:51-00:00</lastmod>
+<lastmod>2019-01-12T23:03:11-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/archives.html</loc>
-<lastmod>2019-01-11T22:56:51-00:00</lastmod>
+<lastmod>2019-01-12T23:03:11-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/tags.html</loc>
-<lastmod>2019-01-11T22:56:51-00:00</lastmod>
+<lastmod>2019-01-12T23:03:11-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/2019/01/monty-hall-beginner.html</loc>
+<lastmod>2019-01-12T10:54:19+07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -33,6 +40,34 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/category/math</loc>
+<lastmod>2019-01-10T19:00:46+07:07</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/category/probability</loc>
+<lastmod>2019-01-12T10:54:19+07:07</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/tag/monte-carlo</loc>
+<lastmod>2019-01-12T10:54:19+07:07</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/tag/bayesian-inference</loc>
+<lastmod>2019-01-12T10:54:19+07:07</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/tag/koan</loc>
 <lastmod>2019-01-10T19:00:46+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
@@ -61,7 +96,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/author/justin-douglas</loc>
-<lastmod>2019-01-10T19:00:46+07:07</lastmod>
+<lastmod>2019-01-12T10:54:19+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
