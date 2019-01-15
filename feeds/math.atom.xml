@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Judo Salt Genius - Math</title><link href="http://tabidots.github.io/" rel="alternate"></link><link href="http://tabidots.github.io/feeds/math.atom.xml" rel="self"></link><id>http://tabidots.github.io/</id><updated>2019-01-10T19:00:46+07:00</updated><entry><title>The Loopless Loop (or How I made my code run 7,000 times faster)</title><link href="http://tabidots.github.io/2019/01/loopless-loop.html" rel="alternate"></link><published>2019-01-10T19:00:46+07:00</published><updated>2019-01-10T19:00:46+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-10:/2019/01/loopless-loop.html</id><summary type="html">&lt;p&gt;In which I (1) discover that the purpose of linear algebra is not to just manipulate spreadsheets and move vectors around but to make your code faster and cleaner—in other words, to give it a Zen uppercut; and (2) learn LaTeX and start a blog just to see syntax-highlighted code and properly typeset math on the same&amp;nbsp;page.&lt;/p&gt;</summary><content type="html">
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Judo Salt Genius - Math</title><link href="http://tabidots.github.io/" rel="alternate"></link><link href="http://tabidots.github.io/feeds/math.atom.xml" rel="self"></link><id>http://tabidots.github.io/</id><updated>2019-01-10T19:00:46+07:00</updated><entry><title>The Loopless Loop (or How I made my code run 7,000 times faster)</title><link href="http://tabidots.github.io/2019/01/loopless-loop" rel="alternate"></link><published>2019-01-10T19:00:46+07:00</published><updated>2019-01-10T19:00:46+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-10:/2019/01/loopless-loop</id><summary type="html">&lt;p&gt;In which I (1) discover that the purpose of linear algebra is not to just manipulate spreadsheets and move vectors around but to make your code faster and cleaner—in other words, to give it a Zen uppercut; and (2) learn LaTeX and start a blog just to see syntax-highlighted code and properly typeset math on the same&amp;nbsp;page.&lt;/p&gt;</summary><content type="html">
 &lt;h1 id="part-1-ugly-math-ugly-code"&gt;Part 1: Ugly math, ugly code&lt;/h1&gt;
 &lt;p&gt;As I embarked on my journey to learn the math side of machine learning, all of the blog posts seemed to point to linear algebra as the starting point. The problem was, nothing I read made it immediately clear &lt;em&gt;how&lt;/em&gt; linear algebra played a role in machine learning.&lt;/p&gt;
 &lt;p&gt;Worse yet, the whole discussion of vectors, matrices, linear combinations, and linear transformations seemed completely disconnected from my layman’s understanding of machine learning.&lt;/p&gt;
@@ -35,13 +35,13 @@
 &lt;span class="c1"&gt;# I REALLY HOPE YOU DIDN'T TRY THIS&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;Okay, maybe not. (It would be pretty hard to write this without understanding the math involved.)&lt;/p&gt;
-&lt;p&gt;Count those loops—&lt;em&gt;three&lt;/em&gt;, to be exact! Terrifying. Now, being handy with Python, I could probably have calculated &lt;code&gt;partial_deriv&lt;/code&gt; in one line with an even more terrifying list comprehension, just to show off:&lt;/p&gt;
+&lt;p&gt;Count those loops—&lt;em&gt;three&lt;/em&gt;, to be exact! Terrifying. Now, being handy with Python, I could probably have calculated &lt;code class="highlight"&gt;partial_deriv&lt;/code&gt; in one line with an even more terrifying list comprehension, just to show off:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;partial_deriv&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;len&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;samples&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;sample&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;j&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;hypothesis&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;sample&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;actual&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;sample&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;enumerate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;samples&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;…which shaves off four lines, at the expense of all readability. But bigger problems remain:&lt;/p&gt;
 &lt;ul&gt;
 &lt;li&gt;&lt;strong&gt;The time complexity of this program is off the charts.&lt;/strong&gt; In &lt;a href="https://en.wikipedia.org/wiki/Time_complexity"&gt;Big-O time complexity&lt;/a&gt; terms, it is &lt;em&gt;at least&lt;/em&gt; &lt;span class="math"&gt;\(O(n^3)\)&lt;/span&gt;, if not more, which is cubic time, or (literally) &lt;em&gt;exponentially &lt;a href="http://bigocheatsheet.com/"&gt;horrible&lt;/a&gt;&lt;/em&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;It doesn’t even work.&lt;/strong&gt; Even with a dataset of unremarkable size, you’re bound to get a &lt;code&gt;RuntimeWarning: overflow encountered in square error&lt;/code&gt; that can’t be avoided even if you set the &lt;code&gt;learning_rate&lt;/code&gt; to an impractically small value like &lt;code&gt;0.00001&lt;/code&gt;. Trust me, I’ve tried.&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;It doesn’t even work.&lt;/strong&gt; Even with a dataset of unremarkable size, you’re bound to get a &lt;code class="highlight"&gt;&lt;span class="n"&gt;RuntimeWarning&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;overflow&lt;/span&gt; &lt;span class="n"&gt;encountered&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="n"&gt;square&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt;&lt;/code&gt; that can’t be avoided even if you set the &lt;code class="highlight"&gt;learning_rate&lt;/code&gt; to an impractically small value like &lt;code class="highlight"&gt;0.00001&lt;/code&gt;. Trust me, I’ve tried.&lt;/li&gt;
 &lt;/ul&gt;
 &lt;p&gt;Is there any way beyond this impasse?&lt;/p&gt;
 &lt;h2 id="meeting-a-zen-master-on-the-road"&gt;Meeting a Zen master on the road&lt;/h2&gt;
@@ -77,7 +77,7 @@ And you will be called one who understands Zen.&lt;/em&gt;&lt;br/&gt;
 &lt;div class="math"&gt;$$ y = \textcolor{magenta}{m}\textcolor{teal}{x} + \textcolor{magenta}{n}\textcolor{teal}{z} + \textcolor{magenta}{o}\textcolor{teal}{a} + \textcolor{magenta}{b}\cdot\textcolor{teal}{1} $$&lt;/div&gt;
 &lt;p&gt;This gives us a nice symmetry: Notice that all of the teal variables are features, which are multiplied by their degree of influence (called a &lt;em&gt;coefficient&lt;/em&gt; in statistics, or a &lt;em&gt;weight&lt;/em&gt; in machine learning). When you add all these together, you get the price of the house.&lt;/p&gt;
 &lt;p&gt;This is called &lt;strong&gt;multiple linear regression&lt;/strong&gt;. Most people wouldn’t skip directly to multiple &lt;span class="caps"&gt;LR&lt;/span&gt; after introducing single &lt;span class="caps"&gt;LR&lt;/span&gt;, but single &lt;span class="caps"&gt;LR&lt;/span&gt; is pretty easy to digest if you can understand high school calculus (derivatives), so it didn’t level up my math knowledge.&lt;/p&gt;
-&lt;p&gt;Now, let’s code our equation, putting all the feature values into a &lt;em&gt;list&lt;/em&gt; &lt;code&gt;features&lt;/code&gt; and the weights into another &lt;em&gt;list&lt;/em&gt; &lt;code&gt;weights&lt;/code&gt;. In Python, in increasing order of elegance, we can write the following:&lt;/p&gt;
+&lt;p&gt;Now, let’s code our equation, putting all the feature values into a &lt;em&gt;list&lt;/em&gt; &lt;code class="highlight"&gt;features&lt;/code&gt; and the weights into another &lt;em&gt;list&lt;/em&gt; &lt;code class="highlight"&gt;weights&lt;/code&gt;. In Python, in increasing order of elegance, we can write the following:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# Using completely random numbers just to show the code&lt;/span&gt;
 &lt;span class="n"&gt;features&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;# 3 features; first value is the “dummy feature”&lt;/span&gt;
 &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mf"&gt;0.6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.75&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
@@ -109,31 +109,31 @@ And you will be called one who understands Zen.&lt;/em&gt;&lt;br/&gt;
 &lt;span class="c1"&gt;# More Pythonic version of the above&lt;/span&gt;
 &lt;span class="n"&gt;price&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;features&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;I didn’t realize this when I wrote the first draft of this post, but even expressing the simple Python function &lt;code&gt;zip(x, y)&lt;/code&gt; in math requires linear algebra. I’ll get back to the non-fancy version of linear regression in just a minute, but for sake of thoroughness, if &lt;span class="math"&gt;\(x\)&lt;/span&gt; and &lt;span class="math"&gt;\(θ\)&lt;/span&gt; are both vectors, then&lt;/p&gt;
+&lt;p&gt;I didn’t realize this when I wrote the first draft of this post, but even expressing the simple Python function &lt;code class="highlight"&gt;zip(x, y)&lt;/code&gt; in math requires linear algebra. I’ll get back to the non-fancy version of linear regression in just a minute, but for sake of thoroughness, if &lt;span class="math"&gt;\(x\)&lt;/span&gt; and &lt;span class="math"&gt;\(θ\)&lt;/span&gt; are both vectors, then&lt;/p&gt;
 &lt;div class="math"&gt;$$ \begin{aligned}
 \vec x = \begin{bmatrix} x_0 \\ x_1 \\ \vdots \\ x_n \end{bmatrix} &amp;amp; \qquad{}
 \vec θ = \begin{bmatrix} θ_0 \\ θ_1 \\ \vdots \\ θ_n \end{bmatrix} &amp;amp; \quad{}
 z(\vec x, \vec θ) = \vec θ\vec x \end{aligned} $$&lt;/div&gt;
-&lt;p&gt;Similarly, we can rewrite our equation as a function in Python, too. Let’s leave vectors aside for now, but keep the &lt;code&gt;zip&lt;/code&gt; and encapsulate it into a function, because it’s clean and easy to understand.&lt;/p&gt;
+&lt;p&gt;Similarly, we can rewrite our equation as a function in Python, too. Let’s leave vectors aside for now, but keep the &lt;code class="highlight"&gt;zip&lt;/code&gt; and encapsulate it into a function, because it’s clean and easy to understand.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;hypothesis&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;features&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;w&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;zip&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;features&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;h2 id="einstein-notation-making-math-less-confusing-by-making-it-more-confusing"&gt;Einstein notation: Making math less confusing by making it more confusing&lt;/h2&gt;
-&lt;p&gt;This is all great if there’s only one &lt;span class="math"&gt;\(x\)&lt;/span&gt; (house). But we will need tons of houses to make a decent prediction. Our list &lt;code&gt;houses&lt;/code&gt; needs to be changed into a &lt;em&gt;list of lists&lt;/em&gt;. For the sake of example, if we had three houses and three features, &lt;code&gt;houses&lt;/code&gt; would look like this (remember the dummy feature):&lt;/p&gt;
+&lt;p&gt;This is all great if there’s only one &lt;span class="math"&gt;\(x\)&lt;/span&gt; (house). But we will need tons of houses to make a decent prediction. Our list &lt;code class="highlight"&gt;houses&lt;/code&gt; needs to be changed into a &lt;em&gt;list of lists&lt;/em&gt;. For the sake of example, if we had three houses and three features, &lt;code class="highlight"&gt;houses&lt;/code&gt; would look like this (remember the dummy feature):&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;houses&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;4&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
           &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt;
           &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;9&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;]]&lt;/span&gt; &lt;span class="c1"&gt;# random values&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This also allows us to refer to specific features of specific houses using two indexes, &lt;code&gt;houses[i][j]&lt;/code&gt;. How do we do this in math, though? Enter &lt;strong&gt;Einstein notation&lt;/strong&gt;.&lt;/p&gt;
+&lt;p&gt;This also allows us to refer to specific features of specific houses using two indexes, &lt;code class="highlight"&gt;houses[i][j]&lt;/code&gt;. How do we do this in math, though? Enter &lt;strong&gt;Einstein notation&lt;/strong&gt;.&lt;/p&gt;
 &lt;div class="math"&gt;$$ h_θ(x^i) = θ_0x_0^i + θ_1x_1^i + \cdots + θ_nx_n^i  $$&lt;/div&gt;
 &lt;p&gt;The superscript numbers here &lt;em&gt;aren’t&lt;/em&gt; exponents. You would think Einstein, of all people, could come up with something less confusing, but that is the convention, so it’s important to become familiar with it.&lt;/p&gt;
 &lt;p&gt;Just remember that in linear regression, there are conventional choices for the variable names. &lt;span class="math"&gt;\(i\)&lt;/span&gt; denotes the &lt;span class="math"&gt;\(i\)&lt;/span&gt;th house, and &lt;span class="math"&gt;\(j\)&lt;/span&gt; the &lt;span class="math"&gt;\(j\)&lt;/span&gt;th feature.&lt;/p&gt;
 &lt;div class="math"&gt;$$ x^{\textcolor{orange}{i \textrm{th sample}}}_{\textcolor{blue}{j \textrm{th feature}}} $$&lt;/div&gt;
 &lt;p&gt;So if we were to start describing each hypothesis for our dataset individually,&lt;/p&gt;
 &lt;div class="math"&gt;$$ h_θ(x^i) = \left\{\begin{array}{ll}
-h_θ(x^0) = θ_0x_0^0 + θ_1x_1^0 + \cdots + θ_nx_n^0 \\
-h_θ(x^1) = θ_0x_0^1 + θ_1x_1^1 + \cdots + θ_nx_n^1 \\
-h_θ(x^2) = θ_0x_0^2 + θ_1x_1^2 + \cdots + θ_nx_n^2 \\
+h_θ(x^0) = θ_0x_0^0 + θ_1x_1^0 + \cdots + θ_nx_n^0 \\[0.5em]
+h_θ(x^1) = θ_0x_0^1 + θ_1x_1^1 + \cdots + θ_nx_n^1 \\[0.5em]
+h_θ(x^2) = θ_0x_0^2 + θ_1x_1^2 + \cdots + θ_nx_n^2 \\[0.5em]
 h_θ(x^3) = θ_0x_0^2 + θ_1x_1^2 + \cdots + θ_nx_n^2
 \end{array}\right. $$&lt;/div&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;hypothesis&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;houses&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -249,14 +249,14 @@ $$&lt;/div&gt;
 \end{cases} $$&lt;/div&gt;
 &lt;p&gt;The derivative of a variable times something else is just the &lt;em&gt;something else&lt;/em&gt;. (For a line &lt;span class="math"&gt;\(y = 2x\)&lt;/span&gt;, &lt;span class="math"&gt;\(\frac{dy}{dx}\)&lt;/span&gt; is just &lt;span class="math"&gt;\(2\)&lt;/span&gt;, since its slope will be 2 at every point along the line.) Thus,&lt;/p&gt;
 &lt;div class="math"&gt;$$ \frac{\partial h_θ(x)}{\partial θ_j} = \begin{cases}
-\frac{\partial h_θ(x)}{\partial θ_0} &amp;amp;= \textcolor{lightgray}{θ_0} \textcolor{teal}{x_0^i} &amp;amp; \text{when } j=0 \\
-\frac{\partial h_θ(x)}{\partial θ_1} &amp;amp;= \textcolor{lightgray}{θ_1} \textcolor{teal}{x_1^i} &amp;amp; \text{when } j=1 \\
+\frac{\partial h_θ(x)}{\partial θ_0} &amp;amp;= \textcolor{lightgray}{θ_0} \textcolor{teal}{x_0^i} &amp;amp; \text{when } j=0 \\[0.5em]
+\frac{\partial h_θ(x)}{\partial θ_1} &amp;amp;= \textcolor{lightgray}{θ_1} \textcolor{teal}{x_1^i} &amp;amp; \text{when } j=1 \\[0.5em]
 \frac{\partial h_θ(x)}{\partial θ_2} &amp;amp;= \textcolor{lightgray}{θ_2} \textcolor{teal}{x_2^i} &amp;amp; \text{when } j=2
 \end{cases} $$&lt;/div&gt;
 &lt;p&gt;Or just&lt;/p&gt;
 &lt;div class="math"&gt;$$ \frac{\partial h_θ(x)}{\partial θ_j} = \left\{\begin{array}{lr}
-x_0^i &amp;amp; \text{when } j=0 \\
-x_1^i &amp;amp; \text{when } j=1 \\
+x_0^i &amp;amp; \text{when } j=0 \\[0.5em]
+x_1^i &amp;amp; \text{when } j=1 \\[0.5em]
 x_2^i &amp;amp; \text{when } j=2
 \end{array}\right\}
 = \textcolor{red}{x_j^i} $$&lt;/div&gt;
@@ -317,49 +317,49 @@ x_2^i &amp;amp; \text{when } j=2
 &lt;div class="math"&gt;$$ \begin{aligned}
 \textbf X =
 \begin{bmatrix}
-  x_1^1 &amp;amp; x_2^1 &amp;amp; \dots  &amp;amp; x_n^1 \\
-  x_1^2 &amp;amp; x_2^2 &amp;amp; \dots  &amp;amp; x_n^2 \\
-  \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
+  x_1^1 &amp;amp; x_2^1 &amp;amp; \dots  &amp;amp; x_n^1 \\[0.5em]
+  x_1^2 &amp;amp; x_2^2 &amp;amp; \dots  &amp;amp; x_n^2 \\[0.5em]
+  \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\[0.5em]
   x_1^m &amp;amp; x_2^m &amp;amp; \dots  &amp;amp; x_n^m
 \end{bmatrix} \qquad{}
 &amp;amp; \vec θ = \begin{bmatrix} θ_0 \\ θ_1 \\ θ_2 \\ \vdots \\ θ_n \end{bmatrix}
 &amp;amp; \vec y = \begin{bmatrix} y_0 \\ y_1 \\ \vdots \\ y_m \end{bmatrix}
 \end{aligned}$$&lt;/div&gt;
-&lt;p&gt;Let’s use &lt;code&gt;scikit-learn&lt;/code&gt; to generate a suitable dataset for us. Since we won’t have to do any of the computations by hand, let’s go wild with the number of features and samples. We also need a vector with our initial weights (all zeros).&lt;/p&gt;
+&lt;p&gt;Let’s use &lt;code class="highlight"&gt;scikit-learn&lt;/code&gt; to generate a suitable dataset for us. Since we won’t have to do any of the computations by hand, let’s go wild with the number of features and samples. We also need a vector with our initial weights (all zeros).&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sklearn.datasets&lt;/span&gt;
 &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sklearn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;datasets&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make_regression&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_samples&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;500&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;n_features&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="c1"&gt;# as many rows as X has columns, and 1 column&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;One important thing to note is that the dummy feature &lt;span class="math"&gt;\(x_0\)&lt;/span&gt; needs to be added to the data. Also, &lt;code&gt;scikit-learn&lt;/code&gt; generates a &lt;code&gt;y&lt;/code&gt; array that doesn’t have the proper dimensions of a vector for some reason.&lt;/p&gt;
+&lt;p&gt;One important thing to note is that the dummy feature &lt;span class="math"&gt;\(x_0\)&lt;/span&gt; needs to be added to the data. Also, &lt;code class="highlight"&gt;scikit-learn&lt;/code&gt; generates a &lt;code class="highlight"&gt;y&lt;/code&gt; array that doesn’t have the proper dimensions of a vector for some reason.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hstack&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ones&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="c1"&gt;# padding for bias column&lt;/span&gt;
 &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vstack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# this just fixes a quirk of sklearn's output&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;div class="math"&gt;$$ \begin{aligned} \textbf X =
 \begin{bmatrix}
-  \textcolor{red}1 &amp;amp; x_1^1 &amp;amp; x_2^1 &amp;amp; \dots &amp;amp; x_n^1 \\
-  \textcolor{red}1 &amp;amp; x_1^2 &amp;amp; x_2^2 &amp;amp; \dots &amp;amp; x_n^2 \\
-  \textcolor{red}\vdots &amp;amp; \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
+  \textcolor{red}1 &amp;amp; x_1^1 &amp;amp; x_2^1 &amp;amp; \dots &amp;amp; x_n^1 \\[0.5em]
+  \textcolor{red}1 &amp;amp; x_1^2 &amp;amp; x_2^2 &amp;amp; \dots &amp;amp; x_n^2 \\[0.5em]
+  \textcolor{red}\vdots &amp;amp; \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\[0.5em]
   \textcolor{red}1 &amp;amp; x_1^m &amp;amp; x_2^m &amp;amp; \dots &amp;amp; x_n^m
 \end{bmatrix} \qquad{}
 &amp;amp; \vec θ = \begin{bmatrix} θ_0 \\ θ_1 \\ θ_2 \\ \vdots \\ θ_n \end{bmatrix}
 \end{aligned} $$&lt;/div&gt;
 &lt;p&gt;The hypothesis function &lt;span class="math"&gt;\(h_θ(x^i)\)&lt;/span&gt; can now be written succinctly as the product of the “houses” matrix &lt;span class="math"&gt;\(\textbf X\)&lt;/span&gt; and the weights vector &lt;span class="math"&gt;\(\vec θ\)&lt;/span&gt;.&lt;/p&gt;
 &lt;div class="math"&gt;$$ \begin{aligned} \textbf X\vec θ &amp;amp;= \begin{bmatrix}
-  \textcolor{teal}{x_0^1} &amp;amp; \textcolor{teal}{x_1^1} &amp;amp; \textcolor{teal}{x_2^1} &amp;amp; \dots &amp;amp; \textcolor{teal}{x_n^1} \\
-  \textcolor{teal}{x_0^2} &amp;amp; \textcolor{teal}{x_1^2} &amp;amp; \textcolor{teal}{x_2^2} &amp;amp; \dots &amp;amp; \textcolor{teal}{x_n^2} \\
-  \textcolor{teal}\vdots &amp;amp; \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
+  \textcolor{teal}{x_0^1} &amp;amp; \textcolor{teal}{x_1^1} &amp;amp; \textcolor{teal}{x_2^1} &amp;amp; \dots &amp;amp; \textcolor{teal}{x_n^1} \\[0.5em]
+  \textcolor{teal}{x_0^2} &amp;amp; \textcolor{teal}{x_1^2} &amp;amp; \textcolor{teal}{x_2^2} &amp;amp; \dots &amp;amp; \textcolor{teal}{x_n^2} \\[0.5em]
+  \textcolor{teal}\vdots &amp;amp; \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\[0.5em]
   \textcolor{teal}{x_0^m} &amp;amp; \textcolor{teal}{x_1^m} &amp;amp; \textcolor{teal}{x_2^m} &amp;amp; \dots &amp;amp; \textcolor{teal}{x_n^m}
 \end{bmatrix} \begin{bmatrix} \textcolor{magenta}{θ_0} \\ \textcolor{magenta}{θ_1} \\ \textcolor{magenta}{θ_2} \\ \vdots \\ \textcolor{magenta}{θ_n} \end{bmatrix} \\
 &amp;amp;= \begin{bmatrix}
-  \textcolor{magenta}{θ_0}\textcolor{teal}{x_0^1} &amp;amp; \textcolor{magenta}{θ_1}\textcolor{teal}{x_1^1} &amp;amp; \textcolor{magenta}{θ_2}\textcolor{teal}{x_2^1} &amp;amp; \dots &amp;amp; \textcolor{magenta}{θ_n}\textcolor{teal}{x_n^1} \\
-  \textcolor{magenta}{θ_0}\textcolor{teal}{x_0^2} &amp;amp; \textcolor{magenta}{θ_1}\textcolor{teal}{x_1^2} &amp;amp; \textcolor{magenta}{θ_2}\textcolor{teal}{x_2^2} &amp;amp; \dots &amp;amp; \textcolor{magenta}{n_2}\textcolor{teal}{x_n^2} \\
-  \vdots &amp;amp; \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
+  \textcolor{magenta}{θ_0}\textcolor{teal}{x_0^1} &amp;amp; \textcolor{magenta}{θ_1}\textcolor{teal}{x_1^1} &amp;amp; \textcolor{magenta}{θ_2}\textcolor{teal}{x_2^1} &amp;amp; \dots &amp;amp; \textcolor{magenta}{θ_n}\textcolor{teal}{x_n^1} \\[0.5em]
+  \textcolor{magenta}{θ_0}\textcolor{teal}{x_0^2} &amp;amp; \textcolor{magenta}{θ_1}\textcolor{teal}{x_1^2} &amp;amp; \textcolor{magenta}{θ_2}\textcolor{teal}{x_2^2} &amp;amp; \dots &amp;amp; \textcolor{magenta}{n_2}\textcolor{teal}{x_n^2} \\[0.5em]
+  \vdots &amp;amp; \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\[0.5em]
   \textcolor{magenta}{θ_0}\textcolor{teal}{x_0^m} &amp;amp; \textcolor{magenta}{θ_1}\textcolor{teal}{x_1^m} &amp;amp; \textcolor{magenta}{θ_2}\textcolor{teal}{x_2^m} &amp;amp; \dots &amp;amp; \textcolor{magenta}{θ_n}\textcolor{teal}{x_n^m}
 \end{bmatrix} \end{aligned}
 $$&lt;/div&gt;
 &lt;p&gt;Here is the generalized form of linear regression before and after vectorization, followed by the vectorized NumPy version.&lt;/p&gt;
 &lt;ol&gt;
-&lt;li&gt;Notice how the non-vectorized version inherently refers to only one sample at a time, with the superscript &lt;span class="math"&gt;\(i\)&lt;/span&gt;. This implies the equation is true for each &lt;span class="math"&gt;\(i\)&lt;/span&gt;, but the vectorized version automatically includes every sample at the same time without us even having to know how many there are. So let’s use the plural &lt;code&gt;hypotheses&lt;/code&gt; to name the result.&lt;/li&gt;
+&lt;li&gt;Notice how the non-vectorized version inherently refers to only one sample at a time, with the superscript &lt;span class="math"&gt;\(i\)&lt;/span&gt;. This implies the equation is true for each &lt;span class="math"&gt;\(i\)&lt;/span&gt;, but the vectorized version automatically includes every sample at the same time without us even having to know how many there are. So let’s use the plural &lt;code class="highlight"&gt;hypotheses&lt;/code&gt; to name the result.&lt;/li&gt;
 &lt;li&gt;Look at how simple the math expression and the code become! (Of course, it does rely on a sufficient understanding of matrix multiplication.)&lt;/li&gt;
 &lt;/ol&gt;
 &lt;div class="math"&gt;$$ \begin{aligned}
@@ -398,7 +398,7 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &lt;span class="n"&gt;o&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ones&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="n"&gt;cost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;num_samples&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Note that the NumPy function &lt;code&gt;np.square(z)&lt;/code&gt; is faster than &lt;code&gt;z ** 2&lt;/code&gt;:&lt;/p&gt;
+&lt;p&gt;Note that the NumPy function &lt;code class="highlight"&gt;np.square(z)&lt;/code&gt; is faster than &lt;code class="highlight"&gt;z ** 2&lt;/code&gt;:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;13&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="n"&gt;rando&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rand&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;500000&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="mi"&gt;500&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt; &lt;span class="c1"&gt;# just a random big dataset for testing&lt;/span&gt;
 
 &lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;14&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;timeit&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rando&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
@@ -407,7 +407,7 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;15&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;timeit&lt;/span&gt; &lt;span class="n"&gt;rando&lt;/span&gt; &lt;span class="o"&gt;**&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
 &lt;span class="mf"&gt;1.19&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="mf"&gt;7.01&lt;/span&gt; &lt;span class="n"&gt;ms&lt;/span&gt; &lt;span class="n"&gt;per&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="n"&gt;runs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt; &lt;span class="n"&gt;each&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;and &lt;code&gt;o.T @ np.square(z))&lt;/code&gt; (that is, &lt;span class="math"&gt;\(\vec o^T\textbf Z^2\)&lt;/span&gt;)  blows &lt;code&gt;sum(z ** 2)&lt;/code&gt; (that is, &lt;span class="math"&gt;\(\sum_{i=1}^m (z_i)^2\)&lt;/span&gt;) out of the water:&lt;/p&gt;
+&lt;p&gt;and &lt;code class="highlight"&gt;o.T @ np.square(z))&lt;/code&gt; (that is, &lt;span class="math"&gt;\(\vec o^T\textbf Z^2\)&lt;/span&gt;)  blows &lt;code class="highlight"&gt;sum(z ** 2)&lt;/code&gt; (that is, &lt;span class="math"&gt;\(\sum_{i=1}^m (z_i)^2\)&lt;/span&gt;) out of the water:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;In&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;17&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="n"&gt;timeit&lt;/span&gt; &lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;rando&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 &lt;span class="mf"&gt;1.36&lt;/span&gt; &lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="mf"&gt;16.3&lt;/span&gt; &lt;span class="n"&gt;ms&lt;/span&gt; &lt;span class="n"&gt;per&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt; &lt;span class="err"&gt;±&lt;/span&gt; &lt;span class="n"&gt;std&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;of&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="n"&gt;runs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;loop&lt;/span&gt; &lt;span class="n"&gt;each&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
@@ -440,38 +440,38 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &lt;p&gt;Transposing &lt;span class="math"&gt;\(\textbf X\)&lt;/span&gt; and squaring &lt;span class="math"&gt;\(\vec e\)&lt;/span&gt; gives us:&lt;/p&gt;
 &lt;div class="math"&gt;$$ \begin{aligned}
 \textbf X^T = \begin{bmatrix}
-  x_0^1 &amp;amp; x_0^2 &amp;amp; \dots &amp;amp; x_0^m \\
-  x_1^1 &amp;amp; x_1^2 &amp;amp; \dots &amp;amp; x_1^m \\
-  \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\
+  x_0^1 &amp;amp; x_0^2 &amp;amp; \dots &amp;amp; x_0^m \\[0.5em]
+  x_1^1 &amp;amp; x_1^2 &amp;amp; \dots &amp;amp; x_1^m \\[0.5em]
+  \vdots &amp;amp; \vdots &amp;amp; \ddots &amp;amp; \vdots \\[0.5em]
   x_n^1 &amp;amp; x_n^2 &amp;amp; \dots  &amp;amp; x_n^m
-\end{bmatrix} &amp;amp; \quad{} \vec e^2 = \begin{bmatrix} {(e_1)}^2 \\ {(e_2)}^2 \\ \vdots \\ {(e_m)}^2 \end{bmatrix}
+\end{bmatrix} &amp;amp; \quad{} \vec e^2 = \begin{bmatrix} {(e_1)}^2 \\[0.5em] {(e_2)}^2 \\[0.5em] \vdots \\[0.5em] {(e_m)}^2 \end{bmatrix}
 \end{aligned} $$&lt;/div&gt;
 &lt;div class="math"&gt;$$ \textbf X^T \vec e^2 = \begin{bmatrix}
-  x_0^1 {(e_1)}^2 + x_0^2 {(e_2)}^2 + x_0^3 {(e_3)}^2 + \cdots + x_0^m {(e_m)}^2 \\
-  x_1^1 {(e_1)}^2 + x_1^2 {(e_2)}^2 + x_1^3 {(e_3)}^2 + \cdots + x_1^m {(e_m)}^2 \\
-  \vdots \\
+  x_0^1 {(e_1)}^2 + x_0^2 {(e_2)}^2 + x_0^3 {(e_3)}^2 + \cdots + x_0^m {(e_m)}^2 \\[0.5em]
+  x_1^1 {(e_1)}^2 + x_1^2 {(e_2)}^2 + x_1^3 {(e_3)}^2 + \cdots + x_1^m {(e_m)}^2 \\[0.5em]
+  \vdots \\[0.5em]
   x_n^1 {(e_1)}^2 + x_n^2 {(e_2)}^2 + x_n^3 {(e_3)}^2 + \cdots + x_n^m {(e_m)}^2
 \end{bmatrix} = \begin{bmatrix}
-  \sum_{i=1}^m x_0^i{(e_1)}^2 \\
-  \sum_{i=1}^m x_1^i{(e_1)}^2 \\
-  \vdots \\
+  \sum_{i=1}^m x_0^i{(e_1)}^2 \\[0.5em]
+  \sum_{i=1}^m x_1^i{(e_1)}^2 \\[0.5em]
+  \vdots \\[0.5em]
   \sum_{i=1}^m x_n^i{(e_1)}^2 \\
 \end{bmatrix} $$&lt;/div&gt;
 &lt;p&gt;Notice how multiplying this result by &lt;span class="math"&gt;\(\frac{1}{m}\)&lt;/span&gt; gives us a vector containing the same values highlighted above in teal.&lt;/p&gt;
 &lt;div class="math"&gt;$$ \frac{1}{m} \textbf X^T \vec e^2 = \frac{1}{m} \begin{bmatrix}
-  \sum_{i=1}^m x_0^i{(e_1)}^2 \\
-  \sum_{i=1}^m x_1^i{(e_1)}^2 \\
-  \vdots \\
+  \sum_{i=1}^m x_0^i{(e_1)}^2 \\[0.5em]
+  \sum_{i=1}^m x_1^i{(e_1)}^2 \\[0.5em]
+  \vdots \\[0.5em]
   \sum_{i=1}^m x_n^i{(e_1)}^2 \\
 \end{bmatrix} = \begin{bmatrix}
-  \textcolor{teal}{ \frac{1}{m} \sum_{i=1}^m x_0^i{(e_1)}^2 } \\
-  \textcolor{teal}{ \frac{1}{m} \sum_{i=1}^m x_1^i{(e_1)}^2 } \\
-  \textcolor{teal}{ \vdots } \\
+  \textcolor{teal}{ \frac{1}{m} \sum_{i=1}^m x_0^i{(e_1)}^2 } \\[0.5em]
+  \textcolor{teal}{ \frac{1}{m} \sum_{i=1}^m x_1^i{(e_1)}^2 } \\[0.5em]
+  \textcolor{teal}{ \vdots } \\[0.5em]
   \textcolor{teal}{ \frac{1}{m} \sum_{i=1}^m x_n^i{(e_1)}^2 } \\
 \end{bmatrix} = \begin{bmatrix}
-  \frac{\partial J(θ)}{\partial θ_0} \\
-  \frac{\partial J(θ)}{\partial θ_1} \\
-  \vdots \\
+  \frac{\partial J(θ)}{\partial θ_0} \\[0.5em]
+  \frac{\partial J(θ)}{\partial θ_1} \\[0.5em]
+  \vdots \\[0.5em]
   \frac{\partial J(θ)}{\partial θ_n}
 \end{bmatrix} $$&lt;/div&gt;
 &lt;p&gt;Astonishingly, that gigantic mess can be expressed as&lt;/p&gt;
@@ -491,7 +491,7 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
     &lt;span class="n"&gt;step_distance&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;num_samples&lt;/span&gt;
     &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;-=&lt;/span&gt; &lt;span class="n"&gt;learning_rate&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;step_distance&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Let’s refactor this as a function &lt;code&gt;train_lr_model&lt;/code&gt; that takes &lt;span class="math"&gt;\(\textbf X, \vec y\)&lt;/span&gt;, and the number of steps (training epochs) as its inputs, and outputs the weights &lt;span class="math"&gt;\(\vec θ\)&lt;/span&gt;. Along the way, let’s have it tell us the cost. If all goes well, we should see that number approach zero as training progresses.&lt;/p&gt;
+&lt;p&gt;Let’s refactor this as a function &lt;code class="highlight"&gt;train_lr_model&lt;/code&gt; that takes &lt;span class="math"&gt;\(\textbf X, \vec y\)&lt;/span&gt;, and the number of steps (training epochs) as its inputs, and outputs the weights &lt;span class="math"&gt;\(\vec θ\)&lt;/span&gt;. Along the way, let’s have it tell us the cost. If all goes well, we should see that number approach zero as training progresses.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;train_lr_model&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;epochs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;learning_rate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.01&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
     &lt;span class="n"&gt;num_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
@@ -620,5 +620,7 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &lt;li&gt;&lt;a href="https://www.youtube.com/watch?v=fNk_zzaMoSs&amp;amp;list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab"&gt;The Essence of Linear Algebra&lt;/a&gt; (video series), Grant Sanderson&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://towardsdatascience.com/linear-regression-using-python-b136c91bf0a2"&gt;Linear Regression using Python&lt;/a&gt;, Animesh Agarwal&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://www.ritchieng.com/multi-variable-linear-regression/"&gt;Linear Regression with Multiple Variables&lt;/a&gt;, Ritchie Ng&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://medium.com/@lachlanmiller_52885/understanding-and-calculating-the-cost-function-for-linear-regression-39b8a3519fcb"&gt;Understanding and Calculating the Cost Function for Linear Regression&lt;/a&gt;, Lachlan Miller&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://anwarruff.com/the-linear-regression-cost-function-in-matrix-form/"&gt;The Linear Regression Cost Function in Matrix Form&lt;/a&gt;, Anwar Ruff&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www.khanacademy.org/math/multivariable-calculus/multivariable-derivatives/differentiating-vector-valued-functions/a/multivariable-chain-rule-simple-version"&gt;Multivariable chain rule, simple version&lt;/a&gt;, Khan Academy&lt;/li&gt;
 &lt;/ul&gt;</content><category term="koan"></category><category term="multivariable calculus"></category><category term="stochastic gradient descent"></category><category term="linear algebra"></category></entry></feed>

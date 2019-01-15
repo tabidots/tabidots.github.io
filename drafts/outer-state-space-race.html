@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="”State space” is the coolest term I’ve learned in a while. Also, I implemented a simple Markov chain, from scratch, as a Python class." />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@tabidots" />
+    <meta name="twitter:creator" content="@tabidots" />
+    <meta name="twitter:title" content="Outer State Space Race: Markov chains and matrices" />
+    <meta name="twitter:description" content="”State space” is the coolest term I’ve learned in a while. Also, I implemented a simple Markov chain, from scratch, as a Python class." />
+    <meta name="twitter:image:src" content="/images/selfportrait_small.png" />
+    <meta name="twitter:domain" content="judosaltgenius.com" />
+
+    <meta property="og:title" content="Outer State Space Race: Markov chains and matrices" />
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="”State space” is the coolest term I’ve learned in a while. Also, I implemented a simple Markov chain, from scratch, as a Python class." />
+    <meta property="og:image" content="/images/selfportrait_small.png" />
+    <meta property="og:site_name" content="judosaltgenius.com" />
+    <meta property="og:url" content="/drafts/outer-state-space-race" />
+
+
+        <title>Outer State Space Race: Markov chains and matrices - Judo Salt Genius</title>
+
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.css" integrity="sha384-VEnyslhHLHiYPca9KFkBB3CMeslnM9CzwjxsEbZTeA21JBm7tdLwKoZmCt3cZTYD" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.js" integrity="sha384-O4hpKqcplNCe+jLuBVEXC10Rn1QEqAmX98lKAIFBEDxZI0a+6Z2w2n8AEtQbR4CD" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/contrib/auto-render.min.js" integrity="sha384-IiI65aU9ZYub2MY9zhtKd1H2ps7xxf+eb2YFG9lX6uRqpXCvBTOidPRCXCrQ++Uc" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/theme/css/pure.css?v=0.1.0" />
+      <!-- CSS specified by the user -->
+
+
+      <link href="/assets/mystyle.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />
+
+    <!-- for pelican_dynamic plugin -->
+    <!-- end pelican_dynamic -->
+
+</head>
+
+<body>
+<div class="pure-g-r" id="layout">
+    <div class="sidebar sidebar-article pure-u">
+        <header class="header-article">
+                    <a href="/author/justin-douglas" title="See posts by Justin Douglas">
+                        <img class="avatar" alt="Justin Douglas" src="https://www.gravatar.com/avatar/74f13134596b2ed04a497936e3fdfd33?s=140">
+                    </a>
+                <h2 class="article-info">Justin Douglas</h2>
+
+
+                    <h5>Draft</h5>
+
+                <p class="article-date">Sat 12 January 2019</p>
+
+                <a class="header-article-home" href="/">&larr;Home</a>
+        </header>
+    </div>
+    <div class="pure-u">
+        <div class="content">
+            <section class="post">
+                <header class="post-header">
+                    <h1>Outer State Space Race: Markov chains and&nbsp;matrices</h1>
+                </header>
+            </section>
+
+                <nav class="toc">
+                <div class="toc">
+<ul>
+<li><a href="#matrix-izing-a-markov-chain">Matrix-izing a Markov chain</a></li>
+<li><a href="#when-pi-is-not-pi">When \(\pi\) is not \(\pi\)</a></li>
+<li><a href="#the-next-step-and-the-ones-thereafter">The next step (and the ones thereafter)</a></li>
+<li><a href="#other-possibilities-for-the-state-vector">Other possibilities for the state vector</a></li>
+<li><a href="#python-izing-a-markov-chain">Python-izing a Markov chain</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+                </nav>
+
+            
+<p>I had heard of Markov chains before, but because my perspective had always been tightly focused on language, I never felt they were really useful.</p>
+<p>To review, a Markov chain basically describes a scenario or system where one event leads to other events (and so on, perhaps in a cycle) with varying probabilities, but <em>the probability of any one event leading to another given event is completely independent of all other probabilities</em>.</p>
+<p>In <a href="https://www.youtube.com/watch?v=0Il-y_WLTo4">the <span class="caps">HIV</span>/<span class="caps">AIDS</span> scenario model</a> that originally got me interested in learning about Markov chains, the chances of your next “step”—future health outcome—depend <em>only</em> on your present status.</p>
+<p>This is called the <strong>Markov property</strong>. It’s like the opposite of the Monty Hall problem I wrote about previously. The probability of there being a car behind Door 2 <em>changes</em> after Monty opens Door 3. Meanwhile, in a Markov chain, every probability is independent of the others.</p>
+<p>Markov chains, as far as I know, have limited usefulness in natural language processing, because sequences of language data—letters, words, sentences, paragraphs—are highly dependent on not only the previous item, but to some extent <em>all</em> previous items.</p>
+<p>You can see the implications of this in Markov text generators, based on everything from Shakespeare to Eminem, that struggle to produce anything meaningful. Or in the case of part-of-speech tagging, it is simply inaccurate that a <span class="caps">POS</span> of a word could depend <em>only</em> on the <span class="caps">POS</span> of the previous word.</p>
+<p>(Even human brains falter in processing so-called <em>garden path sentences</em>, such as “The horse raced past the barn fell,” where you expect perhaps an adverb of some sort after the word “barn.”)</p>
+<h1 id="matrix-izing-a-markov-chain">Matrix-izing a Markov chain</h1>
+<p>The simplest representation of a Markov chain is called a <em>transition diagram</em>, which basically looks like a flowchart (although it could be cyclical) with arrows going between different states and probability values attached to those arrows.</p>
+<p>Now, what recently got me interested in Markov chains, as I <a href="2019/01/monty-hall-beginner">wrote previously</a>, is the fact that they can also be represented by matrices, and manipulated with the tools of linear algebra.</p>
+<p>The following is a Markov chain as a matrix, also known as a <strong>transition matrix</strong>, since the values in the matrix represent the probabilities of transitioning from one state to another. In this case, suppose our system has five states.</p>
+<p>(Annotating a matrix is beyond my <span class="math">\(\LaTeX\)</span> skills—and perhaps the capabilities of the <span class="math">\(\KaTeX\)</span> renderer—so I will use a code block.)</p>
+<div class="highlight"><pre><span></span>                  <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">go</span> <span class="n">to</span> <span class="n">state</span>
+                      <span class="n">A</span>  <span class="n">B</span>  <span class="n">C</span>  <span class="n">D</span>  <span class="n">E</span>
+                  <span class="n">A</span> <span class="p">[</span> <span class="n">probabilities</span> <span class="p">]</span> <span class="n">sum</span> <span class="n">to</span> <span class="mi">1</span> <span class="n">reading</span> <span class="n">across</span>
+                  <span class="n">B</span> <span class="p">[</span> <span class="n">probabilities</span> <span class="p">]</span>          <span class="s">""</span>
+<span class="hll"> <span class="n">you</span> <span class="n">are</span> <span class="kp">in</span> <span class="n">state</span> <span class="n">C</span> <span class="p">[</span> <span class="n">probabilities</span> <span class="p">]</span>          <span class="s">""</span>
+</span>                  <span class="n">D</span> <span class="p">[</span> <span class="n">probabilities</span> <span class="p">]</span>          <span class="s">""</span>
+                  <span class="n">E</span> <span class="p">[</span> <span class="n">probabilities</span> <span class="p">]</span>          <span class="s">""</span>
+</pre></div>
+<p>The collection of <em>possible states</em> of a system is called its <strong>state space</strong> (what a cool term!) and notated as <span class="math">\(S = \{1,2,3,\cdots,N\}\)</span> in the general case. For our system, it’s <span class="math">\(S = \{A, B, C, D, E\}\)</span>.</p>
+<p>To give a more concrete example, for a text-generating Markov chain, the state space would include all the relevant units (letters of the alphabet plus spaces and punctuation for a character-by-character generator, words in the vocabulary for a word-by-word generator, etc.).</p>
+<p>In formal notation, a possible <strong>transition matrix</strong> (a.k.a. Markov matrix, stochastic matrix) might look something like this:</p>
+<div class="math">$$ P = \begin{bmatrix}
+1\over4 &amp; 1\over2 &amp; 1\over4 \\[0.5em]
+1\over3 &amp; 0       &amp; 2\over3 \\[0.5em]
+1\over2 &amp; 0       &amp; 1\over2 \end{bmatrix} $$</div>
+<p>Capital <span class="math">\(P\)</span> represents the whole matrix and each small <span class="math">\(p\)</span> with subscripts (<span class="math">\(p_{ij}\)</span>, like <span class="math">\(p_{DE}\)</span>) represents the probability of going from state <span class="math">\(i\)</span> (some row) to state <span class="math">\(j\)</span> (some column in that row). <span class="math">\(p_{ij}\)</span> can also be used in a general sense to mean <em>all</em> of the probabilities in the matrix.</p>
+<p>Each row must add up to 1 because it includes every possible next step from that state.</p>
+<p>Also note that the probabilities of the state <em>staying the same</em> from one time step to the next run along the diagonal from top left to bottom right, which means that the identity matrix would represent a static system—one that <em>never changes</em>:</p>
+<div class="math">$$ P = \begin{bmatrix}
+1 &amp; 0 &amp; 0 \\
+0 &amp; 1 &amp; 0 \\
+0 &amp; 0 &amp; 1 \end{bmatrix} $$</div>
+<h1 id="when-pi-is-not-pi">When <span class="math">\(\pi\)</span> is not <span class="math">\(\pi\)</span></h1>
+<p>Now, a transition matrix by itself doesn’t really have any added value compared to the transition diagram it represents, other than looking nicely organized. So let’s make a simple matrix with some random values and do matrix-y stuff with it, like multiply it by something.</p>
+<p>For the time being, I live in Southeast Asia and I eat mostly local food, which means that for any given meal, there’ll either be rice or noodles on my plate. (Not that I’m complaining—everything is ridiculously tasty!)</p>
+<p>Consider a system <span class="math">\(X\)</span> (that’s the conventional choice of letter) that describes my meals with a state space <span class="math">\(S = \{N, R\}\)</span>. The transition matrix <span class="math">\(P\)</span> is then</p>
+<div class="math">$$ P = \begin{bmatrix}
+0.4 &amp; 0.6 \\
+0.2 &amp; 0.8 \end{bmatrix} $$</div>
+<p>Again, I can’t label the rows and columns of the matrix, so let’s stick to alphabetical order and make <span class="math">\(N\)</span> first. Thus:</p>
+<ul>
+<li><span class="math">\(p_{NN}\)</span>, probability of repeating noodles: <span class="math">\(0.4\)</span></li>
+<li><span class="math">\(p_{NR}\)</span>, probability of rice after noodles: <span class="math">\(0.6\)</span></li>
+<li><span class="math">\(p_{RN}\)</span>, probability of noodles after rice: <span class="math">\(0.2\)</span></li>
+<li><span class="math">\(p_{RR}\)</span>, probability of repeating rice: <span class="math">\(0.8\)</span></li>
+</ul>
+<p>The initial state can be represented by a row vector with <span class="math">\(S\)</span> values (i.e., as many values as there are possible states), with a 1 in the spot corresponding to the current state and a 0 for all other states.</p>
+<p>If my first meal was a noodle dish, then I can express that initial state like this:</p>
+<div class="math">$$ \pi^{(0)} = \begin{bmatrix}1 &amp; 0\end{bmatrix} $$</div>
+<p>The math notation for this is not so straightforward.</p>
+<ol>
+<li>
+<p>Lowercase <em>pi</em> here represents a given state, <strong>not</strong> the constant <em>pi</em> that relates to circles! I don’t know who came up with that idea, but I don’t think it was a wise choice.</p>
+</li>
+<li>
+<p>The superscript number is also not what it seems: it’s not an exponent, but rather the <em>number of time steps from now</em>. So <span class="math">\(\pi^{(0)}\)</span> means our state at 0 time steps from now, or in other words, now.</p>
+</li>
+<li>
+<p>Why is this vector of the more uncommon horizontal variety (i.e., a row vector)? That’s a more complicated question (and the reason that I got stuck on the warmup problem in the Linear Algebra for Coders course).</p>
+</li>
+</ol>
+<p>This is the part where I turned to Python because I couldn’t get any farther with the math alone.</p>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">meals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">],[</span><span class="mf">0.2</span><span class="p">,</span><span class="mf">0.8</span><span class="p">]])</span>
+<span class="n">now</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+</pre></div>
+<h1 id="the-next-step-and-the-ones-thereafter">The next step (and the ones thereafter)</h1>
+<p>To find the probabilities for the next meal, we can multiply this vector and the transition matrix together. If you <a href="https://www.youtube.com/watch?v=kYB8IZa5AuE">imagine matrix-vector multiplication as a vector undergoing a linear transformation</a>, then this sort of makes sense.</p>
+<p>There’s a catch, though. Transition matrices are set up to be read <em>across</em>, from left to right, with each row telling us the next-step probabilities <em>if</em> we are in that state:</p>
+<div class="highlight"><pre><span></span>                <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="n">go</span> <span class="n">to</span> <span class="n">state</span>
+                      <span class="n">N</span>    <span class="n">R</span>
+<span class="hll"> <span class="n">you</span> <span class="n">are</span> <span class="kp">in</span> <span class="n">state</span> <span class="n">N</span> <span class="p">[</span> <span class="mf">0.4</span>  <span class="mf">0.6</span> <span class="p">]</span>
+</span>                  <span class="n">R</span> <span class="p">[</span> <span class="mf">0.2</span>  <span class="mf">0.8</span> <span class="p">]</span>
+</pre></div>
+<p>So if we already <em>know</em> that we will be in state <span class="math">\(N\)</span> to begin with, we can essentially filter out the other rows, leaving a single row:</p>
+<div class="math">$$ \pi^{(1)} = \begin{bmatrix}p_{NN} &amp; p_{NR}\end{bmatrix} = \begin{bmatrix}0.4 &amp; 0.6\end{bmatrix}$$</div>
+<p>Now, if we suppose that our state vector is a column vector <span class="math">\(\vec v\)</span>,</p>
+<div class="math">$$ \vec v = \begin{bmatrix}1 \\ 0\end{bmatrix}$$</div>
+<p>and multiply it by the matrix,</p>
+<div class="math">$$ \pi^{(1)} \stackrel{?}{=} P\vec v
+= \begin{bmatrix}
+0.4 &amp; 0.6 \\
+0.2 &amp; 0.8 \end{bmatrix} \begin{bmatrix}1 \\ 0\end{bmatrix}
+= \begin{bmatrix}
+1\cdot0.4 + \textcolor{lightgray}{0\cdot0.6} \\
+1\cdot0.2 + \textcolor{lightgray}{0\cdot0.8} \end{bmatrix}
+= \begin{bmatrix} 0.4 \\ 0.2 \end{bmatrix} $$</div>
+<p>Hmm, that’s not quite right. The values don’t match what we know about our system, and we want a row, not a column.</p>
+<p>Since the product of a matrix and a vector is the shape of the vector, <span class="math">\(\pi^{(1)}\)</span> should be a row vector. We could also transpose the matrix, but then the rows of the matrix no longer represent probabilities of transitioning from a given state. Using a row vector maintains the idea that rows describe origin states and the property that values of rows add up to 1.</p>
+<div class="math">$$ \begin{aligned}
+\pi^{(1)} = \pi^{(0)}P &amp;= \begin{bmatrix}1 &amp; 0\end{bmatrix} \begin{bmatrix}
+0.4 &amp; 0.6 \\
+0.2 &amp; 0.8 \end{bmatrix} \\
+&amp;= \begin{bmatrix}
+1\cdot0.4 + \textcolor{lightgray}{0\cdot0.2} &amp;
+1\cdot0.6 + \textcolor{lightgray}{0\cdot0.8} \end{bmatrix} \\
+&amp;= \begin{bmatrix} 0.4 &amp; 0.6 \end{bmatrix}
+\end{aligned} $$</div>
+<p>Intuitively, you can imagine that you’re “feeding” the collection of probabilities through the state and getting the “transformed” probabilities.</p>
+<div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="n">now</span> <span class="err">@</span> <span class="n">meals</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">11</span><span class="p">]:</span> <span class="n">array</span><span class="p">([[</span><span class="mf">0.4</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">]])</span>
+</pre></div>
+<p>Also, since the probabilities at time <span class="math">\(t + 1\)</span> only depend on the probabilities at time <span class="math">\(t\)</span>, we can do this recursively to find <span class="math">\(\pi^{(n)}\)</span>.</p>
+<div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">]:</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">now</span> <span class="err">@</span> <span class="n">meals</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">15</span><span class="p">]:</span> <span class="n">p1</span> <span class="err">@</span> <span class="n">meals</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">16</span><span class="p">]:</span> <span class="n">array</span><span class="p">([[</span><span class="mf">0.28</span><span class="p">,</span> <span class="mf">0.72</span><span class="p">]])</span> <span class="c1"># this is pi^(2), or probabilities at time 2</span>
+</pre></div>
+<p>On a day where I had noodles for breakfast, then, I have a 40% chance of having noodles and a 60% chance of having rice for lunch, and then a 28% chance of having noodles and a 72% chance of having rice for dinner.</p>
+<h1 id="other-possibilities-for-the-state-vector">Other possibilities for the state vector</h1>
+<p>Actually, I oversimplified the above example a bit. The state vector doesn’t have to be a binary thing. Since its values must sum to 1, it can also reflect an initial probability <em>distribution</em>:</p>
+<div class="math">$$ \pi^{(0)} = \begin{bmatrix}0.45 &amp; 0.55\end{bmatrix} $$</div>
+<p>As you can see, this changes the subsequent probabilities:</p>
+<div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="n">now</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.45</span><span class="p">,</span><span class="mf">0.55</span><span class="p">]])</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="n">now</span> <span class="err">@</span> <span class="n">meals</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="n">array</span><span class="p">([[</span><span class="mf">0.29</span><span class="p">,</span> <span class="mf">0.71</span><span class="p">]])</span>
+</pre></div>
+<p>In the <span class="caps">HIV</span>/<span class="caps">AIDS</span> scenario I referred to at the beginning of this post, the initial state vector is used to represent the population (since subsets of a population can be expressed as the probability that a random person will belong to that subset).</p>
+<p>Here are the givens of that problem. The states are <em><span class="caps">HIV</span> asymptomatic, <span class="caps">HIV</span> symptomatic, <span class="caps">AIDS</span>,</em> and <em>death</em>.</p>
+<div class="math">$$ \begin{gathered} P = \begin{bmatrix}
+0.97 &amp; 0.07 &amp; 0.02 &amp; 0.01 \\
+0    &amp; 0.93 &amp; 0.05 &amp; 0.02 \\
+0    &amp; 0    &amp; 0.85 &amp; 0.15 \\
+0    &amp; 0    &amp; 0    &amp; 1.00 \end{bmatrix} \\
+\pi^{(0)} = \begin{bmatrix} 0.85 &amp; 0.10 &amp; 0.05 &amp; 0 \end{bmatrix}
+\end{gathered} $$</div>
+<p>This means that the initial population was 85% asymptomatic, 10% symptomatic, 5% <span class="caps">AIDS</span> patients, and 0% dead.</p>
+<p>If we used a vector with a single 1 and the rest 0s, then that would represent the outcomes for a homogenous population, or more likely, a single person.</p>
+<div class="highlight"><pre><span></span><span class="n">hiv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.9</span> <span class="p">,</span> <span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span>   <span class="p">,</span> <span class="mf">0.93</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span>   <span class="p">,</span> <span class="mi">0</span>   <span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span>   <span class="p">,</span> <span class="mi">0</span>   <span class="p">,</span> <span class="mi">0</span>   <span class="p">,</span> <span class="mi">1</span>   <span class="p">]])</span>
+<span class="n">population</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">33</span><span class="p">]:</span> <span class="n">population</span> <span class="err">@</span> <span class="n">hiv</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">33</span><span class="p">]:</span> <span class="n">array</span><span class="p">([[</span><span class="mf">0.765</span> <span class="p">,</span> <span class="mf">0.1525</span><span class="p">,</span> <span class="mf">0.0645</span><span class="p">,</span> <span class="mf">0.018</span> <span class="p">]])</span>
+</pre></div>
+<p>So the outcomes after 1 year (<span class="math">\(t = 1\)</span>) are 76.5% asymptomatic, 15.25% symptomatic, 6.45% <span class="caps">AIDS</span> patients, and 1.8% dead.</p>
+<h1 id="python-izing-a-markov-chain">Python-izing a Markov chain</h1>
+<p>Maybe this is kind of overkill, but we can implement our system as a class.</p>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Markov_Chain</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">init_state</span><span class="p">):</span>
+        <span class="c1"># Validate the matrix</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">init_state</span><span class="p">)</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'The Markov matrix and state vector must be NumPy arrays.'</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Markov matrices must be square.'</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="p">(</span><span class="n">matrix</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">()</span> <span class="ow">or</span> <span class="p">(</span><span class="n">init_state</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Probabilities cannot be negative.'</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">sum</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">row</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">matrix</span><span class="p">])</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'Each row in a Markov matrix must sum to 1.'</span><span class="p">)</span>
+        <span class="c1"># Validate the init_state</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">init_state</span><span class="p">)</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">'The initial state vector must be a NumPy array.'</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">init_state</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">matrix</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">f</span><span class="s1">'The state vector must have a shape of 1 x {matrix.shape[1]}.'</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">init_state</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">'The values in the state vector must sum to 1.'</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span> <span class="o">=</span> <span class="n">matrix</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">init_state</span> <span class="o">=</span> <span class="n">init_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">probs</span> <span class="o">=</span> <span class="n">init_state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">evolve</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">evolve</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>            
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">times</span><span class="p">):</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">probs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">probs</span> <span class="err">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">matrix</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">probs_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="s2">"%"</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">probs</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">'At time {self.time}, '</span>
+              <span class="n">f</span><span class="s1">'the transition probabilities are</span><span class="se">\n</span><span class="s1">'</span>
+              <span class="n">f</span><span class="s1">'{"</span><span class="se">\n</span><span class="s1">".join(probs_list)}.'</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">restart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init_state</span><span class="p">):</span>
+        <span class="c1"># call with no args to start over with same initial state</span>
+        <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">,</span> <span class="n">init_state</span><span class="p">)</span>
+</pre></div>
+<p>Now we can see what the population will be like after many years with just a few keystrokes:</p>
+<div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">40</span><span class="p">]:</span> <span class="n">m</span> <span class="o">=</span> <span class="n">Markov_Chain</span><span class="p">(</span><span class="n">hiv</span><span class="p">,</span> <span class="n">population</span><span class="p">)</span>
+<span class="n">At</span> <span class="n">time</span> <span class="mi">1</span><span class="p">,</span> <span class="n">the</span> <span class="n">transition</span> <span class="n">probabilities</span> <span class="n">are</span> <span class="p">[</span><span class="s1">'76.5%'</span><span class="p">,</span> <span class="s1">'15.25%'</span><span class="p">,</span> <span class="s1">'6.45%'</span><span class="p">,</span> <span class="s1">'1.8%'</span><span class="p">]</span><span class="o">.</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">41</span><span class="p">]:</span> <span class="n">m</span><span class="o">.</span><span class="n">evolve</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">At</span> <span class="n">time</span> <span class="mi">11</span><span class="p">,</span> <span class="n">the</span> <span class="n">transition</span> <span class="n">probabilities</span> <span class="n">are</span> <span class="p">[</span><span class="s1">'26.67%'</span><span class="p">,</span> <span class="s1">'31.53%'</span><span class="p">,</span> <span class="s1">'13.58%'</span><span class="p">,</span> <span class="s1">'28.21%'</span><span class="p">]</span><span class="o">.</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">42</span><span class="p">]:</span> <span class="n">m</span><span class="o">.</span><span class="n">evolve</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
+<span class="n">At</span> <span class="n">time</span> <span class="mi">31</span><span class="p">,</span> <span class="n">the</span> <span class="n">transition</span> <span class="n">probabilities</span> <span class="n">are</span> <span class="p">[</span><span class="s1">'3.24%'</span><span class="p">,</span> <span class="s1">'14.4%'</span><span class="p">,</span> <span class="s1">'7.71%'</span><span class="p">,</span> <span class="s1">'74.65%'</span><span class="p">]</span><span class="o">.</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">43</span><span class="p">]:</span> <span class="n">m</span><span class="o">.</span><span class="n">evolve</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">At</span> <span class="n">time</span> <span class="mi">61</span><span class="p">,</span> <span class="n">the</span> <span class="n">transition</span> <span class="n">probabilities</span> <span class="n">are</span> <span class="p">[</span><span class="s1">'0.14%'</span><span class="p">,</span> <span class="s1">'2.17%'</span><span class="p">,</span> <span class="s1">'1.29%'</span><span class="p">,</span> <span class="s1">'96.4%'</span><span class="p">]</span><span class="o">.</span>
+</pre></div>
+<p>96.4% dead after 30 years—grim outlook, to say the least. (Though to be fair, the model takes into account that people may and do die of things other than <span class="caps">HIV</span>/<span class="caps">AIDS</span>. This is represented in the matrix by the nonzero probabilities of asymptomatic people transitioning right to death.)</p>
+<p>…aaaand on that note, I’ll end this post here for now. I will write about Markov chains again in the near future.</p>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://www.youtube.com/watch?v=0Il-y_WLTo4">Concepts of Markov Chains</a> (video), Paul Harper</li>
+<li><a href="https://www.stat.auckland.ac.nz/~fewster/325/notes/ch8.pdf">Stats 325, Chapter 8: Markov Chains</a>, Rachel Fewster</li>
+<li><a href="https://medium.com/@balamurali_m/markov-chain-simple-example-with-python-985d33b14d19">Markov Chain: Simple example with Python</a>, Balamurali M</li>
+</ul>
+
+            <p class="post-footer">
+                // filed
+under                    <a class="post-category" href="/tag/markov-chain">Markov chain</a>
+                    <a class="post-category" href="/tag/linear-algebra">linear algebra</a>
+                in <a class="post-category" href="/category/probability">Probability</a>&nbsp;&nbsp;&nbsp;
+
+                <span style="display:inline-block;">
+                // share on <a href="https://twitter.com/share?text=%22Outer%20State%20Space%20Race%3A%20Markov%20chains%20and%C2%A0matrices%3A%20%E2%80%9DState%20space%E2%80%9D%20is%20the%20coolest%20term%20I%E2%80%99ve%20learned%20in%20a%20while.%20Also%2C%20I%20implemented%20a%20simple%20Markov%20chain%2C%20from%20scratch%2C%20as%20a%20Python%C2%A0class.%22&amp;hashtags=Markovchain%2Clinearalgebra" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i> Twitter
+                </a>
+                </span>
+            </p>
+            <div class="hr"></div>
+
+
+            <a href="#" class="go-top">Go Top</a>
+<footer class="footer">
+    <p>&copy; Justin Douglas  2019. Published with <a href="https://github.com/getpelican/pelican">Pelican</a>.<br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+</footer>        </div>
+    </div>
+</div>
+    <script>
+        renderMathInElement(document.body);
+    </script>
+
+			<!-- Script specified by the user -->
+			<script type="text/javascript"  src="/assets/tweaks.js"></script>
+
+    <!-- for pelican_dynamic plugin -->
+
+
+
+</body>
+</html>

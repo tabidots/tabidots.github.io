@@ -5,34 +5,48 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/</loc>
-<lastmod>2019-01-13T00:21:27-00:00</lastmod>
+<lastmod>2019-01-16T02:09:39-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/archives.html</loc>
-<lastmod>2019-01-13T00:21:27-00:00</lastmod>
+<lastmod>2019-01-16T02:09:39-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/tags.html</loc>
-<lastmod>2019-01-13T00:21:27-00:00</lastmod>
+<lastmod>2019-01-16T02:09:39-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://tabidots.github.io/2019/01/monty-hall-beginner.html</loc>
+<loc>http://tabidots.github.io/categories.html</loc>
+<lastmod>2019-01-16T02:09:39-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/2019/01/outer-state-space-race</loc>
+<lastmod>2019-01-12T11:29:32+07:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/2019/01/monty-hall-beginner</loc>
 <lastmod>2019-01-12T10:54:19+07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
-<loc>http://tabidots.github.io/2019/01/loopless-loop.html</loc>
+<loc>http://tabidots.github.io/2019/01/loopless-loop</loc>
 <lastmod>2019-01-10T19:00:46+07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
@@ -47,7 +61,21 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/category/probability</loc>
-<lastmod>2019-01-12T10:54:19+07:07</lastmod>
+<lastmod>2019-01-12T11:29:32+07:07</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/tag/markov-chain</loc>
+<lastmod>2019-01-12T11:29:32+07:07</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/tag/linear-algebra</loc>
+<lastmod>2019-01-12T11:29:32+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -88,15 +116,8 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
-<loc>http://tabidots.github.io/tag/linear-algebra</loc>
-<lastmod>2019-01-10T19:00:46+07:07</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
 <loc>http://tabidots.github.io/author/justin-douglas</loc>
-<lastmod>2019-01-12T10:54:19+07:07</lastmod>
+<lastmod>2019-01-12T11:29:32+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
