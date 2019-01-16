@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@tabidots" />
+    <meta name="twitter:creator" content="@tabidots" />
+    <meta name="twitter:title" content="How I pimped my browser, terminal, and editor" />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:image:src" content="../images/selfportrait_small.png" />
+    <meta name="twitter:domain" content="judosaltgenius.com" />
+
+    <meta property="og:title" content="How I pimped my browser, terminal, and editor" />
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="" />
+    <meta property="og:image" content="../images/selfportrait_small.png" />
+    <meta property="og:site_name" content="judosaltgenius.com" />
+    <meta property="og:url" content="../drafts/pimp-my-browser-terminal-editor" />
+
+        <link rel="alternate"  href="http://tabidots.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Judo Salt Genius Full Atom Feed"/>
+
+        <title>How I pimped my browser, terminal, and editor - Judo Salt Genius</title>
+
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.css" integrity="sha384-VEnyslhHLHiYPca9KFkBB3CMeslnM9CzwjxsEbZTeA21JBm7tdLwKoZmCt3cZTYD" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.js" integrity="sha384-O4hpKqcplNCe+jLuBVEXC10Rn1QEqAmX98lKAIFBEDxZI0a+6Z2w2n8AEtQbR4CD" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/contrib/auto-render.min.js" integrity="sha384-IiI65aU9ZYub2MY9zhtKd1H2ps7xxf+eb2YFG9lX6uRqpXCvBTOidPRCXCrQ++Uc" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../theme/css/pure.css?v=0.1.0" />
+      <!-- CSS specified by the user -->
+
+
+      <link href="../assets/mystyle.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="../theme/css/pygments.css" />
+
+    <!-- for pelican_dynamic plugin -->
+    <!-- end pelican_dynamic -->
+
+</head>
+
+<body>
+<div class="pure-g-r" id="layout">
+    <div class="sidebar sidebar-article pure-u">
+        <header class="header-article">
+                    <a href="../author/justin-douglas" title="See posts by Justin Douglas">
+                        <img class="avatar" alt="Justin Douglas" src="https://www.gravatar.com/avatar/74f13134596b2ed04a497936e3fdfd33?s=140">
+                    </a>
+                <h2 class="article-info">Justin Douglas</h2>
+
+
+                    <h5>Draft</h5>
+
+                <p class="article-date">Wed 16 January 2019</p>
+
+                <a class="header-article-home" href="/">&larr;Home</a>
+        </header>
+    </div>
+    <div class="pure-u">
+        <div class="content">
+            <section class="post">
+                <header class="post-header">
+                    <h1>How I pimped my browser, terminal, and&nbsp;editor</h1>
+                </header>
+            </section>
+
+                <nav class="toc">
+                <div class="toc">
+<ul>
+<li><a href="#browser">Browser</a></li>
+<li><a href="#essentials">Essentials</a><ul>
+<li><a href="#homebrew">Homebrew</a></li>
+<li><a href="#python">Python</a><ul>
+<li><a href="#pelican">Pelican</a></li>
+<li><a href="#nlp-stuff"><span class="caps">NLP</span> stuff</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#terminal-shell">Terminal <span class="amp">&amp;</span> shell</a><ul>
+<li><a href="#fonts">Fonts</a></li>
+<li><a href="#iterm2">iTerm2</a></li>
+<li><a href="#zsh">zsh</a></li>
+<li><a href="#powerline-9000">Powerline 9000</a></li>
+</ul>
+</li>
+<li><a href="#editor">Editor</a><ul>
+<li><a href="#plugins">Plugins</a></li>
+<li><a href="#hydrogen">Hydrogen</a><ul>
+<li><a href="#markdown">Markdown</a></li>
+<li><a href="#javascript">JavaScript</a></li>
+</ul>
+</li>
+<li><a href="#clojure">Clojure</a><ul>
+<li><a href="#install-clojure">Install Clojure</a></li>
+<li><a href="#pimp-your-repl">Pimp your <span class="caps">REPL</span></a></li>
+<li><a href="#get-leiningen">Get Leiningen</a></li>
+<li><a href="#hydrogen-integration">Hydrogen integration</a></li>
+</ul>
+</li>
+<li><a href="#r">R</a><ul>
+<li><a href="#hydrogen-integration_1">Hydrogen integration</a></li>
+</ul>
+</li>
+<li><a href="#julia">Julia</a><ul>
+<li><a href="#hydrogen-integration_2">Hydrogen integration</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li><a href="#finishing-up">Finishing up</a></li>
+</ul>
+</div>
+                </nav>
+
+            
+<p>This guide is for Mac <span class="caps">OS</span> X. Actually, it’s more of a personal reminder in case my computer crashes (or I get a new one) and I have to set everything up again.</p>
+<h1 id="browser">Browser</h1>
+<p>Install <a href="https://add0n.com/stylus.html">Stylus</a> (for Chrome, Firefox, and Opera)</p>
+<ul>
+<li><a href="https://github.com/hyperfekt/google-dark">Google Dark Mode</a></li>
+<li><a href="https://github.com/StylishThemes/Wikipedia-Dark">Wikipedia Dark Mode</a></li>
+<li><a href="https://github.com/StylishThemes/GitHub-Dark">GitHub Dark Mode</a></li>
+<li>Reddit <span class="amp">&amp;</span> YouTube already have a dark mode feature 👍🏻</li>
+</ul>
+<p>I’m sure there are plenty of other themes, but this covers most of my needs. My own blog should have a dark mode, though 🙈</p>
+<h1 id="essentials">Essentials</h1>
+<h2 id="homebrew">Homebrew</h2>
+<p>Good brew is absolutely essential to get everything else in motion. Interpret that as you wish, but you’ll need <em>this</em> <a href="https://brew.sh/">Homebrew</a> to continue.</p>
+<h2 id="python">Python</h2>
+<p>Python 2 comes built-in, so let’s pimp that out first before touching the other languages.</p>
+<p>Python 3</p>
+<p>iPython, Jupyter, NumPy, SciPy, Matplotlib, Pandas</p>
+<h3 id="pelican">Pelican</h3>
+<h3 id="nlp-stuff"><span class="caps">NLP</span> stuff</h3>
+<p>SpaCy/MeCab/CaboCha</p>
+<h1 id="terminal-shell">Terminal <span class="amp">&amp;</span> shell</h1>
+<h2 id="fonts">Fonts</h2>
+<p>Fira Code, Roboto Mono, Inconsolata, Meslo</p>
+<h2 id="iterm2">iTerm2</h2>
+<p>Colors: Galaxy or https://github.com/benniemosher/the-one-theme</p>
+<h2 id="zsh">zsh</h2>
+<h2 id="powerline-9000">Powerline 9000</h2>
+<h1 id="editor">Editor</h1>
+<p>Install <a href="https://atom.io/">Atom</a>. ’Nuff said.</p>
+<h2 id="plugins">Plugins</h2>
+<ul>
+<li>file-icons</li>
+</ul>
+<h2 id="hydrogen">Hydrogen</h2>
+<div class="highlight"><pre><span></span>pip3 install ipykernel
+</pre></div>
+<h3 id="markdown">Markdown</h3>
+<p>Install <a href="https://atom.io/packages/language-gfm-enhanced">language-gfm-enhanced</a> (supports more languages and <span class="math">\(\LaTeX\)</span>)</p>
+<div class="highlight"><pre><span></span>pip3 install markdown-kernel
+python3 -m markdown_kernel.install
+</pre></div>
+<p>Change <strong>Language Mappings</strong> in Hydrogen settings to:
+<div class="highlight"><pre><span></span>{ "python": "magicpython", "markdown": "github markdown"}
+</pre></div></p>
+<p>This setup highlights delimited <span class="math">\(\LaTeX\)</span> and <span class="math">\(\KaTeX\)</span> properly within Markdown files, but rendering is a little slow (i.e., you might get a blank preview the first time), and the <span class="math">\(\KaTeX\)</span>-specific syntax is not supported by the renderer.</p>
+<h3 id="javascript">JavaScript</h3>
+<h2 id="clojure">Clojure</h2>
+<h3 id="install-clojure">Install Clojure</h3>
+<p>Ensure you’ve got Java 8 (1.8) installed set as your <code class="highlight">$JAVA_HOME</code>, regardless of whether you have other versions of Java installed as well. Leiningen doesn’t work with versions of Java beyond 8!</p>
+<div class="highlight"><pre><span></span>$ /usr/libexec/java_home -V   <span class="c1"># list all installed versions</span>
+$ java -version               <span class="c1"># show active version</span>
+$ <span class="c1"># If Java 8 is not installed</span>
+$ brew install java8    
+$ <span class="c1"># Or, if Java 8 is not the active version</span>
+$ <span class="nb">export</span> <span class="nv">JAVA_HOME</span><span class="o">=</span><span class="k">$(</span>/usr/libexec/java_home -v <span class="m">1</span>.8<span class="k">)</span>
+$
+$ brew install clojure
+</pre></div>
+<h3 id="pimp-your-repl">Pimp your <span class="caps">REPL</span></h3>
+<p>It’s worth installing this <a href="https://github.com/bhauman/rebel-readline">fantastic readline tool</a> to turn your terminal into an interactive version of the Clojure docs (even if you write the bulk of your code in Atom).</p>
+<p>It seems that LightTable (which I used to use specifically for its built-in implementation of this) is no longer being maintained—too bad, I liked it quite a lot when it was new.</p>
+<p>Append this to your <code class="highlight"><span class="na">.zshrc</span></code> (or <code class="highlight"><span class="na">.bash_profile</span></code>) file:</p>
+<div class="highlight"><pre><span></span><span class="c1"># source: https://gist.github.com/Lokeh/a67bb2dc9295d7990d9f8525f478457c</span>
+<span class="k">function</span> rebel-clj<span class="o">()</span> <span class="o">{</span>
+  clojure -Sdeps <span class="s2">"{:deps {com.bhauman/rebel-readline {:mvn/version \"0.1.4\"} </span><span class="nv">$@</span><span class="s2">}}"</span> -m rebel-readline.main
+<span class="o">}</span>
+<span class="k">function</span> rebel-cljs<span class="o">()</span> <span class="o">{</span>
+  clojure -Sdeps <span class="s2">"{:deps {com.bhauman/figwheel-main {:mvn/version \"0.1.7\"} com.bhauman/rebel-readline-cljs {:mvn/version \"0.1.4\"} </span><span class="nv">$@</span><span class="s2">}}"</span> -m figwheel.main
+<span class="o">}</span>
+</pre></div>
+<h3 id="get-leiningen">Get Leiningen</h3>
+<p>https://leiningen.org/ (for project automation)</p>
+<h3 id="hydrogen-integration">Hydrogen integration</h3>
+<div class="highlight"><pre><span></span>$ git clone https://github.com/clojupyter/clojupyter
+$ <span class="nb">cd</span> clojupyter
+$ make
+$ make install
+</pre></div>
+<p>Plugin for Atom: parinfer</p>
+<h2 id="r">R</h2>
+<div class="highlight"><pre><span></span>$ brew install r
+$ R
+</pre></div>
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">install.packages</span><span class="p">(</span><span class="s">"tidyverse"</span><span class="p">)</span> <span class="c1"># data science ecosystem</span>
+</pre></div>
+<h3 id="hydrogen-integration_1">Hydrogen integration</h3>
+<p>Install <a href="https://atom.io/packages/atom-language-r">atom-language-r</a> plugin for Atom. Then,</p>
+<div class="highlight"><pre><span></span>$ brew install libgit2 <span class="c1"># this is necessary to install devtools</span>
+$ R                    <span class="c1"># CAPITAL R, not small R!</span>
+</pre></div>
+<div class="highlight"><pre><span></span><span class="o">&gt;</span> <span class="nf">install.packages</span><span class="p">(</span><span class="nf">c</span><span class="p">(</span><span class="s">'repr'</span><span class="p">,</span> <span class="s">'IRdisplay'</span><span class="p">,</span> <span class="s">'evaluate'</span><span class="p">,</span> <span class="s">'crayon'</span><span class="p">,</span> <span class="s">'pbdZMQ'</span><span class="p">,</span> <span class="s">'devtools'</span><span class="p">,</span> <span class="s">'uuid'</span><span class="p">,</span> <span class="s">'digest'</span><span class="p">))</span>
+<span class="o">&gt;</span> <span class="n">devtools</span><span class="o">::</span><span class="nf">install_github</span><span class="p">(</span><span class="s">'IRkernel/IRkernel'</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">IRkernel</span><span class="o">::</span><span class="nf">installspec</span><span class="p">()</span>
+</pre></div>
+<h2 id="julia">Julia</h2>
+<div class="highlight"><pre><span></span>$ brew install julia
+$ julia
+</pre></div>
+<div class="highlight"><pre><span></span><span class="n">julia</span> <span class="o">&gt;</span> <span class="k">using</span> <span class="n">Pkg</span>
+<span class="n">julia</span> <span class="o">&gt;</span> <span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">"Gadfly"</span><span class="p">)</span>
+</pre></div>
+<h3 id="hydrogen-integration_2">Hydrogen integration</h3>
+<div class="highlight"><pre><span></span><span class="n">julia</span> <span class="o">&gt;</span> <span class="n">Pkg</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="s">"IJulia"</span><span class="p">)</span>
+</pre></div>
+<h1 id="finishing-up">Finishing up</h1>
+<p>Confirm installed Jupyter kernels</p>
+<div class="highlight"><pre><span></span>$ jupyter kernelspec list
+</pre></div>
+<p>Final <code class="highlight"><span class="na">.zshrc</span></code></p>
+
+            <p class="post-footer">
+                // filed
+                in <a class="post-category" href="../category/misc">misc</a>&nbsp;&nbsp;&nbsp;
+
+                <span style="display:inline-block;">
+                // share on <a href="https://twitter.com/share?text=%22How%20I%20pimped%20my%20browser%2C%20terminal%2C%20and%C2%A0editor%3A%22&amp;hashtags=" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i> Twitter
+                </a>
+                </span>
+            </p>
+            <div class="hr"></div>
+
+
+            <a href="#" class="go-top">Go Top</a>
+<footer class="footer">
+    <p>&copy; Justin Douglas  2019. Published with <a href="https://github.com/getpelican/pelican">Pelican</a>.<br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+</footer>        </div>
+    </div>
+</div>
+    <script>
+        renderMathInElement(document.body);
+    </script>
+
+			<!-- Script specified by the user -->
+			<script type="text/javascript"  src="../assets/tweaks.js"></script>
+
+    <!-- for pelican_dynamic plugin -->
+
+
+
+</body>
+</html>

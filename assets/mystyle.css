@@ -48,10 +48,15 @@ code {
 
 .superfences-tabs label {
   width: auto;
-  margin: 0 0.5em;
-  padding: 0.25em;
-  font-size: 120%;
+  padding: 0.25em 0.25em 0.1em;
+  margin-right: .25em;
+  font-size: 100%;
   cursor: pointer;
+  border-radius: 3px 3px 0 0;
+}
+
+.superfences-tabs input:first-child + label {
+  margin-left: .2em;
 }
 
 .superfences-tabs input {
@@ -64,12 +69,20 @@ code {
 }
 
 .superfences-tabs input:nth-child(n+1) + label:hover {
-  color: rgb(142, 142, 214);
+  background: rgb(142, 142, 214);
+  color: white;
+  transition: background-color color .5s ease-in-out;
 }
 
 .superfences-tabs input:nth-child(n+1):checked + label {
   color: rgb(142, 142, 214);
   font-weight: 700;
+  border-bottom: 3px solid rgb(142, 142, 214);
+  transition: background-color color .5s ease-in-out;
+}
+
+.superfences-tabs input:nth-child(n+1):checked + label:hover {
+  color: white;
 }
 
 .superfences-tabs input:nth-child(n+1):checked + label + .superfences-content {

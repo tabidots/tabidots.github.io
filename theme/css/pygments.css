@@ -24,7 +24,7 @@
 }
 
 .highlight .hll { background-color: black; display: block; }
-.highlight  { /* background: #272822; color: #f8f8f2 */ }
+.highlight  { /* background: #272822; */ color: #f8f8f2; }
 .highlight .c { color: #949076; font-style: italic; } /* Comment */
 .highlight .err { color: #ff3ca7; background-color: #1e0010 } /* Error */
 .highlight .k { color: #66d9ef; font-weight: 700; } /* Keyword */

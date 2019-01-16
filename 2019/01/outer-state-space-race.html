@@ -54,7 +54,7 @@
 
 
 
-                <p class="article-date">Sat 12 January 2019</p>
+                <p class="article-date">Wed 16 January 2019</p>
 
                 <a class="header-article-home" href="/">&larr;Home</a>
         </header>
@@ -171,7 +171,7 @@
 1\cdot0.2 + \textcolor{lightgray}{0\cdot0.8} \end{bmatrix}
 = \begin{bmatrix} 0.4 \\ 0.2 \end{bmatrix} $$</div>
 <p>Hmm, that’s not quite right. The values don’t match what we know about our system, and we want a row, not a column.</p>
-<p>Since the product of a matrix and a vector is the shape of the vector, <span class="math">\(\pi^{(1)}\)</span> should be a row vector. We could also transpose the matrix, but then the rows of the matrix no longer represent probabilities of transitioning from a given state. Using a row vector maintains the idea that rows describe origin states and the property that values of rows add up to 1.</p>
+<p>Since the product of a matrix and a vector is the shape of the vector, <span class="math">\(\pi^{(0)}\)</span> should be a row vector if we want <span class="math">\(\pi^{(1)}\)</span> to be a row vector. We could also transpose the matrix, but then the rows of the matrix no longer represent probabilities of transitioning from a given state. Using a row vector maintains the idea that rows describe origin states and the property that values of rows add up to 1.</p>
 <div class="math">$$ \begin{aligned}
 \pi^{(1)} = \pi^{(0)}P &amp;= \begin{bmatrix}1 &amp; 0\end{bmatrix} \begin{bmatrix}
 0.4 &amp; 0.6 \\
@@ -199,7 +199,7 @@
 <div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">19</span><span class="p">]:</span> <span class="n">now</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.45</span><span class="p">,</span><span class="mf">0.55</span><span class="p">]])</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="n">now</span> <span class="err">@</span> <span class="n">meals</span>
-<span class="n">Out</span><span class="p">[</span><span class="mi">21</span><span class="p">]:</span> <span class="n">array</span><span class="p">([[</span><span class="mf">0.29</span><span class="p">,</span> <span class="mf">0.71</span><span class="p">]])</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">20</span><span class="p">]:</span> <span class="n">array</span><span class="p">([[</span><span class="mf">0.29</span><span class="p">,</span> <span class="mf">0.71</span><span class="p">]])</span>
 </pre></div>
 <p>In the <span class="caps">HIV</span>/<span class="caps">AIDS</span> scenario I referred to at the beginning of this post, the initial state vector is used to represent the population (since subsets of a population can be expressed as the probability that a random person will belong to that subset).</p>
 <p>Here are the givens of that problem. The states are <em><span class="caps">HIV</span> asymptomatic, <span class="caps">HIV</span> symptomatic, <span class="caps">AIDS</span>,</em> and <em>death</em>.</p>
@@ -212,10 +212,10 @@
 \end{gathered} $$</div>
 <p>This means that the initial population was 85% asymptomatic, 10% symptomatic, 5% <span class="caps">AIDS</span> patients, and 0% dead.</p>
 <p>If we used a vector with a single 1 and the rest 0s, then that would represent the outcomes for a homogenous population, or more likely, a single person.</p>
-<div class="highlight"><pre><span></span><span class="n">hiv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.9</span> <span class="p">,</span> <span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">],</span>
-                <span class="p">[</span><span class="mi">0</span>   <span class="p">,</span> <span class="mf">0.93</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">],</span>
-                <span class="p">[</span><span class="mi">0</span>   <span class="p">,</span> <span class="mi">0</span>   <span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">],</span>
-                <span class="p">[</span><span class="mi">0</span>   <span class="p">,</span> <span class="mi">0</span>   <span class="p">,</span> <span class="mi">0</span>   <span class="p">,</span> <span class="mi">1</span>   <span class="p">]])</span>
+<div class="highlight"><pre><span></span><span class="n">hiv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span>  <span class="p">,</span> <span class="mf">0.93</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mf">0.02</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span>  <span class="p">,</span> <span class="mi">0</span>   <span class="p">,</span> <span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.15</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span>  <span class="p">,</span> <span class="mi">0</span>   <span class="p">,</span> <span class="mi">0</span>   <span class="p">,</span> <span class="mi">1</span>   <span class="p">]])</span>
 <span class="n">population</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">0.85</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.05</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">33</span><span class="p">]:</span> <span class="n">population</span> <span class="err">@</span> <span class="n">hiv</span>
@@ -224,7 +224,7 @@
 <p>So the outcomes after 1 year (<span class="math">\(t = 1\)</span>) are 76.5% asymptomatic, 15.25% symptomatic, 6.45% <span class="caps">AIDS</span> patients, and 1.8% dead.</p>
 <h1 id="python-izing-a-markov-chain">Python-izing a Markov chain</h1>
 <p>Maybe this is kind of overkill, but we can implement our system as a class.</p>
-<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">Markov_Chain</span><span class="p">:</span>
+<div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MarkovChain</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">matrix</span><span class="p">,</span> <span class="n">init_state</span><span class="p">):</span>
         <span class="c1"># Validate the matrix</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span> <span class="ow">or</span> <span class="nb">type</span><span class="p">(</span><span class="n">init_state</span><span class="p">)</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
@@ -258,28 +258,29 @@
 
     <span class="k">def</span> <span class="nf">status</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">probs_list</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="s2">"%"</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">probs</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
-        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">'At time {self.time}, '</span>
-              <span class="n">f</span><span class="s1">'the transition probabilities are</span><span class="se">\n</span><span class="s1">'</span>
-              <span class="n">f</span><span class="s1">'{"</span><span class="se">\n</span><span class="s1">".join(probs_list)}.'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">'At time {self.time}, the transition probabilities are'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">probs_list</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">restart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">init_state</span><span class="p">):</span>
-        <span class="c1"># call with no args to start over with same initial state</span>
-        <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">,</span> <span class="n">init_state</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">restart</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">init_state</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+          <span class="k">if</span> <span class="ow">not</span> <span class="n">init_state</span><span class="p">:</span>
+              <span class="n">init_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">init_state</span>
+          <span class="c1"># call with no args to start over with same initial state</span>
+          <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">matrix</span><span class="p">,</span> <span class="n">init_state</span><span class="p">)</span>
 </pre></div>
 <p>Now we can see what the population will be like after many years with just a few keystrokes:</p>
-<div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">40</span><span class="p">]:</span> <span class="n">m</span> <span class="o">=</span> <span class="n">Markov_Chain</span><span class="p">(</span><span class="n">hiv</span><span class="p">,</span> <span class="n">population</span><span class="p">)</span>
+<div class="highlight"><pre><span></span><span class="n">In</span> <span class="p">[</span><span class="mi">40</span><span class="p">]:</span> <span class="n">m</span> <span class="o">=</span> <span class="n">MarkovChain</span><span class="p">(</span><span class="n">hiv</span><span class="p">,</span> <span class="n">population</span><span class="p">)</span>
 <span class="n">At</span> <span class="n">time</span> <span class="mi">1</span><span class="p">,</span> <span class="n">the</span> <span class="n">transition</span> <span class="n">probabilities</span> <span class="n">are</span> <span class="p">[</span><span class="s1">'76.5%'</span><span class="p">,</span> <span class="s1">'15.25%'</span><span class="p">,</span> <span class="s1">'6.45%'</span><span class="p">,</span> <span class="s1">'1.8%'</span><span class="p">]</span><span class="o">.</span>
 
 <span class="n">In</span> <span class="p">[</span><span class="mi">41</span><span class="p">]:</span> <span class="n">m</span><span class="o">.</span><span class="n">evolve</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <span class="n">At</span> <span class="n">time</span> <span class="mi">11</span><span class="p">,</span> <span class="n">the</span> <span class="n">transition</span> <span class="n">probabilities</span> <span class="n">are</span> <span class="p">[</span><span class="s1">'26.67%'</span><span class="p">,</span> <span class="s1">'31.53%'</span><span class="p">,</span> <span class="s1">'13.58%'</span><span class="p">,</span> <span class="s1">'28.21%'</span><span class="p">]</span><span class="o">.</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">42</span><span class="p">]:</span> <span class="n">m</span><span class="o">.</span><span class="n">evolve</span><span class="p">(</span><span class="mi">20</span><span class="p">)</span>
-<span class="n">At</span> <span class="n">time</span> <span class="mi">31</span><span class="p">,</span> <span class="n">the</span> <span class="n">transition</span> <span class="n">probabilities</span> <span class="n">are</span> <span class="p">[</span><span class="s1">'3.24%'</span><span class="p">,</span> <span class="s1">'14.4%'</span><span class="p">,</span> <span class="s1">'7.71%'</span><span class="p">,</span> <span class="s1">'74.65%'</span><span class="p">]</span><span class="o">.</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">42</span><span class="p">]:</span> <span class="n">m</span><span class="o">.</span><span class="n">evolve</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">At</span> <span class="n">time</span> <span class="mi">21</span><span class="p">,</span> <span class="n">the</span> <span class="n">transition</span> <span class="n">probabilities</span> <span class="n">are</span> <span class="p">[</span><span class="s1">'9.3%'</span><span class="p">,</span> <span class="s1">'23.68%'</span><span class="p">,</span> <span class="s1">'11.67%'</span><span class="p">,</span> <span class="s1">'55.34%'</span><span class="p">]</span><span class="o">.</span>
 
-<span class="n">In</span> <span class="p">[</span><span class="mi">43</span><span class="p">]:</span> <span class="n">m</span><span class="o">.</span><span class="n">evolve</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
-<span class="n">At</span> <span class="n">time</span> <span class="mi">61</span><span class="p">,</span> <span class="n">the</span> <span class="n">transition</span> <span class="n">probabilities</span> <span class="n">are</span> <span class="p">[</span><span class="s1">'0.14%'</span><span class="p">,</span> <span class="s1">'2.17%'</span><span class="p">,</span> <span class="s1">'1.29%'</span><span class="p">,</span> <span class="s1">'96.4%'</span><span class="p">]</span><span class="o">.</span>
+<span class="n">In</span> <span class="p">[</span><span class="mi">43</span><span class="p">]:</span> <span class="n">m</span><span class="o">.</span><span class="n">evolve</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+<span class="n">At</span> <span class="n">time</span> <span class="mi">31</span><span class="p">,</span> <span class="n">the</span> <span class="n">transition</span> <span class="n">probabilities</span> <span class="n">are</span> <span class="p">[</span><span class="s1">'3.24%'</span><span class="p">,</span> <span class="s1">'14.4%'</span><span class="p">,</span> <span class="s1">'7.71%'</span><span class="p">,</span> <span class="s1">'74.65%'</span><span class="p">]</span><span class="o">.</span>
 </pre></div>
-<p>96.4% dead after 30 years—grim outlook, to say the least. (Though to be fair, the model takes into account that people may and do die of things other than <span class="caps">HIV</span>/<span class="caps">AIDS</span>. This is represented in the matrix by the nonzero probabilities of asymptomatic people transitioning right to death.)</p>
+<p>75% dead after 30 years—grim outlook, to say the least. (Though to be fair, the model takes into account that people may and do die of things other than <span class="caps">HIV</span>/<span class="caps">AIDS</span>. This is represented in the matrix by the nonzero probabilities of asymptomatic people transitioning right to death.)</p>
 <p>…aaaand on that note, I’ll end this post here for now. I will write about Markov chains again in the near future.</p>
 <h1 id="references">References</h1>
 <ul>
