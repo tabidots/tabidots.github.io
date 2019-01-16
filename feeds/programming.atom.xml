@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Judo Salt Genius - Programming</title><link href="http://tabidots.github.io/" rel="alternate"></link><link href="http://tabidots.github.io/feeds/programming.atom.xml" rel="self"></link><id>http://tabidots.github.io/</id><updated>2019-01-16T21:06:57+07:00</updated><entry><title>Zen Coding: A Markov chain in Clojure</title><link href="http://tabidots.github.io/2019/01/markov-chain-in-clojure" rel="alternate"></link><published>2019-01-16T21:06:57+07:00</published><updated>2019-01-16T21:06:57+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-16:/2019/01/markov-chain-in-clojure</id><summary type="html">&lt;p&gt;Clojure is so terse and Zen-like. I love it. This is the Clojure translation of the Markov chain implementation I wrote in Python&amp;nbsp;yesterday.&lt;/p&gt;</summary><content type="html">
+&lt;p&gt;I’m currently in the middle of, among learning many new things, getting back into Clojure. I never really could imagine deploying production-grade Clojure programs, but writing code in a functional paradigm is always a fascinating, challenging, and rewarding exercise.&lt;/p&gt;
+&lt;p&gt;Plus, any Lisp looks pretty cool syntactically, and such languages are always extremely terse.&lt;/p&gt;
+&lt;p&gt;Here’s a Clojure adaptation of the &lt;span class="caps"&gt;HIV&lt;/span&gt;/&lt;span class="caps"&gt;AIDS&lt;/span&gt; Markov chain scenario model that I wrote about and implemented in Python yesterday. Look at how short it is!&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;require&lt;/span&gt; &lt;span class="o"&gt;'&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;clojupyter.misc.helper&lt;/span&gt; &lt;span class="ss"&gt;:as&lt;/span&gt; &lt;span class="nv"&gt;helper&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;helper/add-dependencies&lt;/span&gt; &lt;span class="o"&gt;'&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;net.mikera/core.matrix&lt;/span&gt; &lt;span class="s"&gt;"0.62.0"&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;use&lt;/span&gt; &lt;span class="o"&gt;'&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;clojure.core.matrix&lt;/span&gt; &lt;span class="ss"&gt;:as&lt;/span&gt; &lt;span class="nv"&gt;m&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nv"&gt;hiv&lt;/span&gt; &lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="mf"&gt;0.9&lt;/span&gt; &lt;span class="mf"&gt;0.07&lt;/span&gt; &lt;span class="mf"&gt;0.02&lt;/span&gt; &lt;span class="mf"&gt;0.01&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="mf"&gt;0.93&lt;/span&gt; &lt;span class="mf"&gt;0.05&lt;/span&gt; &lt;span class="mf"&gt;0.02&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="mf"&gt;0.85&lt;/span&gt; &lt;span class="mf"&gt;0.15&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]])&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;def &lt;/span&gt;&lt;span class="nv"&gt;p-0&lt;/span&gt; &lt;span class="p"&gt;[[&lt;/span&gt;&lt;span class="mf"&gt;0.85&lt;/span&gt;, &lt;span class="mf"&gt;0.1&lt;/span&gt;, &lt;span class="mf"&gt;0.05&lt;/span&gt;, &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]])&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;defn &lt;/span&gt;&lt;span class="nv"&gt;evolutions&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;p-matrix&lt;/span&gt; &lt;span class="nv"&gt;initial&lt;/span&gt; &lt;span class="nv"&gt;steps&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;reductions&lt;/span&gt; &lt;span class="nv"&gt;m/mmul&lt;/span&gt;
+              &lt;span class="nv"&gt;initial&lt;/span&gt;
+              &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;repeat &lt;/span&gt;&lt;span class="nv"&gt;steps&lt;/span&gt; &lt;span class="nv"&gt;p-matrix&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;defn &lt;/span&gt;&lt;span class="nv"&gt;future-distribution&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;p-matrix&lt;/span&gt; &lt;span class="nv"&gt;initial&lt;/span&gt; &lt;span class="nv"&gt;steps&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;last&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;evolutions&lt;/span&gt; &lt;span class="nv"&gt;p-matrix&lt;/span&gt;
+                &lt;span class="nv"&gt;initial&lt;/span&gt;
+                &lt;span class="nv"&gt;steps&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;defn &lt;/span&gt;&lt;span class="nv"&gt;watch-evolve&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;column&lt;/span&gt; &lt;span class="nv"&gt;p-matrix&lt;/span&gt; &lt;span class="nv"&gt;initial&lt;/span&gt; &lt;span class="nv"&gt;steps&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;-&amp;gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;evolutions&lt;/span&gt; &lt;span class="nv"&gt;p-matrix&lt;/span&gt;
+                  &lt;span class="nv"&gt;initial&lt;/span&gt;
+                  &lt;span class="nv"&gt;steps&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;get-column&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;get-column&lt;/span&gt; &lt;span class="nv"&gt;column&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Note: It’s written in a way that works in &lt;a href="https://blog.nteract.io/hydrogen-interactive-computing-in-atom-89d291bcc4dd"&gt;Hydrogen&lt;/a&gt; for Atom (i.e., via a hidden Jupyter Notebook). I’m not sure how you’d go about importing &lt;a href="https://github.com/mikera/core.matrix/"&gt;core.matrix&lt;/a&gt; in a one-off &lt;span class="caps"&gt;REPL&lt;/span&gt; session (not a Leiningen project), but now that I’ve discovered Hydrogen, I doubt there will be many terminal &lt;span class="caps"&gt;REPL&lt;/span&gt; sessions in my future!&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;Coding in Clojure means non-object-oriented and no mutable state. You can write a function to compute the probability distribution at time &lt;span class="math"&gt;\(t\)&lt;/span&gt;, but the system won’t stay in that state.&lt;/p&gt;
+&lt;p&gt;In fact, there &lt;em&gt;is&lt;/em&gt; no system—&lt;strong&gt;only evolution&lt;/strong&gt;. In that sense, you quite literally end up with a &lt;em&gt;memoryless&lt;/em&gt; Markov chain. The design philosophy of Clojure is all about impermanence, which is very Zen, when you think about it. (Would that make each program a koan?)&lt;/p&gt;
+&lt;p&gt;Let’s take a quick tour of the functions.&lt;/p&gt;
+&lt;p&gt;First, there is &lt;code class="highlight"&gt;evolutions [p-matrix initial steps]&lt;/code&gt;. That’s a base function that works as a building block for the other functions. In pseudo-math, it would look like this:&lt;/p&gt;
+&lt;div class="math"&gt;$$ E(P, \pi^{(0)}, t) = {\pi^{(1)}, \cdots, \pi^{(t)}} $$&lt;/div&gt;
+&lt;p&gt;It’s easy to see that computing some &lt;span class="math"&gt;\(\pi^{(n)}\)&lt;/span&gt;, the probability distribution (state of the system) at a given time, can be accomplished with a single &lt;code class="highlight"&gt;reduce&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;But Clojure has an interesting function &lt;code class="highlight"&gt;reductions&lt;/code&gt; (&lt;a href="https://clojuredocs.org/clojure.core/reductions"&gt;docs&lt;/a&gt;), which stores all of the intermediate outputs in a list, with the expected output of &lt;code class="highlight"&gt;reduce&lt;/code&gt; as the last entry. So it makes sense to write two functions here:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;one, &lt;code class="highlight"&gt;evolutions&lt;/code&gt;, that gives us &lt;em&gt;all&lt;/em&gt; &lt;span class="math"&gt;\(\{\pi^{(1)}, \cdots, \pi^{(t)}\}\)&lt;/span&gt;, and&lt;/li&gt;
+&lt;li&gt;another, &lt;code class="highlight"&gt;future-distribution&lt;/code&gt;, that takes the same inputs and outputs only the &lt;code class="highlight"&gt;last&lt;/code&gt; evolution.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;In pseudo-math:&lt;/p&gt;
+&lt;div class="math"&gt;$$ F(P, \pi^{(0)}, t) = \pi^{(t)} $$&lt;/div&gt;
+&lt;p&gt;In action:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;future-distribution&lt;/span&gt; &lt;span class="nv"&gt;hiv&lt;/span&gt; &lt;span class="nv"&gt;p-0&lt;/span&gt; &lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;; =&amp;gt; [[0.10334015640198398 0.24687062185910383 0.12037223090781371 0.5294169908310989]]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;What else can we do with the output of &lt;code class="highlight"&gt;evolutions&lt;/code&gt;? Well, we can choose one state of the system and watch its distribution evolve over time by picking out the &lt;span class="math"&gt;\(k\)&lt;/span&gt;-th item of each evolution (a row vector).&lt;/p&gt;
+&lt;p&gt;In this case, we can observe how the proportion of a segment of the population (asymptomatic, symptomatic, has &lt;span class="caps"&gt;AIDS&lt;/span&gt;, dead) changes over &lt;span class="math"&gt;\(t\)&lt;/span&gt; time-steps.&lt;/p&gt;
+&lt;p&gt;In pseudo-math:&lt;/p&gt;
+&lt;div class="math"&gt;$$ W(s, P, \pi^{(0)}, t) = \Big\{ P(s_0), P(s_1 | s_0), \cdots, P(s_t | s_{t-1}) \Big\} $$&lt;/div&gt;
+&lt;p&gt;In action:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;watch-evolve&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="nv"&gt;hiv&lt;/span&gt; &lt;span class="nv"&gt;p-0&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;; =&amp;gt; [0.85 0.765 0.6885 0.61965 0.5576850000000001 0.5019165000000001]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;What a cool language.&lt;/p&gt;</content><category term="clojure"></category><category term="recursion"></category><category term="markov chain"></category></entry></feed>
