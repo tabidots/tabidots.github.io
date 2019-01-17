@@ -3,25 +3,26 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="" />
+    <meta name="description" content="My first experience with something that resembles a math textbook in many years, but this time with “big kid math.” It’s hard!" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@tabidots" />
     <meta name="twitter:creator" content="@tabidots" />
-    <meta name="twitter:title" content="PIM notes, Chapter 2" />
-    <meta name="twitter:description" content="" />
-    <meta name="twitter:image:src" content="/images/selfportrait_small.png" />
+    <meta name="twitter:title" content="PIM notes, Chapter 2 (Polynomials)" />
+    <meta name="twitter:description" content="My first experience with something that resembles a math textbook in many years, but this time with “big kid math.” It’s hard!" />
+    <meta name="twitter:image:src" content="../../images/selfportrait_small.png" />
     <meta name="twitter:domain" content="judosaltgenius.com" />
 
-    <meta property="og:title" content="PIM notes, Chapter 2" />
+    <meta property="og:title" content="PIM notes, Chapter 2 (Polynomials)" />
     <meta property="og:type" content="article" />
-    <meta property="og:description" content="" />
-    <meta property="og:image" content="/images/selfportrait_small.png" />
+    <meta property="og:description" content="My first experience with something that resembles a math textbook in many years, but this time with “big kid math.” It’s hard!" />
+    <meta property="og:image" content="../../images/selfportrait_small.png" />
     <meta property="og:site_name" content="judosaltgenius.com" />
-    <meta property="og:url" content="/drafts/pim-notes-chapter-2" />
+    <meta property="og:url" content="../../2019/01/pim-notes-chapter-2" />
 
+        <link rel="alternate"  href="http://tabidots.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Judo Salt Genius Full Atom Feed"/>
 
-        <title>PIM notes, Chapter 2 - Judo Salt Genius</title>
+        <title>PIM notes, Chapter 2 (Polynomials) - Judo Salt Genius</title>
 
 
     <!-- KaTeX -->
@@ -30,12 +31,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/contrib/auto-render.min.js" integrity="sha384-IiI65aU9ZYub2MY9zhtKd1H2ps7xxf+eb2YFG9lX6uRqpXCvBTOidPRCXCrQ++Uc" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="/theme/css/pure.css?v=0.1.0" />
+    <link rel="stylesheet" href="../../theme/css/pure.css?v=0.1.0" />
       <!-- CSS specified by the user -->
 
 
-      <link href="/assets/mystyle.css" type="text/css" rel="stylesheet" />
-    <link rel="stylesheet" href="/theme/css/pygments.css" />
+      <link href="../../assets/mystyle.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../theme/css/pygments.css" />
 
     <!-- for pelican_dynamic plugin -->
     <!-- end pelican_dynamic -->
@@ -46,13 +47,12 @@
 <div class="pure-g-r" id="layout">
     <div class="sidebar sidebar-article pure-u">
         <header class="header-article">
-                    <a href="/author/justin-douglas" title="See posts by Justin Douglas">
+                    <a href="../../author/justin-douglas" title="See posts by Justin Douglas">
                         <img class="avatar" alt="Justin Douglas" src="https://www.gravatar.com/avatar/74f13134596b2ed04a497936e3fdfd33?s=140">
                     </a>
                 <h2 class="article-info">Justin Douglas</h2>
 
 
-                    <h5>Draft</h5>
 
                 <p class="article-date">Thu 17 January 2019</p>
 
@@ -63,7 +63,7 @@
         <div class="content">
             <section class="post">
                 <header class="post-header">
-                    <h1><span class="caps">PIM</span> notes, Chapter&nbsp;2</h1>
+                    <h1><span class="caps">PIM</span> notes, Chapter 2&nbsp;(Polynomials)</h1>
                 </header>
             </section>
 
@@ -75,7 +75,6 @@
 <li><a href="#sumprod-nested-product-in-sum">\(\sum\prod\) (Nested product in sum)</a></li>
 <li><a href="#horners-method">Horner’s Method</a></li>
 <li><a href="#nested-polynomials">Nested polynomials</a></li>
-<li><a href="#exercises">Exercises</a></li>
 </ul>
 </div>
                 </nav>
@@ -83,8 +82,8 @@
             
 <p>I started reading Jeremy Kun’s <em><a href="https://pimbook.org/">A Programmer’s Introduction to Mathematics</a></em>. This is just a collection of my notes from Chapter 2, or code/math that I felt like writing/typesetting as an exercise while working through the chapter.</p>
 <p>I activated the SuperFences Markdown plugin in the blog’s settings, so it’s really cool to write code for the same thing in different languages side-by-side. (The Java lexer is a little off, though.)</p>
-<p>Note: The chapter is divided into the “main material,” an implementation of something that uses the relevant math, and exercises. I actually got through the material and code part of the chapter last week, and thought I’d be able to publish the complete notes in one go.</p>
-<p>However, the exercises are time-consuming and quickly get very difficult, so my impatience compels me to split this post in two and publish my answers to the exercises another week.</p>
+<p>Note: The chapter is divided into the “main material,” an implementation of something that uses the relevant math, and exercises. I had actually gotten through the material and code part of the chapter last week, before I wrote about Markov matrices, and thought I’d be able to publish the complete notes in one go.</p>
+<p>However, the exercises are time-consuming and quickly get very difficult, so my impatience compels me to split this post in two, since it’d be strange to be writing about <span class="math">\(\Pi\)</span> notation after covering way more advanced material! I’ll publish my answers to the exercises another week.</p>
 <h1 id="sum-summation"><span class="math">\(\sum\)</span> (Summation)</h1>
 <p>Summation notation wasn’t new to me (I learned it the hard way trying to make sense of the linear regression stuff), nor was the Python equivalent. However, since it was presented in Java, I thought it was good opportunity to see the correspondence between Python and Java. When I first started learning to code (beyond web development), I ran away from Java with my tail between my legs, but now it makes a lot more sense. It’s just terribly verbose and inefficient.</p>
 <p>Also, I wanted to use an easy example to get reacquainted with Clojure, my other favorite language, and pick up some R and Julia along the way too.</p>
@@ -320,98 +319,14 @@
 <p>Ah, makes sense. It‘s easy to miss (for me, anyway), but the function <span class="math">\(f(x)\)</span> isn’t the only polynomial here—the term within the <span class="math">\(\prod\)</span> is itself also a polynomial.</p>
 <p>At first, I thought it was just a clever trick, but the reason for factoring out the <span class="math">\(x\)</span> without a subscript is basically that it, unlike everything else in the entire function, <em>not</em> being iterated over by either the <span class="math">\(\prod\)</span> (iterator <span class="math">\(j\)</span>) or <span class="math">\(\sum\)</span> (iterator <span class="math">\(i\)</span>).</p>
 <p>It’s the general indeterminate quantity <span class="math">\(\textcolor{orange}x\)</span>, and not <span class="math">\(\textcolor{teal}{x_i}\)</span> or <span class="math">\(\textcolor{maroon}{x_j}\)</span> (i.e., the x-coordinate of one of the <span class="math">\(n\)</span> points that we provided to the function), which are actually part of the coefficients here. Incidentally, separating the static <code class="highlight">x</code> from the dynamic <code class="highlight">x</code>s was a stumbling block for me as I imagined how to tackle this.</p>
-<h1 id="exercises">Exercises</h1>
-<p><strong>2.1</strong></p>
-<ol>
-<li>
-<p>The highest-degree term in <span class="math">\(f\)</span> is <span class="math">\(x^2\)</span>; the highest-degree term in <span class="math">\(g\)</span> is <span class="math">\(x\)</span>. The highest possible power of <span class="math">\(x\)</span> that can occur in <span class="math">\(f \cdot g\)</span> is <span class="math">\(x^2 \cdot x\)</span>, or <span class="math">\(x^3\)</span>.</p>
-</li>
-<li>
-<p>The highest-degree term in <span class="math">\(f\)</span> is <span class="math">\(x^n\)</span>; the highest-degree term in <span class="math">\(g\)</span> is <span class="math">\(m\)</span>. The highest possible power of <span class="math">\(x\)</span> that can occur in <span class="math">\(f \cdot g\)</span> is <span class="math">\(x^n \cdot x^m = x^{n + m}\)</span>, resulting in a polynomial of degree <span class="math">\(n+m\)</span>.</p>
-</li>
-<li>
-<p>This does not hold when <span class="math">\(f\)</span> or <span class="math">\(g\)</span> are the zero polynomial. The generalization could be changed to say that <span class="math">\(f\)</span> and <span class="math">\(g\)</span> are polynomials with degrees <span class="math">\(n\)</span> and <span class="math">\(m\)</span> where <span class="math">\(n \geq 0\)</span> and <span class="math">\(m \geq 0\)</span>.</p>
-</li>
-</ol>
-<p><strong>2.2</strong></p>
-<ul>
-<li>
-<p>If <span class="math">\(n = 24\)</span>, then the relative prime numbers of <span class="math">\(n\)</span> are <span class="math">\(5, 7, 11, 13, 17, 19, 23\)</span>, which means <span class="math">\(\phi(n) = 8\)</span>.</p>
-</li>
-<li>
-<p>One example of a monic polynomial is <span class="math">\(f(x) = x^5 + 3x^4 + 12x^3 + x + 7\)</span>.</p>
-</li>
-<li>
-<p>If <span class="math">\(f(x) = 6x^3 + 18x^2 - 3x\)</span>, a <span class="math">\(3x\)</span> can be factored out of each term, leaving the factors <span class="math">\(g(x) = 2x^3 + 6x^2 - 1\)</span> and <span class="math">\(h(x) = 3x\)</span>.</p>
-</li>
-<li>
-<p><span class="math">\(f(x) = 17x^3 - 2\)</span> and <span class="math">\(g(x) = 6x^2\)</span> are relatively prime polynomials. <span class="math">\(f(x)\)</span> is also irreducible. For the functions <span class="math">\(f(x) = 2x^2 + 4\)</span> and <span class="math">\(g(x) = 4x^2 + 8\)</span>, their greatest common divisor, since it must be monic, is <span class="math">\((j)x = x^2 + 4\)</span>.</p>
-</li>
-</ul>
-<p><strong>2.3.</strong> According to Euler’s theorem, <span class="math">\(a^{\varphi(n)}\over{n}\)</span> has remainder <span class="math">\(1\)</span> (or <span class="math">\(a^{\varphi(n)}\)</span> <code class="highlight">mod</code> <span class="math">\(n = 1\)</span>). This means that
-    </p>
-<div class="math">$$\begin{aligned}
-    a^{\varphi(n)} \bmod n &amp;= 1 \\
-    \frac{a^{\varphi(n)}}{n} &amp;= c + \frac{1}{n} \\
-    a^{\varphi(n)} &amp;= cn + 1 \\
-    \end{aligned}$$</div>
-<p>
-<span class="math">\(c\)</span> must be a nonnegative integer, which means that <span class="math">\(\frac{a^{\varphi(n)} - 1}{n}\)</span> must be a nonnegative integer. Using the numbers from the previous example (<span class="math">\(n = 24\)</span>, <span class="math">\(\varphi(n) = 8\)</span>), we can let <span class="math">\(a = 5\)</span>.
-    </p>
-<div class="math">$$\begin{aligned}
-    \frac{5^{8}}{24} &amp;= c + \frac{1}{24} \\
-    5^{8} &amp;= 24c + 1 \\
-    390625 - 1 &amp;= 24c \\
-    c &amp;= 16276
-    \end{aligned}$$</div>
-<p>
-  Indeed, <span class="math">\(\frac{390625 - 1}{24}\)</span> is a nonnegative integer.</p>
-<p><strong>2.4.</strong> Based on the definition, a number <span class="math">\(z\)</span> is algebraic if there is some polynomial function <span class="math">\(f(x) = a_0 + a_1x + \cdots + a_nx^n\)</span>, where all <span class="math">\(a_i\)</span> are rational, such that <span class="math">\(f(z) = 0\)</span>. <span class="math">\(\sqrt 2\)</span> is algebraic because it is the root of <span class="math">\(x^2 - 2\)</span>, which has the rational coefficients <span class="math">\(a_0 = -2\)</span>, <span class="math">\(a_1 = 0\)</span>, and <span class="math">\(a_2 = 1\)</span>.</p>
-<p>You can find this by trying to get to <span class="math">\(z\)</span> from 0, then going backwards through that order of operations starting with <span class="math">\(x\)</span>. I find this easier to visualize by writing in Clojure:</p>
-<div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">sqrt</span>         <span class="c1">; x^2</span>
-  <span class="p">(</span><span class="nb">+ </span><span class="mi">2</span> <span class="mi">0</span><span class="p">))</span>    <span class="c1">; - 2</span>
-</pre></div>
-<p>What about <span class="math">\(\phi = \frac{1 + \sqrt 5}{2}\)</span>?</p>
-<div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">/ </span><span class="mi">2</span>              <span class="c1">; 2x</span>
-  <span class="p">(</span><span class="nb">+ </span><span class="mi">1</span>            <span class="c1">; - 1</span>
-    <span class="p">(</span><span class="nf">sqrt</span>         <span class="c1">; all of that ^2</span>
-      <span class="p">(</span><span class="nb">+ </span><span class="mi">5</span> <span class="mi">0</span><span class="p">))))</span>  <span class="c1">; - 5</span>
-</pre></div>
-<p>Thus,</p>
-<div class="math">$$ \begin{aligned}
-f(x) &amp;= (2x - 1)^2 - 5 \\
-&amp;= 2x^2 - 4x + 1 - 5 \\
-&amp;= 2x^2 - 4x - 4
-\end{aligned} $$</div>
-<p>So, we have a polynomial. Since we started from 0 and worked in reverse to come up with this polynomial, that should mean <span class="math">\(\phi\)</span> is algebraic. Let’s check:</p>
-<div class="math">$$ \begin{aligned}
-f(\phi) &amp;= \Big(\cancel{2}(\frac{1 + \sqrt 5}{\cancel{2}}) - 1\Big)^2 - 5 \\
-&amp;= (\cancel{1} + \sqrt 5 - \cancel{1})^2 - 5 \\
-&amp;= (\sqrt 5)^2 - 5 \\
-&amp;= 0
-\end{aligned} $$</div>
-<p>And <span class="math">\(\phi\)</span> is its root, so yes, <span class="math">\(\phi\)</span> is an algebraic number. Now, how about <span class="math">\(\sqrt 2 + \sqrt 3\)</span>? At first I tried to work it out with Clojure and I got the wrong answer. But there is definitely a way to make <span class="math">\(\sqrt 2 + \sqrt 3 = 0\)</span>. I did it the old-fashioned way, filling up an entire sheet of paper with algebra.</p>
-<p>You have to square the term to get rid of the square roots, but because <span class="math">\((a + b)^2 = a^2 + 2ab + b^2\)</span>, you’ll also have to get rid of the <span class="math">\(2\sqrt 2\sqrt 3\)</span> that remains when you do <span class="math">\((\sqrt 2 + \sqrt 3)^2\)</span>.</p>
-<div class="math">$$ \begin{aligned}
-f(x) &amp;= \Big(\frac{x^2 - 5}{2}\Big)^2 - 6 \\
-&amp;= \frac{1}{4}x^4 + \frac{5}{2}x^2 + \frac{25}{4} - 6 \\
-&amp;= \frac{1}{4}x^4 + \frac{5}{2}x^2 + \frac{1}{4}
-\end{aligned} $$</div>
-<p><strong>2.5.</strong></p>
-<p>a. A polynomial encompasses the operations of addition, multiplication, and exponentiation. To find the root of a polynomial is to perform the ”opposite” of these operations.</p>
-<p>Addition and multiplication are commutative, so their opposite is themselves; the opposite of exponentiation is to take a root.</p>
-<p>It would seem from the above work that so any number made from combinations of these “opposite” operations performed on rational numbers is the root of <em>some</em> polynomial and is therefore algebraic.</p>
-<p>Therefore, for any two algebraic numbers, their sum and their product are both algebraic as well.</p>
-<p>b. As for the second part of this problem, proving that <span class="math">\(\pi + e\)</span> and <span class="math">\(\pi e\)</span> cannot <em>both</em> be algebraic, I have no idea.</p>
-<p><strong>2.6.</strong> Ouch</p>
-<p><strong>2.7.</strong></p>
 
             <p class="post-footer">
                 // filed
-                in <a class="post-category" href="/category/math">Math</a>&nbsp;&nbsp;&nbsp;
+under                    <a class="post-category" href="../../tag/pimbook">pimbook</a>
+                in <a class="post-category" href="../../category/math">Math</a>&nbsp;&nbsp;&nbsp;
 
                 <span style="display:inline-block;">
-                // share on <a href="https://twitter.com/share?text=%22PIM%20notes%2C%20Chapter%C2%A02%3A%22&amp;hashtags=" target="_blank">
+                // share on <a href="https://twitter.com/share?text=%22PIM%20notes%2C%20Chapter%202%C2%A0%28Polynomials%29%3A%20My%20first%20experience%20with%20something%20that%20resembles%20a%20math%20textbook%20in%20many%20years%2C%20but%20this%20time%20with%20%E2%80%9Cbig%20kid%20math.%E2%80%9D%20It%E2%80%99s%C2%A0hard%21%22&amp;hashtags=pimbook" target="_blank">
                     <i class="fa fa-twitter fa-lg"></i> Twitter
                 </a>
                 </span>
@@ -430,7 +345,7 @@ f(x) &amp;= \Big(\frac{x^2 - 5}{2}\Big)^2 - 6 \\
     </script>
 
 			<!-- Script specified by the user -->
-			<script type="text/javascript"  src="/assets/tweaks.js"></script>
+			<script type="text/javascript"  src="../../assets/tweaks.js"></script>
 
     <!-- for pelican_dynamic plugin -->
 
