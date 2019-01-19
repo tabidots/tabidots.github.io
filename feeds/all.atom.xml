@@ -1,5 +1,296 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Judo Salt Genius</title><link href="http://tabidots.github.io/" rel="alternate"></link><link href="http://tabidots.github.io/feeds/all.atom.xml" rel="self"></link><id>http://tabidots.github.io/</id><updated>2019-01-17T12:54:19+07:00</updated><entry><title>PIM notes, Chapter 2 (Polynomials)</title><link href="http://tabidots.github.io/2019/01/pim-notes-chapter-2" rel="alternate"></link><published>2019-01-17T12:54:19+07:00</published><updated>2019-01-17T12:54:19+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-17:/2019/01/pim-notes-chapter-2</id><summary type="html">&lt;p&gt;My first experience with something that resembles a math textbook in many years, but this time with “big kid math.” It’s&amp;nbsp;hard!&lt;/p&gt;</summary><content type="html">
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Judo Salt Genius</title><link href="http://tabidots.github.io/" rel="alternate"></link><link href="http://tabidots.github.io/feeds/all.atom.xml" rel="self"></link><id>http://tabidots.github.io/</id><updated>2019-01-19T17:32:22+07:00</updated><entry><title>From zero to “ε-ro”: Infinitesimals, floating-point, convergence, and random error</title><link href="http://tabidots.github.io/2019/01/from-zero-to-ero" rel="alternate"></link><published>2019-01-19T17:32:22+07:00</published><updated>2019-01-19T17:32:22+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-19:/2019/01/from-zero-to-ero</id><summary type="html">&lt;p&gt;Who knew so much could be said about a value so small? I didn’t even cover&amp;nbsp;everything!&lt;/p&gt;</summary><content type="html">
+&lt;p&gt;One of the questions I left open from my blog’s inaugural post on linear regression was &lt;em&gt;How do you know when you’ve reached convergence?&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;That led me to learning about &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; (epsilon), or I suppose re-learning, if you count high school calculus, in which I think it made a single brief appearance in the formal definition of limit.&lt;/p&gt;
+&lt;p&gt;I’m going to take a rather circuitous route to explaining the role of &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; in linear regression, as I kept discovering interesting new things along the way.&lt;/p&gt;
+&lt;p&gt;Hopefully your attention span is larger than the value of &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; (har har)!&lt;/p&gt;
+&lt;h1 id="all-the-small-things"&gt;All the small things&lt;/h1&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; can be found in a variety of contexts, but it always represents an &lt;strong&gt;infinitesimal&lt;/strong&gt;: a quantity that it is infinitely small and basically zero, but not zero-y &lt;em&gt;enough&lt;/em&gt; to not exist.&lt;/p&gt;
+&lt;p&gt;In high school calculus, &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; is the difference between&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;the value of a function, &lt;span class="math"&gt;\(f(x)\)&lt;/span&gt;, near its limit point, &lt;span class="math"&gt;\(x \rightarrow a\)&lt;/span&gt;, and&lt;/li&gt;
+&lt;li&gt;the hypothetical value &lt;span class="math"&gt;\(L\)&lt;/span&gt; that the function appears to tend toward at the actual limit point &lt;span class="math"&gt;\(a\)&lt;/span&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;As the distance between &lt;span class="math"&gt;\(x\)&lt;/span&gt; and &lt;span class="math"&gt;\(a\)&lt;/span&gt; (which is called &lt;span class="math"&gt;\(\delta\)&lt;/span&gt;, delta) shrinks, so does &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt;, so the upper bounds of the two quantities move in tandem.&lt;/p&gt;
+&lt;p&gt;You can also use &lt;span class="math"&gt;\(\delta\)&lt;/span&gt; and &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; to describe derivatives; i.e., if &lt;span class="math"&gt;\(dx = \delta\)&lt;/span&gt; and &lt;span class="math"&gt;\(\frac{dy}{dx} = \epsilon\)&lt;/span&gt;, you can imagine how shrinking one shrinks the other, and more importantly, that the ideal value for both of them is &lt;em&gt;as close as you can get to zero without vanishing&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="derivative animation" src="../../images/derivative_animation.gif" title="source: https://sites.google.com/a/student.ashcoll.school.nz/bcashcoll/13-mac/differentiation-as-3-6-91578"/&gt;&lt;/p&gt;
+&lt;h1 id="machine-epsilon"&gt;Machine epsilon&lt;/h1&gt;
+&lt;p&gt;There is also a quantity that computer scientists call &lt;strong&gt;machine epsilon&lt;/strong&gt;, which defines the smallest number that a given computing environment can represent.&lt;/p&gt;
+&lt;p&gt;It is the largest &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; that satisfies&lt;/p&gt;
+&lt;div class="math"&gt;$$ 1 + \epsilon = 1 $$&lt;/div&gt;
+&lt;p&gt;which looks like another math koan, or at least some Orwellian “newmath” like &lt;span class="math"&gt;\(2 + 2 = 5\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Actually, that &lt;span class="math"&gt;\(+\)&lt;/span&gt; should have a &lt;span class="math"&gt;\(\bigcirc\)&lt;/span&gt; around it: &lt;span class="math"&gt;\(\oplus\)&lt;/span&gt;, giving us&lt;/p&gt;
+&lt;div class="math"&gt;$$ 1 \oplus \epsilon = 1 $$&lt;/div&gt;
+&lt;p&gt;The &lt;span class="math"&gt;\(\oplus\)&lt;/span&gt; means &lt;em&gt;floating-point addition&lt;/em&gt;.  &lt;/p&gt;
+&lt;p&gt;Now, in my programming life, I have not had a need for significant precision until now, with my new interest in fields that require numerical computing.&lt;/p&gt;
+&lt;p&gt;I also started with Python (well, JavaScript if you go way back), so I never even really had to distinguish between &lt;code class="highlight"&gt;float&lt;/code&gt;s and &lt;code class="highlight"&gt;int&lt;/code&gt;s in my code—much less think about the consequences or even know the difference, really. I just knew that if you wanted a number with a decimal point, it had to be a &lt;code class="highlight"&gt;float&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Once you get into doing real math with computers, though, you can’t just keep &lt;code class="highlight"&gt;float&lt;/code&gt;ing along like that, because the limitations of machines come into play.&lt;/p&gt;
+&lt;h2 id="floating-point-arithmetic"&gt;Floating-point arithmetic&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;Floating-point arithmetic&lt;/em&gt; was devised because computer memory, especially in machines from the very early days of computing, can only allocate a finite amount of resources to data.&lt;/p&gt;
+&lt;p&gt;Floating-point is basically scientific notation. Let’s consider the mass of a proton in scientific notation (this post isn’t about physics, but as an astoundingly small value, it’s a good example):&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned} &amp;amp; 0.0000000000000000000000000016726 \space \textrm{kg} \\
+&amp;amp;= \underbrace{1.6726}_{\textrm{significand}} \times \underbrace{10}_{\textrm{base}}  \!\!\!\!^{\overbrace{-27}^{\textrm{exponent}}} \space \textrm{kg}
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;The goal of scientific notation is to translate numbers of extreme magnitude into more human-friendly terms. But computers don’t operate like humans do. So how can we translate this number into &lt;em&gt;computer&lt;/em&gt;-friendly terms?&lt;/p&gt;
+&lt;p&gt;First, computers use &lt;em&gt;binary&lt;/em&gt;, not base 10 (decimal system). Of course, we know that, but what does that actually mean? I always thought binary sequences were random collections of ones and zeros—as if computer programs were like canvasses assaulted by a digital Jackson Pollock armed with buckets of bits and bytes.&lt;/p&gt;
+&lt;p&gt;&lt;img alt="binary counter" src="https://upload.wikimedia.org/wikipedia/commons/7/75/Binary_counter.gif" title="(source: Ephert [CC BY-SA 4.0] https://creativecommons.org/licenses/by-sa/4.0, from Wikimedia Commons)"/&gt;&lt;/p&gt;
+&lt;p&gt;I am not well-versed enough in binary to explain this in words, but you can definitely see some sort of pattern in the movement of the values here.&lt;/p&gt;
+&lt;p&gt;Anyway, let’s rewrite the mass of a proton in binary (scroll sideways, it’s a long one):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000100001001000010
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;And in binary scientific notation (sort of):&lt;/p&gt;
+&lt;div class="math"&gt;$$ 1.00001001000010_{\textrm{bin}} \times 2^{-89} $$&lt;/div&gt;
+&lt;p&gt;Almost there. Let’s take a look at how computers actually store floating-point numbers:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="64-bit floating point storage structure" src="https://upload.wikimedia.org/wikipedia/commons/a/a9/IEEE_754_Double_Floating_Point_Format.svg" title="source: Codekaizen - Own work, [CC BY-SA 4.0] https://commons.wikimedia.org/w/index.php?curid=3595583"/&gt;&lt;/p&gt;
+&lt;p&gt;Every number is allocated 64 bits of memory (this can vary, but let’s stick with 64). There are 52 bits for the &lt;em&gt;mantissa&lt;/em&gt; (computer science term for significand), 11 for the exponent, and 1 for the sign (positve or negative). Each bit can be 1 or 0, which is the whole reason for using binary in the first place.&lt;/p&gt;
+&lt;p&gt;Storing the mantissa, then, is just a matter of finding a way to fit the relevant sequence of ones and zeros into the 52 slots allocated for it. If there are too many digits (as in this case), chop them off; if there are too few, add padding. This is where floating-point differs from scientific notation.&lt;/p&gt;
+&lt;div class="math"&gt;$$ 00000000 \space 00000000 \space 00000000 \space 00000000 \space
+00000\textcolor{teal}{100 \space 00100100 \space 0010} \times 2^{-51} $$&lt;/div&gt;
+&lt;p&gt;Looks like a lot of zeros. Incidentally, the method to obtain a base-10 number from this can be expressed mathematically in a cool way:&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+&amp;amp; \Bigg(\sum_{n=0}^{p-1} \textrm{bit}_n \times 2^{-n} \Bigg) \times 2^e \\
+&amp;amp;= (0 \times 2^{-0} + 0 \times 2^{-1} + 0 \times 2^{-2} + \cdots + 1 \times 2^{-50} + 0 \times 2^{-51}) \times 2^{-51} \\
+&amp;amp;= (1 \times 2^{-37} + 1 \times 2^{-42} + 1 \times 2^{-45} + 1 \times 2^{-50}) \times 2^{-51}
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;where &lt;span class="math"&gt;\(\textrm{bit}_n\)&lt;/span&gt; is the binary value of the bit at index &lt;span class="math"&gt;\(n\)&lt;/span&gt; (from the left, starting at 0), &lt;span class="math"&gt;\(p\)&lt;/span&gt; is the precision (number of bits), and &lt;span class="math"&gt;\(e\)&lt;/span&gt; is the exponent (which just happens to be &lt;span class="math"&gt;\(-51\)&lt;/span&gt; here; it has nothing to do with the number of bits for the mantissa).&lt;/p&gt;
+&lt;p&gt;Okay, that was fun. Now what?&lt;/p&gt;
+&lt;h2 id="rounding-errors"&gt;Rounding errors&lt;/h2&gt;
+&lt;p&gt;&lt;em&gt;If there are too many digits, chop them off&lt;/em&gt;. This opens up a big can of worms. Or an infinitesimal one, given the topic at hand (har har).&lt;/p&gt;
+&lt;p&gt;In exchange for the computability (read: speed and power) and storeability of floating-point numbers, we have to accept a limit to their precision. The digits of &lt;span class="math"&gt;\(\pi\)&lt;/span&gt;, for example, repeat endlessly. We can’t expect a computer to handle them all, or a calculator, for that matter.&lt;/p&gt;
+&lt;p&gt;Even totally pedestrian numbers like &lt;span class="math"&gt;\(\frac{1}{3}\)&lt;/span&gt; go on forever. This means that computers cannot reason about fractional quantities in the way that the human mind can.&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+1 + \frac{1}{3} &amp;amp;= \frac{4}{3}_{\textrm{human}} \\[0.8em]
+&amp;amp;= 1.333\overline{3}_{\textrm{dec}} \\
+&amp;amp;= 1.1010\overline{10}_{\textrm{bin}}
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;That is, unless you are working in some baller language like Clojure that has &lt;code class="highlight"&gt;Ratio&lt;/code&gt; data types:&lt;/p&gt;
+&lt;div class="superfences-tabs"&gt;
+&lt;input checked="checked" id="__tab_1_0" name="__tabs_1" type="radio"/&gt;
+&lt;label for="__tab_1_0"&gt;Clojure&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;/ &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;        &lt;span class="c1"&gt;; 1/3&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;type&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;/ &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="c1"&gt;; clojure.lang.Ratio&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+ &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;/ &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;  &lt;span class="c1"&gt;; 4/3&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;input id="__tab_1_1" name="__tabs_1" type="radio"/&gt;
+&lt;label for="__tab_1_1"&gt;Python&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;# 1.3333333333333333&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Most languages seem to have implemented some sort of corrective mechanism that works in simple cases, but notice what happens with the following expressions in Python:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;
+&lt;span class="c1"&gt;# 1.0&lt;/span&gt;
+&lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="c1"&gt;# 1.0&lt;/span&gt;
+&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;
+&lt;span class="c1"&gt;# 0.9999999999999998&lt;/span&gt;
+&lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;
+&lt;span class="c1"&gt;# False&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Keep in mind that we’re working in binary here. Unexpectedly (if you are not proficient in binary), many “simple” numbers that don’t repeat in decimal do in binary:&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+\frac{1}{10} &amp;amp;= 0.1_{\textrm{dec}} \\
+&amp;amp;= 0.1100\overline{1100}_{\textrm{bin}}
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;All of this leads to &lt;strong&gt;floating-point rounding errors&lt;/strong&gt; that can quickly snowball into massively erroneous output over many iterations. Here’s the example from the &lt;a href="https://youtu.be/8iGzBMboA0I?t=3247"&gt;Rachel Thomas lecture&lt;/a&gt;. Start with &lt;span class="math"&gt;\(x = \frac{1}{10}\)&lt;/span&gt; and keep applying the function to the output you get:&lt;/p&gt;
+&lt;div class="math"&gt;$$ f(x) = \begin{cases}
+2x     &amp;amp; \textrm{if } x \leq \frac{1}{2} \\
+2x - 1 &amp;amp; \textrm{if } x &amp;gt; \frac{1}{2}
+\end{cases} $$&lt;/div&gt;
+&lt;p&gt;If you do this by hand you get&lt;/p&gt;
+&lt;div class="math"&gt;$$ \{\tfrac{1}{10}, \tfrac{1}{5}, \tfrac{2}{5}, \tfrac{4}{5}, \tfrac{3}{5}, \overline{\tfrac{1}{5}, \tfrac{2}{5}, \tfrac{4}{5}, \tfrac{3}{5}}, \cdots\} $$&lt;/div&gt;
+&lt;p&gt;but when you try to execute this on a computer:&lt;/p&gt;
+&lt;div class="superfences-tabs"&gt;
+&lt;input checked="checked" id="__tab_2_0" name="__tabs_2" type="radio"/&gt;
+&lt;label for="__tab_2_0"&gt;Python&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt;
+    &lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;10&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;_&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;input id="__tab_2_1" name="__tabs_2" type="radio"/&gt;
+&lt;label for="__tab_2_1"&gt;Clojure&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;use&lt;/span&gt; &lt;span class="ss"&gt;'clojure.pprint&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kd"&gt;defn &lt;/span&gt;&lt;span class="nv"&gt;f&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;x&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;lt;= &lt;/span&gt;&lt;span class="nv"&gt;x&lt;/span&gt; &lt;span class="mf"&gt;0.5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;* &lt;/span&gt;&lt;span class="nv"&gt;x&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;- &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;* &lt;/span&gt;&lt;span class="nv"&gt;x&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;pprint&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;take &lt;/span&gt;&lt;span class="mi"&gt;80&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;iterate &lt;/span&gt;&lt;span class="nv"&gt;f&lt;/span&gt; &lt;span class="mf"&gt;0.1&lt;/span&gt;&lt;span class="p"&gt;)))&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;it doesn’t take long before the value converges on 1, which is very bizarre.&lt;/p&gt;
+&lt;h2 id="granularity"&gt;Granularity&lt;/h2&gt;
+&lt;p&gt;Limited storage space leads to limited precision. A related consequence of this is that floating-point numbers are discrete, not continuous like the number line we picture in our minds. (As a kid, I think I imagined a spectrum. Fun? Yes. Accurate? Not sure.) Computers are capable of pretty precise calculations, but not perfectly precise.&lt;/p&gt;
+&lt;p&gt;Think of floating-point numbers like pixels. While it is true that computer displays have become less and less ”pixelly-looking” over the years, and text rendered on a Retina screen can almost look like a printed page, we know that such output still consists of pixels.&lt;/p&gt;
+&lt;p&gt;The same is true for floating-point numbers. They allow for some degree of precision, but the number line they form is more like a dotted line than a solid line. (Even stranger, the density of the line changes at different scales, but I’ll leave that one for someone else to explain!)&lt;/p&gt;
+&lt;p&gt;Take the binary number &lt;code class="highlight"&gt;1.0&lt;/code&gt; (regular binary, not floating-point). This is equal to the decimal number 1 as well. If we keep moving the 1 to the right and adding zeros accordingly, the value is halved:&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+1.0_\textrm{bin} = 1_\textrm{dec} \\
+0.1_\textrm{bin} = \tfrac{1}{2}_\textrm{dec} \\
+0.01_\textrm{bin} = \tfrac{1}{4}_\textrm{dec} \\
+0.001_\textrm{bin} = \tfrac{1}{8}_\textrm{dec}
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;It is pretty clear that with 52 slots for binary values, you are going to run out of room at some point—even with the orders-of-magnitude wiggle room that the exponent provides.&lt;/p&gt;
+&lt;p&gt;This means that after enough iterations, a value can no longer be halved. &lt;em&gt;That unhalvable value&lt;/em&gt; is the smallest difference that that computing environment can represent, and it is the distance between a given number and its closest possible neighbor on the floating-point number line.&lt;/p&gt;
+&lt;p&gt;You could think of that as the size of a ”number pixel.” The whole pixel has the value of (say) its left edge, and any quantity that falls within the space of the pixel gets rounded to the edge of that pixel or the next one.&lt;/p&gt;
+&lt;p&gt;Machine epsilon, then, is the &lt;em&gt;largest quantity&lt;/em&gt; that is less than the width of a number pixel. So it makes sense, then, that &lt;span class="math"&gt;\(1 \oplus \epsilon = 1\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;This means that machine epsilon is the &lt;em&gt;largest possible rounding error&lt;/em&gt; of a floating-point system.&lt;/p&gt;
+&lt;p&gt;It also means that on our continuous human number line, as soon as you move &lt;em&gt;rightward&lt;/em&gt; of machine epsilon, you have entered the territory of the next machine-perceptible number. That is how machine epsilon defines the smallest possible difference that the system can represent.&lt;/p&gt;
+&lt;h2 id="calculating-machine-epsilon"&gt;Calculating machine epsilon&lt;/h2&gt;
+&lt;p&gt;Before I started writing this post, I just wanted to see the code to calculate machine epsilon. But I didn’t fully understand what was going on, and my dissatisfaction with that led me to go back through all the stuff I just explained. (Of course, it didn’t help that I wasn’t sure about the syntax of &lt;code class="highlight"&gt;loop&lt;/code&gt; in Clojure 🙈)&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;; Source: https://github.com/log0ymxm/gorilla-worksheets/blob/master/src/machine-epsilon.clj&lt;/span&gt;
+
+&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;loop &lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;k&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="nv"&gt;s&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;if &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;or &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;lt;= &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+ &lt;/span&gt;&lt;span class="nv"&gt;s&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+          &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;gt; &lt;/span&gt;&lt;span class="nv"&gt;k&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="nb"&gt;dec &lt;/span&gt;&lt;span class="nv"&gt;k&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;, &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;* &lt;/span&gt;&lt;span class="mf"&gt;2.0&lt;/span&gt; &lt;span class="nv"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;recur&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;inc &lt;/span&gt;&lt;span class="nv"&gt;k&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;* &lt;/span&gt;&lt;span class="mf"&gt;0.5&lt;/span&gt; &lt;span class="nv"&gt;s&lt;/span&gt;&lt;span class="p"&gt;))))&lt;/span&gt;
+&lt;span class="c1"&gt;; [53 2.220446049250313E-16]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This loop is trying to find the unhalvable value I wrote about earlier. Start with &lt;code class="highlight"&gt;s = 1.0&lt;/code&gt; and keep halving that (moving the binary 1 rightward) until &lt;code class="highlight"&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;lt;= &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+ &lt;/span&gt;&lt;span class="nv"&gt;s&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;/code&gt; or &lt;span class="math"&gt;\(1 + s \leq 1\)&lt;/span&gt;—i.e., until the computer no longer recognizes &lt;code class="highlight"&gt;s&lt;/code&gt; as having value.&lt;/p&gt;
+&lt;p&gt;Once that happens, you’ve gone too far and fallen within the bounds of a number pixel. To find the edge of the next pixel—that is, the next adjacent perceptibly different number—move the binary 1 left by one place (in decimal, that’s multiplying by 2).&lt;/p&gt;
+&lt;p&gt;That’s the reason for the final &lt;code class="highlight"&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;* &lt;/span&gt;&lt;span class="mf"&gt;2.0&lt;/span&gt; &lt;span class="nv"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;/code&gt; once the terminating condition is met.&lt;/p&gt;
+&lt;p&gt;&lt;code class="highlight"&gt;k&lt;/code&gt; tells us that the 1 is in the &lt;span class="math"&gt;\(k\)&lt;/span&gt;th place after the decimal point. Here, that’s the 53rd place. That’s no surprise; we know it’s a 64-bit number. But &lt;code class="highlight"&gt;k&lt;/code&gt; could be larger or smaller depending on the precision of the floating-point system, with higher values meaning more available places and thus higher precision.&lt;/p&gt;
+&lt;p&gt;Julia, NumPy, and R have built-in ways to find machine epsilon (or rather, the value just a hair larger than machine epsilon). Of the three, Julia’s value is the most precise (to the same level of precision as Clojure above).&lt;/p&gt;
+&lt;div class="superfences-tabs"&gt;
+&lt;input checked="checked" id="__tab_3_0" name="__tabs_3" type="radio"/&gt;
+&lt;label for="__tab_3_0"&gt;Julia&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c"&gt;# source: https://docs.julialang.org/en/v1/manual/integers-and-floating-point-numbers/index.html&lt;/span&gt;
+&lt;span class="n"&gt;julia&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;eps&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;         
+&lt;span class="mf"&gt;2.220446049250313e-16&lt;/span&gt;
+&lt;span class="n"&gt;julia&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;eps&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="kt"&gt;Float32&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c"&gt;# 32-bit (single-precision) number&lt;/span&gt;
+&lt;span class="mf"&gt;1.1920929f-7&lt;/span&gt;
+&lt;span class="n"&gt;julia&lt;/span&gt;&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;eps&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;span class="mf"&gt;1.0&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;input id="__tab_3_1" name="__tabs_3" type="radio"/&gt;
+&lt;label for="__tab_3_1"&gt;Python&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# source: https://stackoverflow.com/questions/19141432/python-numpy-machine-epsilon&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;finfo&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eps&lt;/span&gt;        
+&lt;span class="mf"&gt;2.22044604925e-16&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;finfo&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;float32&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eps&lt;/span&gt; &lt;span class="c1"&gt;# 32-bit (single-precision) number&lt;/span&gt;
+&lt;span class="mf"&gt;1.19209e-07&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;finfo&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;float&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eps&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;span class="mf"&gt;1.0&lt;/span&gt;
+ &lt;span class="sb"&gt;``&lt;/span&gt;&lt;span class="err"&gt;`&lt;/span&gt;
+
+&lt;span class="sb"&gt;``&lt;/span&gt;&lt;span class="err"&gt;`&lt;/span&gt;&lt;span class="n"&gt;R&lt;/span&gt; &lt;span class="n"&gt;tab&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;
+&lt;span class="c1"&gt;# source: https://stackoverflow.com/questions/2619543/how-do-i-obtain-the-machine-epsilon-in-r&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Machine&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;double&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eps&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="mf"&gt;2.220446e-16&lt;/span&gt;
+&lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;Machine&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;double&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;eps&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Just for completeness, this is that value in math notation:&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+\epsilon_{\textrm{mach}} &amp;amp;= 2.220446049250313 \times 10^{-16} \\
+&amp;amp;= 0.000 \space 000 \space 000 \space 000 \space 000 \space 000 \space 000 \space
+222 \space 044 \space 604 \space 9250
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;So, even though I don’t immediately see myself caring about the specific &lt;em&gt;value&lt;/em&gt; of machine epsilon (as opposed to its &lt;em&gt;implications&lt;/em&gt;), that’s pretty neat.&lt;/p&gt;
+&lt;p&gt;Speaking of the implications of &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt;—of the machine and non-machine variety—I have to bring the discussion back to what brought me to &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; in the first place: convergence in linear regression.&lt;/p&gt;
+&lt;h1 id="linear-regression"&gt;Linear regression&lt;/h1&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; has &lt;em&gt;two&lt;/em&gt; meanings in linear regression depending on whether you are creating the model or using the model.&lt;/p&gt;
+&lt;h2 id="convergence-threshold"&gt;Convergence threshold&lt;/h2&gt;
+&lt;p&gt;&lt;a href="/2019/01/loopless-loop"&gt;Previously&lt;/a&gt;, we performed stochastic gradient descent in a way that we could see the cost decreasing with every iteration, but we still had to adjust the number of iterations manually and judge convergence by looking through the output to find the point where the next iteration wasn’t really worth it.&lt;/p&gt;
+&lt;p&gt;It’s conceptually very simple to have the computer do this for you. On each iteration, just keep track of the cost obtained after the previous iteration and compare it to the current cost. If the difference is below a certain threshold value, stop iterating.&lt;/p&gt;
+&lt;div class="math"&gt;$$ | J(\theta_{\textrm{current}}) - J(\theta_{\textrm{previous}}) | &amp;lt; \epsilon $$&lt;/div&gt;
+&lt;p&gt;In this context, the threshold value is called &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt;. Something like &lt;span class="math"&gt;\(0.0001\)&lt;/span&gt; might be adequate.&lt;/p&gt;
+&lt;p&gt;Let’s take first part of the code from the last post:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sklearn.datasets&lt;/span&gt;
+
+&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sklearn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;datasets&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make_regression&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_samples&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;500&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;n_features&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hstack&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ones&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="c1"&gt;# padding for bias column&lt;/span&gt;
+&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vstack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# this just fixes a quirk of sklearn's output&lt;/span&gt;
+
+&lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;cost&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;num_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;o&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ones&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;num_samples&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;errors&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+    &lt;span class="n"&gt;cost_array&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;num_samples&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;cost_array&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;and modify our &lt;code class="highlight"&gt;train_model&lt;/code&gt; function to show us the difference between the current and the last cost on every 50th iteration, and train for 1500 epochs.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;train_model&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;epochs&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;learning_rate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.01&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;num_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="hll"&gt;    &lt;span class="n"&gt;last_cost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;/span&gt;    &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="nb"&gt;range&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;epochs&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+        &lt;span class="n"&gt;errors&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+        &lt;span class="n"&gt;step_distance&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;num_samples&lt;/span&gt;
+        &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;-=&lt;/span&gt; &lt;span class="n"&gt;learning_rate&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;step_distance&lt;/span&gt;
+&lt;span class="hll"&gt;        &lt;span class="n"&gt;this_cost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cost&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/span&gt;&lt;span class="hll"&gt;        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="mi"&gt;50&lt;/span&gt; &lt;span class="o"&gt;==&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/span&gt;&lt;span class="hll"&gt;            &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;i&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="nb"&gt;abs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;this_cost&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;last_cost&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+&lt;/span&gt;&lt;span class="hll"&gt;        &lt;span class="n"&gt;last_cost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;this_cost&lt;/span&gt;
+&lt;/span&gt;    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;
+
+&lt;span class="n"&gt;train_model&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1500&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;At 600 epochs, the difference falls to about &lt;code class="highlight"&gt;0.001&lt;/code&gt; and at 700 epochs, it falls to about &lt;code class="highlight"&gt;0.0001&lt;/code&gt;. Considering the difference between the initial 20 iterations was in the hundreds, I think &lt;code class="highlight"&gt;0.001&lt;/code&gt; is a sufficiently good &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;Let’s rewrite the function to stop training based on a value of &lt;code class="highlight"&gt;epsilon&lt;/code&gt; rather than a number &lt;code class="highlight"&gt;epochs&lt;/code&gt;:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="hll"&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;train_model&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;epsilon&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.001&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;learning_rate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.01&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/span&gt;    &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
+    &lt;span class="n"&gt;num_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="n"&gt;last_cost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
+&lt;span class="hll"&gt;    &lt;span class="n"&gt;epochs&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="c1"&gt;# just to know the value; not critical for training&lt;/span&gt;
+&lt;/span&gt;&lt;span class="hll"&gt;    &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;span class="hll"&gt;        &lt;span class="n"&gt;epochs&lt;/span&gt; &lt;span class="o"&gt;+=&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;
+&lt;/span&gt;        &lt;span class="n"&gt;errors&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+        &lt;span class="n"&gt;step_distance&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="n"&gt;num_samples&lt;/span&gt;
+        &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;-=&lt;/span&gt; &lt;span class="n"&gt;learning_rate&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;step_distance&lt;/span&gt;
+        &lt;span class="n"&gt;this_cost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;cost&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="hll"&gt;        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="nb"&gt;abs&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;this_cost&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;last_cost&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;&amp;lt;&lt;/span&gt; &lt;span class="n"&gt;epsilon&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;/span&gt;&lt;span class="hll"&gt;            &lt;span class="k"&gt;break&lt;/span&gt;
+&lt;/span&gt;        &lt;span class="n"&gt;last_cost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;this_cost&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"Completed {epochs} epochs of training."&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="s2"&gt;"Final cost: {cost(X, y, weights)}"&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt;
+
+&lt;span class="n"&gt;train_model&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="c1"&gt;# Completed 612 epochs of training.&lt;/span&gt;
+&lt;span class="c1"&gt;# Final cost: 0.05001815274191081&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Nice!&lt;/p&gt;
+&lt;h2 id="random-error"&gt;Random error&lt;/h2&gt;
+&lt;p&gt;I sort of lied when I said linear regression is&lt;/p&gt;
+&lt;div class="math"&gt;$$ h_{\theta}(x) = \theta_0x_0 + \theta_1x_1 + \cdots + \theta_nx_n $$&lt;/div&gt;
+&lt;p&gt;I mean, it is. But that function gives the idealized, &lt;em&gt;predicted&lt;/em&gt; value, the &lt;span class="math"&gt;\(\hat y\)&lt;/span&gt;. The &lt;em&gt;real&lt;/em&gt; value is&lt;/p&gt;
+&lt;div class="math"&gt;$$ y = \theta_0x_0 + \theta_1x_1 + \cdots + \theta_nx_n + \textcolor{magenta}{\epsilon} $$&lt;/div&gt;
+&lt;p&gt;(And in statistics they use &lt;span class="math"&gt;\(\beta\)&lt;/span&gt; rather than &lt;span class="math"&gt;\(\theta\)&lt;/span&gt;, just to keep you on your toes.)&lt;/p&gt;
+&lt;p&gt;This &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; is called the &lt;strong&gt;random error&lt;/strong&gt;, which sounds like the consequence of a really sloppy programmer, but is simply a way of dealing with the unavoidable fact that no model can be perfect.&lt;/p&gt;
+&lt;p&gt;Remember how we used the &lt;em&gt;actual&lt;/em&gt; error (&lt;span class="math"&gt;\(\hatY - Y\)&lt;/span&gt;) to compute the distance between our hypothetical line of best fit and each data point? The random error is basically saying that&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;The regression line is the line that best fits—not &lt;em&gt;perfectly&lt;/em&gt; fits—the data used to create it, and&lt;/li&gt;
+&lt;li&gt;Because of that, predictions made with the model are not likely to fall directly &lt;em&gt;on&lt;/em&gt; the line.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;That doesn’t mean they &lt;em&gt;won’t&lt;/em&gt;, but we can’t know for sure, and it’s not likely. This uncertainty is captured by &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; (which we should hope is a small value, if not infinitesimal 😅). &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; is considered to be taken from&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;a normally distributed (bell curve) set of values&lt;/li&gt;
+&lt;li&gt;with a mean of 0&lt;/li&gt;
+&lt;/ol&gt;
+&lt;p&gt;The second property makes sense; our line is the best-fitting line, so its underestimates should equal its overestimates). The first property is arbitrary—you could choose any kind of probability distribution, but a bell curve is apparently the simplest one that is correct enough frequently enough.&lt;/p&gt;
+&lt;p&gt;This is more of a theoretical shim than anything that concerns atually coding a model, but it’s still an important variable.&lt;/p&gt;
+&lt;p&gt;In a future post, I will talk about a topic that takes &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; to the next level. Stay tuned!&lt;/p&gt;
+&lt;h1 id="references"&gt;References&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://en.wikibooks.org/wiki/Floating_Point/Epsilon"&gt;Floating Point/Epsilon&lt;/a&gt;, Wikibooks&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://en.wikipedia.org/wiki/Floating-point_arithmetic"&gt;Floating-point arithmetic&lt;/a&gt;, Wikipedia&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://www0.gsb.columbia.edu/faculty/pglasserman/B6014/Regression.pdf"&gt;B6014 Managerial Statistics: Linear Regression&lt;/a&gt;, Columbia Business School&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://math.stackexchange.com/questions/1051863/assumption-of-a-random-error-term-in-a-regression"&gt;Assumption of a Random error term in a regression&lt;/a&gt;, StackExchange Mathematics&lt;/li&gt;
+&lt;/ul&gt;</content><category term="convergence"></category><category term="floating-point"></category><category term="error"></category><category term="epsilon"></category></entry><entry><title>PIM notes, Chapter 2 (Polynomials)</title><link href="http://tabidots.github.io/2019/01/pim-notes-chapter-2" rel="alternate"></link><published>2019-01-17T12:54:19+07:00</published><updated>2019-01-17T12:54:19+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-17:/2019/01/pim-notes-chapter-2</id><summary type="html">&lt;p&gt;My first experience with something that resembles a math textbook in many years, but this time with “big kid math.” It’s&amp;nbsp;hard!&lt;/p&gt;</summary><content type="html">
 &lt;p&gt;I started reading Jeremy Kun’s &lt;em&gt;&lt;a href="https://pimbook.org/"&gt;A Programmer’s Introduction to Mathematics&lt;/a&gt;&lt;/em&gt;. This is just a collection of my notes from Chapter 2, or code/math that I felt like writing/typesetting as an exercise while working through the chapter.&lt;/p&gt;
 &lt;p&gt;I activated the SuperFences Markdown plugin in the blog’s settings, so it’s really cool to write code for the same thing in different languages side-by-side. (The Java lexer is a little off, though.)&lt;/p&gt;
 &lt;p&gt;Note: The chapter is divided into the “main material,” an implementation of something that uses the relevant math, and exercises. I had actually gotten through the material and code part of the chapter last week, before I wrote about Markov matrices, and thought I’d be able to publish the complete notes in one go.&lt;/p&gt;
@@ -1273,7 +1564,7 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &lt;ul&gt;
 &lt;li&gt;Are there any other simple techniques to speed this up? (Mean normalization)&lt;/li&gt;
 &lt;li&gt;Are there any complex techniques to speed this up? (Automatic differentiation)&lt;/li&gt;
-&lt;li&gt;How do we know when we’ve reached convergence? (Epsilon)&lt;/li&gt;
+&lt;li&gt;&lt;a href="from-zero-to-ero"&gt;How do we know when we’ve reached convergence? (Epsilon)&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;How can &lt;em&gt;linear&lt;/em&gt; (as opposed to &lt;em&gt;logistic&lt;/em&gt;) regression be applied to language tasks? (General backpropagation of neural networks)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h1 id="references"&gt;References&lt;/h1&gt;

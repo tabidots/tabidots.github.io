@@ -3,23 +3,24 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="" />
+    <meta name="description" content="Who knew so much could be said about a value so small? I didn’t even cover everything!" />
 
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:site" content="@tabidots" />
     <meta name="twitter:creator" content="@tabidots" />
     <meta name="twitter:title" content="From zero to “ε-ro”: Infinitesimals, floating-point, convergence, and random error" />
-    <meta name="twitter:description" content="" />
-    <meta name="twitter:image:src" content="/images/selfportrait_small.png" />
+    <meta name="twitter:description" content="Who knew so much could be said about a value so small? I didn’t even cover everything!" />
+    <meta name="twitter:image:src" content="../../images/selfportrait_small.png" />
     <meta name="twitter:domain" content="judosaltgenius.com" />
 
     <meta property="og:title" content="From zero to “ε-ro”: Infinitesimals, floating-point, convergence, and random error" />
     <meta property="og:type" content="article" />
-    <meta property="og:description" content="" />
-    <meta property="og:image" content="/images/selfportrait_small.png" />
+    <meta property="og:description" content="Who knew so much could be said about a value so small? I didn’t even cover everything!" />
+    <meta property="og:image" content="../../images/selfportrait_small.png" />
     <meta property="og:site_name" content="judosaltgenius.com" />
-    <meta property="og:url" content="/drafts/from-zero-to-ero" />
+    <meta property="og:url" content="../../2019/01/from-zero-to-ero" />
 
+        <link rel="alternate"  href="http://tabidots.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Judo Salt Genius Full Atom Feed"/>
 
         <title>From zero to “ε-ro”: Infinitesimals, floating-point, convergence, and random error - Judo Salt Genius</title>
 
@@ -30,12 +31,12 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/contrib/auto-render.min.js" integrity="sha384-IiI65aU9ZYub2MY9zhtKd1H2ps7xxf+eb2YFG9lX6uRqpXCvBTOidPRCXCrQ++Uc" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
-    <link rel="stylesheet" href="/theme/css/pure.css?v=0.1.0" />
+    <link rel="stylesheet" href="../../theme/css/pure.css?v=0.1.0" />
       <!-- CSS specified by the user -->
 
 
-      <link href="/assets/mystyle.css" type="text/css" rel="stylesheet" />
-    <link rel="stylesheet" href="/theme/css/pygments.css" />
+      <link href="../../assets/mystyle.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../theme/css/pygments.css" />
 
     <!-- for pelican_dynamic plugin -->
     <!-- end pelican_dynamic -->
@@ -46,15 +47,14 @@
 <div class="pure-g-r" id="layout">
     <div class="sidebar sidebar-article pure-u">
         <header class="header-article">
-                    <a href="/author/justin-douglas" title="See posts by Justin Douglas">
+                    <a href="../../author/justin-douglas" title="See posts by Justin Douglas">
                         <img class="avatar" alt="Justin Douglas" src="https://www.gravatar.com/avatar/74f13134596b2ed04a497936e3fdfd33?s=140">
                     </a>
                 <h2 class="article-info">Justin Douglas</h2>
 
 
-                    <h5>Draft</h5>
 
-                <p class="article-date">Fri 18 January 2019</p>
+                <p class="article-date">Sat 19 January 2019</p>
 
                 <a class="header-article-home" href="/">&larr;Home</a>
         </header>
@@ -102,7 +102,7 @@
 </ul>
 <p>As the distance between <span class="math">\(x\)</span> and <span class="math">\(a\)</span> (which is called <span class="math">\(\delta\)</span>, delta) shrinks, so does <span class="math">\(\epsilon\)</span>, so the upper bounds of the two quantities move in tandem.</p>
 <p>You can also use <span class="math">\(\delta\)</span> and <span class="math">\(\epsilon\)</span> to describe derivatives; i.e., if <span class="math">\(dx = \delta\)</span> and <span class="math">\(\frac{dy}{dx} = \epsilon\)</span>, you can imagine how shrinking one shrinks the other, and more importantly, that the ideal value for both of them is <em>as close as you can get to zero without vanishing</em>.</p>
-<p><img alt="derivative animation" src="../images/derivative_animation.gif" title="source: https://sites.google.com/a/student.ashcoll.school.nz/bcashcoll/13-mac/differentiation-as-3-6-91578"/></p>
+<p><img alt="derivative animation" src="../../images/derivative_animation.gif" title="source: https://sites.google.com/a/student.ashcoll.school.nz/bcashcoll/13-mac/differentiation-as-3-6-91578"/></p>
 <h1 id="machine-epsilon">Machine epsilon</h1>
 <p>There is also a quantity that computer scientists call <strong>machine epsilon</strong>, which defines the smallest number that a given computing environment can represent.</p>
 <p>It is the largest <span class="math">\(\epsilon\)</span> that satisfies</p>
@@ -374,19 +374,23 @@
 <p>This is more of a theoretical shim than anything that concerns atually coding a model, but it’s still an important variable.</p>
 <p>In a future post, I will talk about a topic that takes <span class="math">\(\epsilon\)</span> to the next level. Stay tuned!</p>
 <h1 id="references">References</h1>
-<p><a href="https://en.wikibooks.org/wiki/Floating_Point/Epsilon">Floating Point/Epsilon</a>, Wikibooks
-<a href="https://en.wikipedia.org/wiki/Floating-point_arithmetic">Floating-point arithmetic</a>, Wikipedia
-<a href="https://www0.gsb.columbia.edu/faculty/pglasserman/B6014/Regression.pdf">B6014 Managerial Statistics: Linear Regression</a>, Columbia Business School
-<a href="https://math.stackexchange.com/questions/1051863/assumption-of-a-random-error-term-in-a-regression">Assumption of a Random error term in a regression</a>, StackExchange Mathematics</p>
+<ul>
+<li><a href="https://en.wikibooks.org/wiki/Floating_Point/Epsilon">Floating Point/Epsilon</a>, Wikibooks</li>
+<li><a href="https://en.wikipedia.org/wiki/Floating-point_arithmetic">Floating-point arithmetic</a>, Wikipedia</li>
+<li><a href="https://www0.gsb.columbia.edu/faculty/pglasserman/B6014/Regression.pdf">B6014 Managerial Statistics: Linear Regression</a>, Columbia Business School</li>
+<li><a href="https://math.stackexchange.com/questions/1051863/assumption-of-a-random-error-term-in-a-regression">Assumption of a Random error term in a regression</a>, StackExchange Mathematics</li>
+</ul>
 
             <p class="post-footer">
                 // filed
-under                    <a class="post-category" href="/tag/convergence">convergence</a>
-                    <a class="post-category" href="/tag/infinitesimals">infinitesimals</a>
-                in <a class="post-category" href="/category/statistics-programming">Statistics, Programming</a>&nbsp;&nbsp;&nbsp;
+under                    <a class="post-category" href="../../tag/convergence">convergence</a>
+                    <a class="post-category" href="../../tag/floating-point">floating-point</a>
+                    <a class="post-category" href="../../tag/error">error</a>
+                    <a class="post-category" href="../../tag/epsilon">epsilon</a>
+                in <a class="post-category" href="../../category/statistics-programming">Statistics, Programming</a>&nbsp;&nbsp;&nbsp;
 
                 <span style="display:inline-block;">
-                // share on <a href="https://twitter.com/share?text=%22From%20zero%20to%20%E2%80%9C%CE%B5-ro%E2%80%9D%3A%20Infinitesimals%2C%20floating-point%2C%20convergence%2C%20and%20random%C2%A0error%3A%22&amp;hashtags=convergence%2Cinfinitesimals" target="_blank">
+                // share on <a href="https://twitter.com/share?text=%22From%20zero%20to%20%E2%80%9C%CE%B5-ro%E2%80%9D%3A%20Infinitesimals%2C%20floating-point%2C%20convergence%2C%20and%20random%C2%A0error%3A%20Who%20knew%20so%20much%20could%20be%20said%20about%20a%20value%20so%20small%3F%20I%20didn%E2%80%99t%20even%20cover%C2%A0everything%21%22&amp;hashtags=convergence%2Cfloating-point%2Cerror%2Cepsilon" target="_blank">
                     <i class="fa fa-twitter fa-lg"></i> Twitter
                 </a>
                 </span>
@@ -405,7 +409,7 @@ under                    <a class="post-category" href="/tag/convergence">conver
     </script>
 
 			<!-- Script specified by the user -->
-			<script type="text/javascript"  src="/assets/tweaks.js"></script>
+			<script type="text/javascript"  src="../../assets/tweaks.js"></script>
 
     <!-- for pelican_dynamic plugin -->
 

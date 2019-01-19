@@ -32,6 +32,11 @@ code {
   border: 1px #999 solid;
 }
 
+.content img {
+  display: block;
+  margin: auto;
+}
+
 /* https://facelessuser.github.io/pymdown-extensions/extensions/superfences/#tabbed-fences */
 
 .superfences-tabs {
@@ -48,12 +53,24 @@ code {
 
 .superfences-tabs label {
   width: auto;
-  padding: 0.25em 0.25em 0.1em;
+  padding: 0.25em 0.25em 0;
   margin-right: .25em;
   font-size: 100%;
   cursor: pointer;
-  border-radius: 3px 3px 0 0;
 }
+
+/* https://stackoverflow.com/questions/28623446/hover-effect-expand-bottom-border */
+.superfences-tabs label:after {
+  display: block;
+  content: '';
+  margin-botom: 10px;
+  border-bottom: solid 3px rgb(142, 142, 214);
+  transform: scaleX(0);
+  transition: transform 250ms ease-in-out;
+}
+.superfences-tabs label:hover:after,
+.superfences-tabs input:nth-child(n+1):checked + label:after
+{ transform: scaleX(1); }
 
 .superfences-tabs input:first-child + label {
   margin-left: .2em;
@@ -69,20 +86,12 @@ code {
 }
 
 .superfences-tabs input:nth-child(n+1) + label:hover {
-  background: rgb(142, 142, 214);
-  color: white;
-  transition: background-color color .5s ease-in-out;
+  color: rgb(142, 142, 214);
 }
 
 .superfences-tabs input:nth-child(n+1):checked + label {
   color: rgb(142, 142, 214);
   font-weight: 700;
-  border-bottom: 3px solid rgb(142, 142, 214);
-  transition: background-color color .5s ease-in-out;
-}
-
-.superfences-tabs input:nth-child(n+1):checked + label:hover {
-  color: white;
 }
 
 .superfences-tabs input:nth-child(n+1):checked + label + .superfences-content {

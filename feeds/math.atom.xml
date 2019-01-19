@@ -851,7 +851,7 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &lt;ul&gt;
 &lt;li&gt;Are there any other simple techniques to speed this up? (Mean normalization)&lt;/li&gt;
 &lt;li&gt;Are there any complex techniques to speed this up? (Automatic differentiation)&lt;/li&gt;
-&lt;li&gt;How do we know when we’ve reached convergence? (Epsilon)&lt;/li&gt;
+&lt;li&gt;&lt;a href="from-zero-to-ero"&gt;How do we know when we’ve reached convergence? (Epsilon)&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;How can &lt;em&gt;linear&lt;/em&gt; (as opposed to &lt;em&gt;logistic&lt;/em&gt;) regression be applied to language tasks? (General backpropagation of neural networks)&lt;/li&gt;
 &lt;/ul&gt;
 &lt;h1 id="references"&gt;References&lt;/h1&gt;
