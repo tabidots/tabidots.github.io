@@ -1,5 +1,173 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Judo Salt Genius</title><link href="http://tabidots.github.io/" rel="alternate"></link><link href="http://tabidots.github.io/feeds/all.atom.xml" rel="self"></link><id>http://tabidots.github.io/</id><updated>2019-01-19T17:32:22+07:00</updated><entry><title>From zero to “ε-ro”: Infinitesimals, floating-point, convergence, and random error</title><link href="http://tabidots.github.io/2019/01/from-zero-to-ero" rel="alternate"></link><published>2019-01-19T17:32:22+07:00</published><updated>2019-01-19T17:32:22+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-19:/2019/01/from-zero-to-ero</id><summary type="html">&lt;p&gt;Who knew so much could be said about a value so small? I didn’t even cover&amp;nbsp;everything!&lt;/p&gt;</summary><content type="html">
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Judo Salt Genius</title><link href="http://tabidots.github.io/" rel="alternate"></link><link href="http://tabidots.github.io/feeds/all.atom.xml" rel="self"></link><id>http://tabidots.github.io/</id><updated>2019-01-20T10:30:47+07:00</updated><entry><title>Model Thinker notes, Ch. 2 and 3</title><link href="http://tabidots.github.io/2019/01/model-thinker-notes-chapters-2-3" rel="alternate"></link><published>2019-01-20T10:30:47+07:00</published><updated>2019-01-20T10:30:47+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-20:/2019/01/model-thinker-notes-chapters-2-3</id><summary type="html">&lt;p&gt;Getting reacquainted with statistics for the first time since my ill-fated stint in introductory statistics in&amp;nbsp;college.&lt;/p&gt;</summary><content type="html">
+&lt;p&gt;Along with &lt;a href="http://www.pimbook.org/"&gt;&lt;em&gt;A Programmer’s Introduction to Mathematics&lt;/em&gt;&lt;/a&gt;, I started reading &lt;a href="https://www.amazon.com/Model-Thinker-What-Need-Know/dp/0465094627/ref=zg_bs_13884_41?_encoding=UTF8&amp;amp;psc=1&amp;amp;refRID=ZK3QGA2250Q3CJSWR8Q2"&gt;&lt;em&gt;Model Thinker: What You Need to Know to Make Data Work for You&lt;/em&gt;&lt;/a&gt; as a sort of analogous non-statistician’s introduction to statistics.&lt;/p&gt;
+&lt;p&gt;Or perhaps I should say &lt;em&gt;re&lt;/em&gt;-introduction, since I had to take Intro to Stats in college. But I passed that class by the skin of my teeth and really developed an aversion to statistical analysis from that course. But it’s a necessary part of data science, so…&lt;/p&gt;
+&lt;h1 id="chapter-2"&gt;Chapter 2&lt;/h1&gt;
+&lt;p&gt;Chapter 2 is about what models can do and their strength in numbers.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;Models can take one of three approaches:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;em&gt;embodiment&lt;/em&gt; approach (simplified but still realistic, like a geological model)&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;analogy&lt;/em&gt; approach (abstracted from reality: &lt;em&gt;Think of the situation as a…&lt;/em&gt;)&lt;/li&gt;
+&lt;li&gt;&lt;em&gt;alternative reality&lt;/em&gt; approach&lt;/li&gt;
+&lt;/ul&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Models must be &lt;em&gt;communicable&lt;/em&gt; and &lt;em&gt;tractable&lt;/em&gt; (analyzable). This means that it should be possible to translate them precisely into math, code, or some other formal language. (Most models are mathematical in nature, but this is not a must.)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;All models are wrong in their own way, so no single model can accurately represent complex phenomena, but many, together, are useful.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Models are a superhero &lt;em&gt;&lt;span class="caps"&gt;REDCAPE&lt;/span&gt;&lt;/em&gt;: Reason, explain, design, communicate, action, predict, explore.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Many models can be applied to the same problem (many-to-one). And with &lt;em&gt;creativity&lt;/em&gt;, one model can also be put to many uses. For example, how many applications are there for a random walk? (What a relief to know that there is a place at the table for creativity and a non-&lt;span class="caps"&gt;STEM&lt;/span&gt; background!)&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id="chapter-3"&gt;Chapter 3&lt;/h1&gt;
+&lt;p&gt;Chapter 3 is about how there is a Goldilocks-esque balance to be struck with regard to the diversity of models and the accuracy of any given model.&lt;/p&gt;
+&lt;p&gt;More is better, until it’s not; more accurate is better, until it’s not.&lt;/p&gt;
+&lt;p&gt;The chapter uses some fancy-looking equations dressed up in terms that are specific to this context, but the equations are actually rooted in statistics and often have simpler, more intuitive explanations.&lt;/p&gt;
+&lt;h2 id="diversity"&gt;Diversity&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Condorcet jury theorem&lt;/strong&gt;: If all jury members in a case have an above-average probability of choosing the correct verdict, then each successive jury member after the first increases the probability of the whole jury choosing the correct verdict. The probability approaches 1 as you keep adding members.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;strong&gt;Wisdom of the crowd&lt;/strong&gt;: The author’s &lt;em&gt;model diversity theorem&lt;/em&gt; is an adaptation of &lt;a href="https://www.archania.org/theorems/diversity/"&gt;the wisdom of the crowd theorem&lt;/a&gt;, and it uses the &lt;em&gt;error&lt;/em&gt; as we calculated in linear regression. (Actually, all of the equations in this chapter are based on a mean squared error of some sort.) The book presents it as follows:
+  &lt;br/&gt;
+&lt;div class="math"&gt;$$ \underbrace{(\bar{M} - V)^2}_{\textrm{Many-Model Error}} =
+  \underbrace{\sum_{i=1}^N \frac{(M_i - V)^2}{N}}_{\textrm{Average-Model Error}} -
+  \underbrace{\textcolor{teal}{\sum_{i=1}^N} \frac{\textcolor{teal}{(M_i - \bar{M})^2}}{N}}_{\textrm{Diversity of Model Predictions}} $$&lt;/div&gt;
+&lt;br/&gt;
+  where &lt;span class="math"&gt;\(M_i\)&lt;/span&gt; is the prediction of model &lt;span class="math"&gt;\(i\)&lt;/span&gt;, &lt;span class="math"&gt;\(\bar{M}\)&lt;/span&gt; is the average value of all models, and &lt;span class="math"&gt;\(V\)&lt;/span&gt; is the true value. In other words,&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;if you have only one model (&lt;span class="math"&gt;\(M_i = \bar{M}\)&lt;/span&gt;), you can never decrease the discrepancy between its prediction and truth.&lt;/li&gt;
+&lt;li&gt;Even if you have many models that make identical predictions (still &lt;span class="math"&gt;\(M_i = \bar{M}\)&lt;/span&gt;), they will collectively misestimate truth by as much as each one misestimates truth.&lt;/li&gt;
+&lt;li&gt;However, as the models’ predictions diverge from each other (that is, as &lt;span class="math"&gt;\(\color{teal}\sum_{i=1}^N (M_i - \bar{M})^2\)&lt;/span&gt; increases), their &lt;em&gt;collective misestimation&lt;/em&gt; goes on decreasing. This is similar to the Condorcet jury theorem, except in continuous rather than binary terms.&lt;/li&gt;
+&lt;/ol&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;However, there is a diminishing rate of returns as you &lt;em&gt;include more models&lt;/em&gt;: Accuracy seems to converge on a limit of some sort, not unlike gradient descent. Conceived in that way, you should stop adding models once the error between &lt;span class="math"&gt;\(n\)&lt;/span&gt; models and &lt;span class="math"&gt;\(n-1\)&lt;/span&gt; models is lower than some &lt;a href="/2019/01/from-zero-to-ero"&gt;&lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; threshold value&lt;/a&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Why is this the case? Diversity is a factor of the data’s dimensionality. Models using the same (or similar) subsets of salient features are liable to predict similarly.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;There is a limit to how independent (&lt;em&gt;accurate&lt;/em&gt; and &lt;em&gt;diverse&lt;/em&gt;) a given group of models can be. Accuracy may suffer as a result of artificially trying to increase diversity (categorizing a list of locations by alphabetical order, for example).&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="accuracy"&gt;Accuracy&lt;/h2&gt;
+&lt;p&gt;Increasing the fit (and thus predictive accuracy) of a model by increasing its granularity (adding categories, features, etc.) can backfire after a certain point.&lt;/p&gt;
+&lt;p&gt;The rest of the chapter is a long and slightly overly complicated explanation of the what statisticians call the &lt;strong&gt;bias-variance tradeoff&lt;/strong&gt;.&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;The relationship between bias and variance is similar to the relationship to &lt;em&gt;precision&lt;/em&gt; and &lt;em&gt;recall&lt;/em&gt; for binary classification. Ideal B-V are both as low as possible; ideal P-R are both as high as possible. However, they have a diametrically opposing relationship, so this is not actually feasible.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3 id="bias"&gt;Bias&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;High &lt;strong&gt;bias&lt;/strong&gt; ⟶ underfitting (model is too coarse to capture the general trend of the data). &lt;img alt="underfitting" src="../../images/underfitting.png"/&gt;&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Source for this illustration and the following ones: &lt;a href="https://medium.freecodecamp.org/using-machine-learning-to-predict-the-quality-of-wines-9e2e13d7480d"&gt;FreeCodeCamp&lt;/a&gt;&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In the context of the chapter’s house price example, high bias is also called &lt;strong&gt;categorization error&lt;/strong&gt;. This is the discrepancy between the samples in each category and the mean of that category.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Bias (categorization error) ↑ if your categories are bad and don’t accurately reflect any shared characteristics among the samples. This makes sense because in terms of a scatter plot, the data points in each category will be spread out randomly and have no trend. In terms of house prices, this could be like lumping real estate markets of states that begin with the same letter together.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Bias (categorization error) ↓ as category granularity ↑ (gets more precise)&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Bias (categorization error) also ↓ as sample size ↑, because the law of large numbers dictates that a larger number of samples in a category will tend toward the mean of that category. This makes sense because more data points should more clearly indicate a trend for the model to follow.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h3 id="variance"&gt;Variance&lt;/h3&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;High &lt;strong&gt;variance&lt;/strong&gt; ⟶ overfitting (model is so fine that it starts to capture noise in the data, or in other words, every little &lt;em&gt;variation&lt;/em&gt;).
+&lt;img alt="overfitting" src="../../images/underfitting.png"/&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;In the context of the chapter’s house price example, high bias is also called &lt;strong&gt;valuation error&lt;/strong&gt;. This is the total discrepancy between the estimated category means and the actual category means.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;Variance (valuation error) ↓ as categories get larger, again because of the law of large numbers.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2 id="we-all-want-what-we-cant-have"&gt;We all want what we can’t have&lt;/h2&gt;
+&lt;p&gt;We want low variance and low bias:
+&lt;img alt="good fit" src="../../images/goodfit.png"/&gt;&lt;/p&gt;
+&lt;p&gt;But decreasing variance increases bias, and decreasing bias increases variance. So good luck with that.&lt;/p&gt;
+&lt;h2 id="a-more-intuitive-explanation-of-r2"&gt;A more intuitive explanation of &lt;span class="math"&gt;\(R^2\)&lt;/span&gt;&lt;/h2&gt;
+&lt;p&gt;There are many ways to measure a model’s accuracy, and there is a sidebar mentioning &lt;span class="math"&gt;\(R^2\)&lt;/span&gt;, which quantifies the predictive accuracy of a regression model. However, it doesn’t explain it anywhere near as intuitively as illustration on Wikipedia:&lt;/p&gt;
+&lt;p&gt;&lt;img alt="R² image" src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Coefficient_of_Determination.svg/640px-Coefficient_of_Determination.svg.png" title="By Orzetto - Own work, CC BY-SA 3.0, https://commons.wikimedia.org/w/index.php?curid=11398293"/&gt;&lt;/p&gt;
+&lt;p&gt;The chapter’s definition of &lt;span class="math"&gt;\(R^2\)&lt;/span&gt; is a pretty common one: &lt;em&gt;The proportion of variance explained by the model&lt;/em&gt;. That’s pretty abstract.&lt;/p&gt;
+&lt;p&gt;A more intuitive explanation, based on the above illustration, is: &lt;em&gt;How much better is a prediction made with your model than just taking the average of the data?&lt;/em&gt;&lt;/p&gt;
+&lt;p&gt;You want the total area of the blue squares (including overlaps) to be as small as possible compared to the total area of the red squares (including overlaps).&lt;/p&gt;
+&lt;h2 id="model-error-decomposition-theorem"&gt;Model error decomposition theorem&lt;/h2&gt;
+&lt;p&gt;The problem with a score like &lt;span class="math"&gt;\(R^2\)&lt;/span&gt; is that it doesn’t tell you how much of the error is due to bias and how much is due to variance. I suppose that might be helpful if you know exactly how to fine-tune one or the other.&lt;/p&gt;
+&lt;p&gt;The author presents the &lt;strong&gt;model error decomposition theorem&lt;/strong&gt; to solve this problem.&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{gathered}
+\textrm{Model Error} = \textrm{Categorization Error} + \textrm{Valuation Error} \\
+\underbrace{\sum_{x \in \textbf X} \Big(M(x) - V(x) \Big)^2}_\textrm{Model Error} =
+\underbrace{\sum_{i=1}^n \sum_{x \in S_i} \Big(V(x) - V_i \Big)^2}_\textrm{Categorization Error} +
+\underbrace{\sum_{i=1}^n \Big(M_i - V_i \Big)^2}_\textrm{Valuation Error}
+\end{gathered} $$&lt;/div&gt;
+&lt;p&gt;Lotta variables here.&lt;/p&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th align="left"&gt;Variable&lt;/th&gt;
+&lt;th align="left"&gt;Meaning&lt;/th&gt;
+&lt;th align="left"&gt;Variable&lt;/th&gt;
+&lt;th align="left"&gt;Meaning&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;span class="math"&gt;\(x\)&lt;/span&gt;&lt;/td&gt;
+&lt;td align="left"&gt;sample&lt;/td&gt;
+&lt;td align="left"&gt;&lt;span class="math"&gt;\(S_i\)&lt;/span&gt;&lt;/td&gt;
+&lt;td align="left"&gt;category &lt;span class="math"&gt;\(i\)&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;span class="math"&gt;\(\textbf X\)&lt;/span&gt;&lt;/td&gt;
+&lt;td align="left"&gt;dataset&lt;/td&gt;
+&lt;td align="left"&gt;&lt;span class="math"&gt;\(M_i\)&lt;/span&gt;&lt;/td&gt;
+&lt;td align="left"&gt;mean of model’s predictions for category &lt;span class="math"&gt;\(i\)&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;span class="math"&gt;\(M(x)\)&lt;/span&gt;&lt;/td&gt;
+&lt;td align="left"&gt;model’s predicition for sample &lt;span class="math"&gt;\(x\)&lt;/span&gt;&lt;/td&gt;
+&lt;td align="left"&gt;&lt;span class="math"&gt;\(V_i\)&lt;/span&gt;&lt;/td&gt;
+&lt;td align="left"&gt;mean of true values for category &lt;span class="math"&gt;\(i\)&lt;/span&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;tr&gt;
+&lt;td align="left"&gt;&lt;span class="math"&gt;\(V(x)\)&lt;/span&gt;&lt;/td&gt;
+&lt;td align="left"&gt;true value for sample &lt;span class="math"&gt;\(x\)&lt;/span&gt;&lt;/td&gt;
+&lt;td align="left"&gt;&lt;/td&gt;
+&lt;td align="left"&gt;&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
+&lt;p&gt;Thus,&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class="math"&gt;\(\textrm{Model Error}\)&lt;/span&gt;: sum discrepancy between model and truth for all samples&lt;/li&gt;
+&lt;li&gt;&lt;span class="math"&gt;\(\textrm{Categorization Error}\)&lt;/span&gt;: sum discrepancy between true values in a category and true mean of that category for all categories&lt;/li&gt;
+&lt;li&gt;&lt;span class="math"&gt;\(\textrm{Valuation Error}\)&lt;/span&gt;: sum discrepancy between predicted mean and true mean for all categories&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;It seems like you could do &lt;span class="math"&gt;\(\sqrt{\textrm{Model Error}}\)&lt;/span&gt; to find a number the average amount that a prediction made with the model will be off by.&lt;/p&gt;
+&lt;h1 id="references"&gt;References&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://medium.freecodecamp.org/using-- machine-learning-to-predict-the-quality-of-wines-9e2e13d7480d"&gt;Using Machine Learning to Predict the Quality of Wines&lt;/a&gt;, FreeCodeCamp&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://en.wikipedia.org/wiki/Bias%E2%80%93variance_tradeoff"&gt;Bias-variance tradeoff&lt;/a&gt;, Wikipedia&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://en.wikipedia.org/wiki/Coefficient_of_determination"&gt;Coefficient of determination&lt;/a&gt;, Wikipedia&lt;/li&gt;
+&lt;/ul&gt;</content><category term="bias"></category><category term="variance"></category><category term="model error decomposition"></category><category term="predictive accuracy"></category><category term="R²"></category><category term="wisdom of the crowd"></category></entry><entry><title>From zero to “ε-ro”: Infinitesimals, floating-point, convergence, and random error</title><link href="http://tabidots.github.io/2019/01/from-zero-to-ero" rel="alternate"></link><published>2019-01-19T17:32:22+07:00</published><updated>2019-01-19T17:32:22+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-19:/2019/01/from-zero-to-ero</id><summary type="html">&lt;p&gt;Who knew so much could be said about a value so small? I didn’t even cover&amp;nbsp;everything!&lt;/p&gt;</summary><content type="html">
 &lt;p&gt;One of the questions I left open from my blog’s inaugural post on linear regression was &lt;em&gt;How do you know when you’ve reached convergence?&lt;/em&gt;&lt;/p&gt;
 &lt;p&gt;That led me to learning about &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; (epsilon), or I suppose re-learning, if you count high school calculus, in which I think it made a single brief appearance in the formal definition of limit.&lt;/p&gt;
 &lt;p&gt;I’m going to take a rather circuitous route to explaining the role of &lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; in linear regression, as I kept discovering interesting new things along the way.&lt;/p&gt;
@@ -43,7 +211,7 @@
 &lt;p&gt;Almost there. Let’s take a look at how computers actually store floating-point numbers:&lt;/p&gt;
 &lt;p&gt;&lt;img alt="64-bit floating point storage structure" src="https://upload.wikimedia.org/wikipedia/commons/a/a9/IEEE_754_Double_Floating_Point_Format.svg" title="source: Codekaizen - Own work, [CC BY-SA 4.0] https://commons.wikimedia.org/w/index.php?curid=3595583"/&gt;&lt;/p&gt;
 &lt;p&gt;Every number is allocated 64 bits of memory (this can vary, but let’s stick with 64). There are 52 bits for the &lt;em&gt;mantissa&lt;/em&gt; (computer science term for significand), 11 for the exponent, and 1 for the sign (positve or negative). Each bit can be 1 or 0, which is the whole reason for using binary in the first place.&lt;/p&gt;
-&lt;p&gt;Storing the mantissa, then, is just a matter of finding a way to fit the relevant sequence of ones and zeros into the 52 slots allocated for it. If there are too many digits (as in this case), chop them off; if there are too few, add padding. This is where floating-point differs from scientific notation.&lt;/p&gt;
+&lt;p&gt;Storing the mantissa, then, is just a matter of finding a way to fit the relevant sequence of ones and zeros into the 52 slots allocated for it. If there are too many digits, chop them off; if there are too few (as in this case), add padding. This is where floating-point differs from scientific notation.&lt;/p&gt;
 &lt;div class="math"&gt;$$ 00000000 \space 00000000 \space 00000000 \space 00000000 \space
 00000\textcolor{teal}{100 \space 00100100 \space 0010} \times 2^{-51} $$&lt;/div&gt;
 &lt;p&gt;Looks like a lot of zeros. Incidentally, the method to obtain a base-10 number from this can be expressed mathematically in a cool way:&lt;/p&gt;
@@ -55,6 +223,7 @@
 &lt;p&gt;where &lt;span class="math"&gt;\(\textrm{bit}_n\)&lt;/span&gt; is the binary value of the bit at index &lt;span class="math"&gt;\(n\)&lt;/span&gt; (from the left, starting at 0), &lt;span class="math"&gt;\(p\)&lt;/span&gt; is the precision (number of bits), and &lt;span class="math"&gt;\(e\)&lt;/span&gt; is the exponent (which just happens to be &lt;span class="math"&gt;\(-51\)&lt;/span&gt; here; it has nothing to do with the number of bits for the mantissa).&lt;/p&gt;
 &lt;p&gt;Okay, that was fun. Now what?&lt;/p&gt;
 &lt;h2 id="rounding-errors"&gt;Rounding errors&lt;/h2&gt;
+&lt;p&gt;&lt;img alt="xkcd comic" src="https://imgs.xkcd.com/comics/e_to_the_pi_minus_pi.png" title="XKCD #217 https://xkcd.com/217/"/&gt;&lt;/p&gt;
 &lt;p&gt;&lt;em&gt;If there are too many digits, chop them off&lt;/em&gt;. This opens up a big can of worms. Or an infinitesimal one, given the topic at hand (har har).&lt;/p&gt;
 &lt;p&gt;In exchange for the computability (read: speed and power) and storeability of floating-point numbers, we have to accept a limit to their precision. The digits of &lt;span class="math"&gt;\(\pi\)&lt;/span&gt;, for example, repeat endlessly. We can’t expect a computer to handle them all, or a calculator, for that matter.&lt;/p&gt;
 &lt;p&gt;Even totally pedestrian numbers like &lt;span class="math"&gt;\(\frac{1}{3}\)&lt;/span&gt; go on forever. This means that computers cannot reason about fractional quantities in the way that the human mind can.&lt;/p&gt;
@@ -126,7 +295,7 @@
 &lt;p&gt;it doesn’t take long before the value converges on 1, which is very bizarre.&lt;/p&gt;
 &lt;h2 id="granularity"&gt;Granularity&lt;/h2&gt;
 &lt;p&gt;Limited storage space leads to limited precision. A related consequence of this is that floating-point numbers are discrete, not continuous like the number line we picture in our minds. (As a kid, I think I imagined a spectrum. Fun? Yes. Accurate? Not sure.) Computers are capable of pretty precise calculations, but not perfectly precise.&lt;/p&gt;
-&lt;p&gt;Think of floating-point numbers like pixels. While it is true that computer displays have become less and less ”pixelly-looking” over the years, and text rendered on a Retina screen can almost look like a printed page, we know that such output still consists of pixels.&lt;/p&gt;
+&lt;p&gt;Think of floating-point numbers like pixels. While it is true that computer displays have become less and less “pixelly-looking” over the years, and text rendered on a Retina screen can almost look like a printed page, we know that such output still consists of pixels.&lt;/p&gt;
 &lt;p&gt;The same is true for floating-point numbers. They allow for some degree of precision, but the number line they form is more like a dotted line than a solid line. (Even stranger, the density of the line changes at different scales, but I’ll leave that one for someone else to explain!)&lt;/p&gt;
 &lt;p&gt;Take the binary number &lt;code class="highlight"&gt;1.0&lt;/code&gt; (regular binary, not floating-point). This is equal to the decimal number 1 as well. If we keep moving the 1 to the right and adding zeros accordingly, the value is halved:&lt;/p&gt;
 &lt;div class="math"&gt;$$ \begin{aligned}
@@ -152,7 +321,7 @@
     &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;recur&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;inc &lt;/span&gt;&lt;span class="nv"&gt;k&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;* &lt;/span&gt;&lt;span class="mf"&gt;0.5&lt;/span&gt; &lt;span class="nv"&gt;s&lt;/span&gt;&lt;span class="p"&gt;))))&lt;/span&gt;
 &lt;span class="c1"&gt;; [53 2.220446049250313E-16]&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;This loop is trying to find the unhalvable value I wrote about earlier. Start with &lt;code class="highlight"&gt;s = 1.0&lt;/code&gt; and keep halving that (moving the binary 1 rightward) until &lt;code class="highlight"&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;lt;= &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+ &lt;/span&gt;&lt;span class="nv"&gt;s&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;/code&gt; or &lt;span class="math"&gt;\(1 + s \leq 1\)&lt;/span&gt;—i.e., until the computer no longer recognizes &lt;code class="highlight"&gt;s&lt;/code&gt; as having value.&lt;/p&gt;
+&lt;p&gt;This loop is trying to find the unhalvable value I wrote about earlier. Start with &lt;code class="highlight"&gt;s = 1.0&lt;/code&gt; and keep halving that (moving the binary 1 rightward) until &lt;code class="highlight"&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;&amp;lt;= &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+ &lt;/span&gt;&lt;span class="nv"&gt;s&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;/code&gt; or &lt;span class="math"&gt;\(1 + s \leq 1\)&lt;/span&gt;. That is, until the computer no longer recognizes &lt;code class="highlight"&gt;s&lt;/code&gt; as having value.&lt;/p&gt;
 &lt;p&gt;Once that happens, you’ve gone too far and fallen within the bounds of a number pixel. To find the edge of the next pixel—that is, the next adjacent perceptibly different number—move the binary 1 left by one place (in decimal, that’s multiplying by 2).&lt;/p&gt;
 &lt;p&gt;That’s the reason for the final &lt;code class="highlight"&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;* &lt;/span&gt;&lt;span class="mf"&gt;2.0&lt;/span&gt; &lt;span class="nv"&gt;s&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;/code&gt; once the terminating condition is met.&lt;/p&gt;
 &lt;p&gt;&lt;code class="highlight"&gt;k&lt;/code&gt; tells us that the 1 is in the &lt;span class="math"&gt;\(k\)&lt;/span&gt;th place after the decimal point. Here, that’s the 53rd place. That’s no surprise; we know it’s a 64-bit number. But &lt;code class="highlight"&gt;k&lt;/code&gt; could be larger or smaller depending on the precision of the floating-point system, with higher values meaning more available places and thus higher precision.&lt;/p&gt;
