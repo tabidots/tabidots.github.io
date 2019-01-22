@@ -63,7 +63,7 @@
 &lt;p&gt;Increasing the fit (and thus predictive accuracy) of a model by increasing its granularity (adding categories, features, etc.) can backfire after a certain point.&lt;/p&gt;
 &lt;p&gt;The rest of the chapter is a long and slightly overly complicated explanation of the what statisticians call the &lt;strong&gt;bias-variance tradeoff&lt;/strong&gt;.&lt;/p&gt;
 &lt;blockquote&gt;
-&lt;p&gt;The relationship between bias and variance is similar to the relationship to &lt;em&gt;precision&lt;/em&gt; and &lt;em&gt;recall&lt;/em&gt; for binary classification. Ideal B-V are both as low as possible; ideal P-R are both as high as possible. However, they have a diametrically opposing relationship, so this is not actually feasible.&lt;/p&gt;
+&lt;p&gt;The relationship between bias and variance is similar to the relationship between &lt;em&gt;precision&lt;/em&gt; and &lt;em&gt;recall&lt;/em&gt; for binary classification. Ideal B-V are both as low as possible; ideal P-R are both as high as possible. However, they have a diametrically opposing relationship, so this is not actually feasible.&lt;/p&gt;
 &lt;/blockquote&gt;
 &lt;h3 id="bias"&gt;Bias&lt;/h3&gt;
 &lt;ul&gt;

@@ -2,6 +2,7 @@
 
 body {
   font-size: 1em;
+  -webkit-font-smoothing: subpixel-antialiased;
 }
 
 code, tt, pre {
