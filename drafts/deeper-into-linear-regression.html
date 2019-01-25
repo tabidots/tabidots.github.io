@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@tabidots" />
+    <meta name="twitter:creator" content="@tabidots" />
+    <meta name="twitter:title" content="Linear Regression, Part 2: From math to data science" />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:image:src" content="../images/selfportrait_small.png" />
+    <meta name="twitter:domain" content="judosaltgenius.com" />
+
+    <meta property="og:title" content="Linear Regression, Part 2: From math to data science" />
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="" />
+    <meta property="og:image" content="../images/selfportrait_small.png" />
+    <meta property="og:site_name" content="judosaltgenius.com" />
+    <meta property="og:url" content="../drafts/deeper-into-linear-regression" />
+
+        <link rel="alternate"  href="http://tabidots.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Judo Salt Genius Full Atom Feed"/>
+
+        <title>Linear Regression, Part 2: From math to data science - Judo Salt Genius</title>
+
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.css" integrity="sha384-VEnyslhHLHiYPca9KFkBB3CMeslnM9CzwjxsEbZTeA21JBm7tdLwKoZmCt3cZTYD" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.js" integrity="sha384-O4hpKqcplNCe+jLuBVEXC10Rn1QEqAmX98lKAIFBEDxZI0a+6Z2w2n8AEtQbR4CD" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/contrib/auto-render.min.js" integrity="sha384-IiI65aU9ZYub2MY9zhtKd1H2ps7xxf+eb2YFG9lX6uRqpXCvBTOidPRCXCrQ++Uc" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../theme/css/pure.css?v=0.1.0" />
+      <!-- CSS specified by the user -->
+
+
+      <link href="../assets/mystyle.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="../theme/css/pygments.css" />
+
+    <!-- for pelican_dynamic plugin -->
+    <!-- end pelican_dynamic -->
+
+</head>
+
+<body>
+<div class="pure-g-r" id="layout">
+    <div class="sidebar sidebar-article pure-u">
+        <header class="header-article">
+                    <a href="../author/justin-douglas" title="See posts by Justin Douglas">
+                        <img class="avatar" alt="Justin Douglas" src="https://www.gravatar.com/avatar/74f13134596b2ed04a497936e3fdfd33?s=140">
+                    </a>
+                <h2 class="article-info">Justin Douglas</h2>
+
+
+                    <h5>Draft</h5>
+
+                <p class="article-date">Tue 22 January 2019</p>
+
+                <a class="header-article-home" href="/">&larr;Home</a>
+        </header>
+    </div>
+    <div class="pure-u">
+        <div class="content">
+            <section class="post">
+                <header class="post-header">
+                    <h1>Linear Regression, Part 2: From math to data&nbsp;science</h1>
+                </header>
+            </section>
+
+                <nav class="toc">
+                <div class="toc">
+<ul>
+<li><a href="#public-data-preprocessing">Public data <span class="amp">&amp;</span> preprocessing</a><ul>
+<li><a href="#cleaning-the-data">Cleaning the data</a></li>
+<li><a href="#feature-scaling">Feature scaling</a></li>
+<li><a href="#segregating-the-data">Segregating the data</a></li>
+</ul>
+</li>
+<li><a href="#a-class-act">A class act</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+                </nav>
+
+            
+<p>In <a href="/squarest-root-in-babylon">the previous post</a>, we looked at using automatic differentiation to simplify our linear regression model and make it more readable.</p>
+<p>Just to recap how far we’ve come with our implementation of linear regression:</p>
+<ol>
+<li><strong>Multiple regression</strong>: Generalize the model to accept any number of features (<span class="math">\(x_1, x_2, \cdots, x_n\)</span>)</li>
+<li><strong>Vectorization</strong>: Eliminate computationally-costly <code class="highlight">for</code>-loops with vector and matrix operations</li>
+<li><strong>Error threshold</strong>: Modify our <code class="highlight">train_model()</code> function to use an <span class="math">\(\epsilon\)</span> error threshold rather than a set number of iterations</li>
+<li><strong>Automatic differentiation</strong>: Outsource the computation of the gradient to a library such as <code class="highlight">autograd</code>, which can do it faster, more simply, and more accurately</li>
+</ol>
+<p>That’s a lot, and there are still many things left to explore! Thankfully, the mathematical heavy lifting is done for now. Now we can concentrate on the coding and data science side of things!</p>
+<ol>
+<li><strong>Do data science</strong>: Use <code class="highlight">pandas</code> instead of <code class="highlight">numpy</code>; use a publicly available dataset instead of randomly generating toy data every time, and preprocess it appropriately</li>
+<li><strong><span class="caps">OOP</span></strong>: Encapsulate the linear regression model into a class</li>
+<li>Fine-tune the hyperparameters and evaluate the results</li>
+<li>Create similar models in Julia, R, and Clojure (the last one is a little ambitious)</li>
+<li>Compare our results to out-of-the-box linear regression models</li>
+</ol>
+<h1 id="public-data-preprocessing">Public data <span class="amp">&amp;</span> preprocessing</h1>
+<p>We were generating toy datasets with random numbers before, but that is only good for testing that the code works. If we are going to evaluate models and hyperparameters, we need to use the same single dataset for consistency.</p>
+<p>I currently live in <span class="caps">SE</span> Asia and air pollution is a big issue here, so the <a href="https://archive.ics.uci.edu/ml/datasets/PM2.5+Data+of+Five+Chinese+Cities"><span class="caps">PM2</span>.5 Data of Five Chinese Cities Data Set</a> caught my eye as I was scrolling through the <span class="caps">UCI</span> Machine Learning Repository website.</p>
+<p>Let’s use <code class="highlight">pandas</code> to read in the Beijing data and generate a <code class="highlight">DataFrame</code> for us, which is a more sophisticated version of a NumPy <code class="highlight">ndarray</code>.</p>
+<div class="superfences-tabs">
+<input checked="checked" id="__tab_1_0" name="__tabs_1" type="radio"/>
+<label for="__tab_1_0">Python</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<span class="c1"># You may have to change os.getcwd() and os.chdir() to tell Python where to look</span>
+<span class="n">raw_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">'FiveCitiePMData/BeijingPM20100101_20151231.csv'</span><span class="p">)</span>
+<span class="n">raw_data</span><span class="o">.</span><span class="n">info</span><span class="p">()</span> <span class="c1"># https://datascience.stackexchange.com/questions/12645/how-to-count-the-number-of-missing-values-in-each-row-in-pandas-dataframe</span>
+</pre></div></div>
+<input id="__tab_1_1" name="__tabs_1" type="radio"/>
+<label for="__tab_1_1">Output</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span>&lt;class 'pandas.core.frame.DataFrame'&gt;
+RangeIndex: 52584 entries, 0 to 52583
+Data columns (total 18 columns):
+No                 52584 non-null int64
+year               52584 non-null int64
+month              52584 non-null int64
+day                52584 non-null int64
+hour               52584 non-null int64
+season             52584 non-null int64
+PM_Dongsi          25052 non-null float64
+PM_Dongsihuan      20508 non-null float64
+PM_Nongzhanguan    24931 non-null float64
+PM_US Post         50387 non-null float64
+DEWP               52579 non-null float64
+HUMI               52245 non-null float64
+PRES               52245 non-null float64
+TEMP               52579 non-null float64
+cbwd               52579 non-null object
+Iws                52579 non-null float64
+precipitation      52100 non-null float64
+Iprec              52100 non-null float64
+dtypes: float64(11), int64(6), object(1)
+memory usage: 7.2+ MB
+</pre></div></div>
+</div>
+<p>Our <code class="highlight">DataFrame</code> has 52,584 entries (hourly snapshots of air pollution) and 18 columns, and there are a lot of “holes” in the data (as noted on the webpage).</p>
+<p>There’s also a lot of data we don’t really need. I’m not a meteorologist, and I’m not experienced enough with statistics to use this data to find out <em>which features</em> correlate with air pollution.</p>
+<p>So, the objective of our model will be to find out <em>how</em> the salient features correlate with air pollution, and use that to predict future <span class="caps">PM2</span>.5 readings.</p>
+<p>A quick-and-dirty Google search reveals that <strong>humidity</strong> and <strong>air temperature</strong> are the most influential factors on <span class="caps">PM2</span>.5 readings. So, let’s trim our data down to humidity (<code class="highlight">HUMI</code>), air temperature (<code class="highlight">TEMP</code>) and the <span class="caps">PM2</span>.5 reading.</p>
+<p>Note that there are several <span class="caps">PM2</span>.5 readings, but the <code class="highlight">PM_US Post</code> has the fewest holes (non-null values). So let’s ignore the others.</p>
+<p>Another consideration is the nature of each feature. Humidity and air temperature are both <em>continuous</em> values, so we’re in the clear, but if we cared about the time of day or wind direction, we would have to deal with those <em>discrete</em> values in a slightly different way.</p>
+<h2 id="cleaning-the-data">Cleaning the data</h2>
+<p>Since we only need a few columns out of this entire table, let’s just create a whole new <code class="highlight">DataFrame</code>, using <code class="highlight">filter</code> to <a href="https://stackoverflow.com/a/34683105">select our target columns</a> and <code class="highlight">dropna</code> to remove the rows where any of those values are <code class="highlight">NaN</code>.</p>
+<div class="highlight"><pre><span></span><span class="n">df</span> <span class="o">=</span> <span class="n">raw_data</span><span class="o">.</span><span class="n">filter</span><span class="p">([</span><span class="s1">'HUMI'</span><span class="p">,</span><span class="s1">'TEMP'</span><span class="p">,</span> <span class="s1">'PM_US Post'</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+</pre></div>
+<p>That was easy!</p>
+<p>We’ve gotten rid of incomplete entries, but we might still have some bad values that, err, pollute our results. Let’s check:</p>
+<div class="superfences-tabs">
+<input checked="checked" id="__tab_2_0" name="__tabs_2" type="radio"/>
+<label for="__tab_2_0">Python</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span><span class="n">df</span><span class="o">.</span><span class="n">describe</span><span class="p">()</span>
+</pre></div></div>
+<input id="__tab_2_1" name="__tabs_2" type="radio"/>
+<label for="__tab_2_1">Output</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span>               HUMI          TEMP    PM_US Post
+count  50048.000000  50048.000000  50048.000000
+mean      54.580363     12.599504     95.773258
+std       25.996814     12.107097     91.731446
+min        2.000000    -19.000000      1.000000
+25%       31.000000      2.000000     27.000000
+50%       55.000000     14.000000     69.000000
+75%       78.000000     23.000000    132.000000
+max      100.000000     42.000000    994.000000
+</pre></div></div>
+</div>
+<p>Keep in mind that <code class="highlight">HUMI</code> is % and <code class="highlight">TEMP</code> is in degrees Celsius. Everything seems okay there.</p>
+<p>How about those pollution readings, though? The <code class="highlight">max</code> value seems a little off. I mean, I have heard of readings in the 300 range (which is still dangerous), but 994 seems like an outlier.</p>
+<p>How many readings were more than 3 standard deviations above the mean?</p>
+<div class="highlight"><pre><span></span><span class="c1"># Source: https://stackoverflow.com/questions/23833763/pandas-count-number-of-elements-in-each-column-less-than-x</span>
+<span class="n">high_pm</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">'PM_US Post'</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span> <span class="o">+</span> <span class="n">df</span><span class="p">[</span><span class="s1">'PM_US Post'</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">()</span> <span class="o">*</span> <span class="mi">3</span>
+<span class="n">high_readings</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">'PM_US Post'</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">high_pm</span><span class="p">)</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+<span class="p">(</span><span class="n">high_readings</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">))</span> <span class="o">*</span> <span class="mi">100</span>
+</pre></div>
+<p>1.86%. I’m tempted to remove them from the data, but a Google search turned up <a href="https://www.telegraph.co.uk/news/worldnews/asia/china/11983156/Air-quality-plummets-as-heavy-smog-blankets-large-swaths-of-China.html">an article that suggests that such readings are not beyond the realm of possibility</a>, sadly.</p>
+<h2 id="feature-scaling">Feature scaling</h2>
+<p>One thing we didn’t do with the randomly generated datasets is <strong>feature scaling</strong>, which refers to the process of either normalizing or standardizing the values to facilitate faster and more accurate computations during gradient descent (or other algorithms).</p>
+<p><strong>Min-max scaling</strong>: Make all values fit within a certain range (between 0 and 1 or some other value)</p>
+<div class="math">$$ X_{\textrm{norm}} = \frac{X - X_{\textrm{min}}}{X_{\textrm{max}} - X_{\textrm{min}}} $$</div>
+<p><strong>Standardization</strong>: Coerce columns to have a mean (<span class="math">\(\mu\)</span>) of 0 and a standard deviation (<span class="math">\(\sigma\)</span>) of 1 by computing a <span class="math">\(z\)</span>-score from the values. This is something I vaguely remember from college stats.</p>
+<div class="math">$$ z_i = \frac{x_i - \mu}{\sigma} $$</div>
+<p>Which is better?</p>
+<blockquote>
+<p>When in doubt, just standardize the data, it shouldn’t hurt. (<a href="https://sebastianraschka.com/Articles/2014_about_feature_scaling.html#about-standardization">Source</a>)</p>
+</blockquote>
+<p>Fair enough. <code class="highlight">scikit-learn</code> has built-in feature scaling methods, but one thing that did cross my mind is that if you train a model on normalized data, how can you make predictions from new data without the <code class="highlight">min</code> and <code class="highlight">max</code> (or <code class="highlight">mean</code> and <code class="highlight">std</code>) from every column?</p>
+<p>For now, I’ll proceed working with this dataset without doing feature scaling, but I’ll come back to this point if necessary.</p>
+<h2 id="segregating-the-data">Segregating the data</h2>
+<p>Typically, for machine learning, you randomize the data and split it into three sets for training, validation, and testing. Training is for the model to learn the weights, validation is to fine-tune the hyperparameters (learning rate, convergence threshold, etc.), and testing is for evaluating the finalized model.</p>
+<p>The following code performs a 60:20:20 split on the data. You could also do 80:10:10.</p>
+<div class="highlight"><pre><span></span><span class="c1"># Source: https://stackoverflow.com/questions/38250710/how-to-split-data-into-3-sets-train-validation-and-test</span>
+<span class="kn">import</span> <span class="nn">autograd.numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># guarantee same result every time</span>
+<span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">permutation</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+<span class="n">train</span><span class="p">,</span> <span class="n">validate</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span>
+                                 <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="o">.</span><span class="mi">6</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)),</span> <span class="nb">int</span><span class="p">(</span><span class="o">.</span><span class="mi">8</span><span class="o">*</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))])</span>
+</pre></div>
+<p>Done!</p>
+<h1 id="a-class-act">A class act</h1>
+<p>Now, we can move on to tightening up the code a little bit. Before we encapsulate it into a class, though, we should consider the fact that we are working with <code class="highlight">pandas</code> now, and not <code class="highlight">numpy</code>, which will affect a couple things.</p>
+<p>To add a column of ones (dummy features), the <span class="math">\(x_0\)</span> in our linear regression matrix:</p>
+<div class="superfences-tabs">
+<input checked="checked" id="__tab_3_0" name="__tabs_3" type="radio"/>
+<label for="__tab_3_0">NumPy</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">target</span><span class="p">))</span>
+</pre></div></div>
+<input id="__tab_3_1" name="__tabs_3" type="radio"/>
+<label for="__tab_3_1">Pandas</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span><span class="n">target</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'dummy'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div></div>
+</div>
+<p>To create a column vector of zeros (our initial weights), we can use a Pandas <code class="highlight">Series</code>:</p>
+<div class="superfences-tabs">
+<input checked="checked" id="__tab_4_0" name="__tabs_4" type="radio"/>
+<label for="__tab_4_0">NumPy</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">num_weights</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+</pre></div></div>
+<input id="__tab_4_1" name="__tabs_4" type="radio"/>
+<label for="__tab_4_1">Pandas</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="n">dataframe_minus_truth</span><span class="p">))</span>
+</pre></div></div>
+</div>
+<p>The <code class="highlight">list(dataframe_minus_truth)</code> isn’t quite so transparent. I found that when doing matrix multiplication between a matrix and either a vector or a matrix in <code class="highlight">pandas</code>, not only must the number of columns in the matrix match the number of rows in the other object, but <a href="https://stackoverflow.com/questions/16472729/matrix-multiplication-in-pandas/16473007">the column <em>names</em> must match, too</a>.</p>
+<p>This is actually pretty smart, because it makes sure that your features don’t get messed up. But it’s still kind of a gotcha for the uninitiated (me).</p>
+<p>So, to fix that, <code class="highlight">list(df)</code> is a <a href="https://stackoverflow.com/questions/19482970/get-list-from-pandas-dataframe-column-headers">quick way to get a list of your column names</a>.</p>
+<p>With those translations in mind, let’s rewrite our linear regression model as a class.</p>
+<p>Our old <code class="highlight">train_model</code> function took separate <code class="highlight">X</code> and <code class="highlight">y</code> inputs, but we should make it more user-friendly by spliting the features from truth behind the scenes (we’ll assume that the last column is truth).</p>
+<p>Let’s flesh out the class with some extra methods, <code class="highlight">test_on(dataset)</code> and <code class="highlight">predict()</code>. For <code class="highlight">test_on(dataset)</code>, let’s have it return the mean error (easier to interpret) rather than the mean squared error.</p>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">autograd</span> <span class="kn">import</span> <span class="n">grad</span>
+
+<span class="k">class</span> <span class="nc">LinRegModel</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>  <span class="c1"># all but last column</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'dummy'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>         <span class="c1"># padding (w_0)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>   <span class="c1"># last column</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">def</span> <span class="nf">__cost__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">weights</span><span class="p">):</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="err">@</span> <span class="n">weights</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">info</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="s1">'Model underwent {self.epochs} epochs of training.'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="s1">'Model weights:'</span><span class="p">)</span>
+        <span class="k">print</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># just to know the value; not critical for training</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">))</span>
+        <span class="n">grad_cost</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cost__</span><span class="p">)</span>
+        <span class="n">last_cost</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">-=</span> <span class="n">learning_rate</span> <span class="o">*</span> <span class="n">grad_cost</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+            <span class="n">this_cost</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__cost__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">this_cost</span> <span class="o">-</span> <span class="n">last_cost</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">epsilon</span><span class="p">:</span>
+                <span class="k">break</span>
+            <span class="n">last_cost</span> <span class="o">=</span> <span class="n">this_cost</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">test_on</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">test_set</span><span class="p">):</span>
+        <span class="n">test_X</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>   <span class="c1"># all but last column</span>
+        <span class="n">test_X</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'dummy'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>          <span class="c1"># padding (w_0)</span>
+        <span class="n">test_y</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">iloc</span><span class="p">[:,</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>    <span class="c1"># last column</span>
+        <span class="n">errors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span> <span class="err">@</span> <span class="n">weights</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+
+    <span class="k">def</span> <span class="nf">predict</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">new_samples</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">new_samples</span><span class="p">)</span> <span class="o">==</span> <span class="s2">"list"</span><span class="p">:</span>
+            <span class="n">new_samples</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">new_samples</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">new_samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="k">pass</span>
+        <span class="k">elif</span> <span class="n">new_samples</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">new_samples</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">'dummy'</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">"Number of features does not match the model's dataset"</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">X</span> <span class="err">@</span> <span class="n">weights</span>
+</pre></div>
+<h1 id="references">References</h1>
+<p><a href="https://sebastianraschka.com/Articles/2014_about_feature_scaling.html">About Feature Scaling and Normalization</a>, Sebastian Raschka</p>
+
+            <p class="post-footer">
+                // filed
+                in <a class="post-category" href="../category/misc">misc</a>&nbsp;&nbsp;&nbsp;
+
+                <span style="display:inline-block;">
+                // share on <a href="https://twitter.com/share?text=%22Linear%20Regression%2C%20Part%202%3A%20From%20math%20to%20data%C2%A0science%3A%22&amp;hashtags=" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i> Twitter
+                </a>
+                </span>
+            </p>
+            <div class="hr"></div>
+
+
+            <a href="#" class="go-top">Go Top</a>
+<footer class="footer">
+    <p>&copy; Justin Douglas  2019. Published with <a href="https://github.com/getpelican/pelican">Pelican</a>.<br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+</footer>        </div>
+    </div>
+</div>
+    <script>
+        renderMathInElement(document.body);
+    </script>
+
+			<!-- Script specified by the user -->
+			<script type="text/javascript"  src="../assets/tweaks.js"></script>
+
+    <!-- for pelican_dynamic plugin -->
+
+
+
+</body>
+</html>

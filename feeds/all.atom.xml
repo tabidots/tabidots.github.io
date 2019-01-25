@@ -1,5 +1,156 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Judo Salt Genius</title><link href="http://tabidots.github.io/" rel="alternate"></link><link href="http://tabidots.github.io/feeds/all.atom.xml" rel="self"></link><id>http://tabidots.github.io/</id><updated>2019-01-22T15:47:33+07:00</updated><entry><title>The squarest root in Babylon and automatic differentiation</title><link href="http://tabidots.github.io/2019/01/squarest-root-in-babylon" rel="alternate"></link><published>2019-01-22T15:47:33+07:00</published><updated>2019-01-22T15:47:33+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-22:/2019/01/squarest-root-in-babylon</id><summary type="html">&lt;p&gt;If you thought 1 + ϵ = 1 was weird, wait till you see what ϵ² equates&amp;nbsp;to.&lt;/p&gt;</summary><content type="html">
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Judo Salt Genius</title><link href="http://tabidots.github.io/" rel="alternate"></link><link href="http://tabidots.github.io/feeds/all.atom.xml" rel="self"></link><id>http://tabidots.github.io/</id><updated>2019-01-25T16:55:04+07:00</updated><entry><title>PIM notes, Chapter 2: Exercises</title><link href="http://tabidots.github.io/2019/01/pim-notes-chapter-2-exercises" rel="alternate"></link><published>2019-01-25T16:55:04+07:00</published><updated>2019-01-25T16:55:04+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-25:/2019/01/pim-notes-chapter-2-exercises</id><summary type="html">&lt;p&gt;Exercises from Chapter 2 of &lt;span class="caps"&gt;PIM&lt;/span&gt;, minus the coding&amp;nbsp;projects.&lt;/p&gt;</summary><content type="html">
+&lt;p&gt;These exercises exclude the coding projects, which I will write about later and post on GitHub.&lt;/p&gt;
+&lt;p&gt;Answering these has been very tedious. The first few were easy, but they quickly ballooned in difficulty / time required and so they got put on the back burner for a bit. I hope this book becomes more enjoyable.&lt;/p&gt;
+&lt;h1 id="21"&gt;2.1&lt;/h1&gt;
+&lt;ol&gt;
+&lt;li&gt;
+&lt;p&gt;The highest-degree term in &lt;span class="math"&gt;\(f\)&lt;/span&gt; is &lt;span class="math"&gt;\(x^2\)&lt;/span&gt;; the highest-degree term in &lt;span class="math"&gt;\(g\)&lt;/span&gt; is &lt;span class="math"&gt;\(x\)&lt;/span&gt;. The highest possible power of &lt;span class="math"&gt;\(x\)&lt;/span&gt; that can occur in &lt;span class="math"&gt;\(f \cdot g\)&lt;/span&gt; is &lt;span class="math"&gt;\(x^2 \cdot x\)&lt;/span&gt;, or &lt;span class="math"&gt;\(x^3\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;The highest-degree term in &lt;span class="math"&gt;\(f\)&lt;/span&gt; is &lt;span class="math"&gt;\(x^n\)&lt;/span&gt;; the highest-degree term in &lt;span class="math"&gt;\(g\)&lt;/span&gt; is &lt;span class="math"&gt;\(m\)&lt;/span&gt;. The highest possible power of &lt;span class="math"&gt;\(x\)&lt;/span&gt; that can occur in &lt;span class="math"&gt;\(f \cdot g\)&lt;/span&gt; is &lt;span class="math"&gt;\(x^n \cdot x^m = x^{n + m}\)&lt;/span&gt;, resulting in a polynomial of degree &lt;span class="math"&gt;\(n+m\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;This does not hold when &lt;span class="math"&gt;\(f\)&lt;/span&gt; or &lt;span class="math"&gt;\(g\)&lt;/span&gt; are the zero polynomial. The generalization could be changed to say that &lt;span class="math"&gt;\(f\)&lt;/span&gt; and &lt;span class="math"&gt;\(g\)&lt;/span&gt; are polynomials with degrees &lt;span class="math"&gt;\(n\)&lt;/span&gt; and &lt;span class="math"&gt;\(m\)&lt;/span&gt; where &lt;span class="math"&gt;\(n \geq 0\)&lt;/span&gt; and &lt;span class="math"&gt;\(m \geq 0\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h1 id="22"&gt;2.2&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;
+&lt;p&gt;If &lt;span class="math"&gt;\(n = 24\)&lt;/span&gt;, then the relative prime numbers of &lt;span class="math"&gt;\(n\)&lt;/span&gt; are &lt;span class="math"&gt;\(5, 7, 11, 13, 17, 19, 23\)&lt;/span&gt;, which means &lt;span class="math"&gt;\(\phi(n) = 8\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;One example of a monic polynomial is &lt;span class="math"&gt;\(f(x) = x^5 + 3x^4 + 12x^3 + x + 7\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;If &lt;span class="math"&gt;\(f(x) = 6x^3 + 18x^2 - 3x\)&lt;/span&gt;, a &lt;span class="math"&gt;\(3x\)&lt;/span&gt; can be factored out of each term, leaving the factors &lt;span class="math"&gt;\(g(x) = 2x^3 + 6x^2 - 1\)&lt;/span&gt; and &lt;span class="math"&gt;\(h(x) = 3x\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;li&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(f(x) = 17x^3 - 2\)&lt;/span&gt; and &lt;span class="math"&gt;\(g(x) = 6x^2\)&lt;/span&gt; are relatively prime polynomials. &lt;span class="math"&gt;\(f(x)\)&lt;/span&gt; is also irreducible. For the functions &lt;span class="math"&gt;\(f(x) = 2x^2 + 4\)&lt;/span&gt; and &lt;span class="math"&gt;\(g(x) = 4x^2 + 8\)&lt;/span&gt;, their greatest common divisor, since it must be monic, is &lt;span class="math"&gt;\((j)x = x^2 + 4\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id="23"&gt;2.3&lt;/h1&gt;
+&lt;p&gt;According to Euler’s theorem, &lt;span class="math"&gt;\(a^{\varphi(n)}\over{n}\)&lt;/span&gt; has remainder &lt;span class="math"&gt;\(1\)&lt;/span&gt; (or &lt;span class="math"&gt;\(a^{\varphi(n)}\)&lt;/span&gt; &lt;code class="highlight"&gt;mod&lt;/code&gt; &lt;span class="math"&gt;\(n = 1\)&lt;/span&gt;). This means that
+    &lt;/p&gt;
+&lt;div class="math"&gt;$$\begin{aligned}
+    a^{\varphi(n)} \bmod n &amp;amp;= 1 \\
+    \frac{a^{\varphi(n)}}{n} &amp;amp;= c + \frac{1}{n} \\
+    a^{\varphi(n)} &amp;amp;= cn + 1 \\
+    \end{aligned}$$&lt;/div&gt;
+&lt;p&gt;
+&lt;span class="math"&gt;\(c\)&lt;/span&gt; must be a nonnegative integer, which means that &lt;span class="math"&gt;\(\frac{a^{\varphi(n)} - 1}{n}\)&lt;/span&gt; must be a nonnegative integer. Using the numbers from the previous example (&lt;span class="math"&gt;\(n = 24\)&lt;/span&gt;, &lt;span class="math"&gt;\(\varphi(n) = 8\)&lt;/span&gt;), we can let &lt;span class="math"&gt;\(a = 5\)&lt;/span&gt;.
+    &lt;/p&gt;
+&lt;div class="math"&gt;$$\begin{aligned}
+    \frac{5^{8}}{24} &amp;amp;= c + \frac{1}{24} \\
+    5^{8} &amp;amp;= 24c + 1 \\
+    390625 - 1 &amp;amp;= 24c \\
+    c &amp;amp;= 16276
+    \end{aligned}$$&lt;/div&gt;
+&lt;p&gt;
+  Indeed, &lt;span class="math"&gt;\(\frac{390625 - 1}{24}\)&lt;/span&gt; is a nonnegative integer.&lt;/p&gt;
+&lt;h1 id="24"&gt;2.4&lt;/h1&gt;
+&lt;p&gt;Based on the definition, a number &lt;span class="math"&gt;\(z\)&lt;/span&gt; is algebraic if there is some polynomial function &lt;span class="math"&gt;\(f(x) = a_0 + a_1x + \cdots + a_nx^n\)&lt;/span&gt;, where all &lt;span class="math"&gt;\(a_i\)&lt;/span&gt; are rational, such that &lt;span class="math"&gt;\(f(z) = 0\)&lt;/span&gt;. &lt;span class="math"&gt;\(\sqrt 2\)&lt;/span&gt; is algebraic because it is the root of &lt;span class="math"&gt;\(x^2 - 2\)&lt;/span&gt;, which has the rational coefficients &lt;span class="math"&gt;\(a_0 = -2\)&lt;/span&gt;, &lt;span class="math"&gt;\(a_1 = 0\)&lt;/span&gt;, and &lt;span class="math"&gt;\(a_2 = 1\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;You can find this by trying to get to &lt;span class="math"&gt;\(z\)&lt;/span&gt; from 0, then going backwards through that order of operations starting with &lt;span class="math"&gt;\(x\)&lt;/span&gt;. I find this easier to visualize by writing in Clojure:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt&lt;/span&gt;         &lt;span class="c1"&gt;; x^2&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+ &lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;    &lt;span class="c1"&gt;; - 2&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;What about &lt;span class="math"&gt;\(\phi = \frac{1 + \sqrt 5}{2}\)&lt;/span&gt;?&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;/ &lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;              &lt;span class="c1"&gt;; 2x&lt;/span&gt;
+  &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+ &lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;            &lt;span class="c1"&gt;; - 1&lt;/span&gt;
+    &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nf"&gt;sqrt&lt;/span&gt;         &lt;span class="c1"&gt;; all of that ^2&lt;/span&gt;
+      &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="nb"&gt;+ &lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;))))&lt;/span&gt;  &lt;span class="c1"&gt;; - 5&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Thus,&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+f(x) &amp;amp;= (2x - 1)^2 - 5 \\
+&amp;amp;= 2x^2 - 4x + 1 - 5 \\
+&amp;amp;= 2x^2 - 4x - 4
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;So, we have a polynomial. Since we started from 0 and worked in reverse to come up with this polynomial, that should mean &lt;span class="math"&gt;\(\phi\)&lt;/span&gt; is algebraic. Let’s check:&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+f(\phi) &amp;amp;= \Big(\cancel{2}(\frac{1 + \sqrt 5}{\cancel{2}}) - 1\Big)^2 - 5 \\
+&amp;amp;= (\cancel{1} + \sqrt 5 - \cancel{1})^2 - 5 \\
+&amp;amp;= (\sqrt 5)^2 - 5 \\
+&amp;amp;= 0
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;And &lt;span class="math"&gt;\(\phi\)&lt;/span&gt; is its root, so yes, &lt;span class="math"&gt;\(\phi\)&lt;/span&gt; is an algebraic number. Now, how about &lt;span class="math"&gt;\(\sqrt 2 + \sqrt 3\)&lt;/span&gt;? At first I tried to work it out with Clojure and I got the wrong answer. But there is definitely a way to make &lt;span class="math"&gt;\(\sqrt 2 + \sqrt 3 = 0\)&lt;/span&gt;. I did it the old-fashioned way, filling up an entire sheet of paper with algebra.&lt;/p&gt;
+&lt;p&gt;You have to square the term to get rid of the square roots, but because &lt;span class="math"&gt;\((a + b)^2 = a^2 + 2ab + b^2\)&lt;/span&gt;, you’ll also have to get rid of the &lt;span class="math"&gt;\(2\sqrt 2\sqrt 3\)&lt;/span&gt; that remains when you do &lt;span class="math"&gt;\((\sqrt 2 + \sqrt 3)^2\)&lt;/span&gt;.&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+f(x) &amp;amp;= \Big(\frac{x^2 - 5}{2}\Big)^2 - 6 \\
+&amp;amp;= \frac{1}{4}x^4 + \frac{5}{2}x^2 + \frac{25}{4} - 6 \\
+&amp;amp;= \frac{1}{4}x^4 + \frac{5}{2}x^2 + \frac{1}{4}
+\end{aligned} $$&lt;/div&gt;
+&lt;h1 id="25"&gt;2.5&lt;/h1&gt;
+&lt;h2 id="product-and-sum-of-algebraic-numbers"&gt;Product and sum of algebraic numbers&lt;/h2&gt;
+&lt;p&gt;A polynomial encompasses the operations of addition, multiplication, and exponentiation. To find the root of a polynomial is to perform the ”opposite” of these operations.&lt;/p&gt;
+&lt;p&gt;Addition and multiplication are commutative, so their opposite is themselves; the opposite of exponentiation is to take a root.&lt;/p&gt;
+&lt;p&gt;It would seem from the above work that any number made from combinations of these “opposite” operations performed on rational numbers is the root of &lt;em&gt;some&lt;/em&gt; polynomial and is therefore algebraic.&lt;/p&gt;
+&lt;p&gt;Therefore, for any two algebraic numbers, their sum and their product are both algebraic as well.&lt;/p&gt;
+&lt;h2 id="proof-regarding-pie-and-pi-e"&gt;Proof regarding &lt;span class="math"&gt;\(\pi+e\)&lt;/span&gt; and &lt;span class="math"&gt;\(\pi e\)&lt;/span&gt; &lt;/h2&gt;
+&lt;p&gt;For this part, I was stuck, so I got some help from the author himself:&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;For the &lt;span class="math"&gt;\(\pi+e\)&lt;/span&gt; and &lt;span class="math"&gt;\(\pi e\)&lt;/span&gt; part, there are two steps: (1) prove that a number which is the root of a polynomial whose coefficients are algebraic is also algebraic, and (2) construct a polynomial whose roots are &lt;span class="math"&gt;\(\pi\)&lt;/span&gt; and &lt;span class="math"&gt;\(e\)&lt;/span&gt;, and whose coefficients can be expressed in terms of &lt;span class="math"&gt;\(\pi+e\)&lt;/span&gt; and &lt;span class="math"&gt;\(\pi e\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;The author said the second part was easy. It is, but it’s not obvious. Apparently you can create a polynomial from a series of roots by just &lt;a href="https://www.purplemath.com/modules/fromzero2.htm"&gt;subtracting them from &lt;span class="math"&gt;\(x\)&lt;/span&gt; and multiplying them together&lt;/a&gt;:&lt;/p&gt;
+&lt;div class="math"&gt;$$ (x-r_1)(x-r_2) $$&lt;/div&gt;
+&lt;p&gt;Since we want a polynomial with roots &lt;span class="math"&gt;\(\pi\)&lt;/span&gt; and &lt;span class="math"&gt;\(e\)&lt;/span&gt;,&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+f(x) &amp;amp;= (x-\pi)(x-e) \\
+&amp;amp;= x^2 - ex - \pi x + \pi e \\
+&amp;amp;= x^2 - (\textcolor{teal}{\pi + e})x + \textcolor{orange}{\pi e}
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;Done!&lt;/p&gt;
+&lt;p&gt;Now, back to the first part. In a more general form, the statement about the roots of a polynomial would look like&lt;/p&gt;
+&lt;div class="math"&gt;$$ f(x) = \prod_{i=1}^n (x-r_i) $$&lt;/div&gt;
+&lt;p&gt;for a polynomial with &lt;span class="math"&gt;\(n\)&lt;/span&gt; roots.&lt;/p&gt;
+&lt;p&gt;That means all that can ever happen to any &lt;span class="math"&gt;\(r_i\)&lt;/span&gt; is the accumulation of multiplication or addition operations.&lt;/p&gt;
+&lt;p&gt;As discussed above, for any two algebraic numbers, their sum and their product are both algebraic as well. So for a set of &lt;span class="math"&gt;\(r_1, \cdots, r_n\)&lt;/span&gt; that are all algebraic, &lt;span class="math"&gt;\(f(x)\)&lt;/span&gt; will also be algebraic.&lt;/p&gt;
+&lt;p&gt;&lt;span class="math"&gt;\(\pi\)&lt;/span&gt; and &lt;span class="math"&gt;\(e\)&lt;/span&gt; are known to &lt;em&gt;not&lt;/em&gt; be algebraic, so accumulating multiplication or addition with algebraic numbers will never &lt;em&gt;make&lt;/em&gt; them algebraic. Therefore the resulting coefficients will not be algebraic.&lt;/p&gt;
+&lt;p&gt;Let’s try making &lt;span class="math"&gt;\(\pi + e\)&lt;/span&gt; a root of a polynomial that has an &lt;em&gt;algebraic&lt;/em&gt; root as well.&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+g(x) &amp;amp;= \Big(x - (\pi + e)\Big)(x + 2) \\
+&amp;amp;= x^2 + 2x - (\pi + e)x - 2(\pi + e) \\
+&amp;amp;= x^2 + (2 - \pi - e)x - 2\pi - e
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;Nope! How about &lt;span class="math"&gt;\(\pi e\)&lt;/span&gt;?&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+h(x) &amp;amp;= (x - \pi e)(x + 2) \\
+&amp;amp;= x^2 + 2x - \pi e x - 2 \pi e \\
+&amp;amp;= x^2 + (2 - \pi e)x - 2 \pi e
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;Here, we cannot know for sure. If &lt;span class="math"&gt;\(\pi e\)&lt;/span&gt; is algebraic, then &lt;span class="math"&gt;\(h(x)\)&lt;/span&gt; will also be algebraic. But we don’t know. So it is true that &lt;span class="math"&gt;\(\pi\)&lt;/span&gt; and &lt;span class="math"&gt;\(e\)&lt;/span&gt; are not algebraic, but &lt;span class="math"&gt;\(\pi + e\)&lt;/span&gt; and &lt;span class="math"&gt;\(\pi e\)&lt;/span&gt; cannot &lt;em&gt;both&lt;/em&gt; be algebraic.&lt;/p&gt;
+&lt;h1 id="26"&gt;2.6&lt;/h1&gt;
+&lt;p&gt;I don’t know how to prove Vieta’s formulas other than working through them. The product is easier than the sum and can be done without substituting actual numbers. Let’s try a polynomial of degree 3 (&lt;span class="math"&gt;\(n=3\)&lt;/span&gt;):&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{gathered}
+(x - r_3)(x - r_2)(x - r_1) \\
+(x^2 - r_2x - r_3x + \textcolor{red}{r_2r_3})(x - r_1) \\
+x^3 - r_2x^2 - r_3x^2 + r_2r_3x - (r_1x^2 + r_1r_2x + r_1r_3x - \textcolor{red}{r_1r_2r_3}) \\
+x^3 \textcolor{teal}{- r_2x^2 - r_3x^2} + \textcolor{orange}{r_2r_3x} - \textcolor{teal}{r_1x^2} \textcolor{orange}{- r_1r_2x - r_1r_3x} + \textcolor{red}{r_1r_2r_3} \\
+{\underbrace{\textcolor{lightgray}{1}}_{a_3}} x^3 + {\underbrace{(\textcolor{teal}{-r_1 - r_2- r_3}}_{a_2})} x^2 + {\underbrace{(\textcolor{orange}{-r_1r_2 - r_1r_3 + r_2r_3})}_{a_1}} x + \underbrace{\textcolor{red}{r_1r_2r_3}}_{a_0}
+\end{gathered} $$&lt;/div&gt;
+&lt;p&gt;According to Vieta’s formula, the following should be true:&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+\prod_{i=1}^n r_i &amp;amp;= (-1)^n \frac{a_0}{a_n} \\
+r_1r_2r_3 &amp;amp;\overset{?}{=} (-1)^3 \frac{r_1r_2r_3}{1} \end{aligned} $$&lt;/div&gt;
+&lt;p&gt;Indeed it is! And if you look at the term I went back and highlighted in red above, you can see why:&lt;/p&gt;
+&lt;p&gt;As you keep multiplying binomials, the final coefficient (the one without a variable) is always going to be the cumulative product of the roots (the term in the binomials without a variable), with the sign switching for each binomial you multiply.&lt;/p&gt;
+&lt;p&gt;But what about the sum of the roots?&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+\sum_{i=1}^n r_i &amp;amp;= -\frac{a_{n-1}}{a_n} \\
+r_1 + r_2 + r_3 &amp;amp;\overset{?}{=} -\frac{a_2}{a_3} \\
+&amp;amp;\overset{?}{=} -\frac{-r_1 - r_2 - r_3}{1} \\
+&amp;amp;= r_1 + r_2 + r_3
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;I can’t explain why this is the case, but I can see that it does work.&lt;/p&gt;
+&lt;p&gt;So Vieta’s formulas are basically saying that for any degree &lt;span class="math"&gt;\(n\)&lt;/span&gt; polynomial &lt;span class="math"&gt;\(a_n \prod_{i=1}^n (x - r_i)\)&lt;/span&gt; with roots &lt;span class="math"&gt;\(r_1, ..., r_n\)&lt;/span&gt;, where &lt;span class="math"&gt;\(a_n\)&lt;/span&gt; acts to “scale” the polynomial, then&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;span class="math"&gt;\(a_0\)&lt;/span&gt; (the coefficient without a variable) is the de-scaled product of all the roots (flipping its sign for each iteration), and&lt;/li&gt;
+&lt;li&gt;&lt;span class="math"&gt;\(a_{n-1}\)&lt;/span&gt;, the coefficient of the second highest term, is the flipped-sign de-scaled sum of all the roots.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h1 id="29"&gt;2.9&lt;/h1&gt;
+&lt;p&gt;Wilkinson’s polynomial has a very precise shape because it was created from multiplying very simple binomials. It is “infinitely” steep near its roots (almost a straight line) and because the terms are of such a high order, altering the coefficients slightly turns what was a very “simple” function (the product of simple binomials) into an extremely complicated one.&lt;/p&gt;
+&lt;h1 id="212"&gt;2.12&lt;/h1&gt;
+&lt;p&gt;As far as I found, fields of math involved in different proofs of the Fundamental Theorem of Algebra include: Complex analysis, real analysis, topology, and Riemannian differential geometry. Pretty scary stuff.&lt;/p&gt;</content></entry><entry><title>The squarest root in Babylon and automatic differentiation</title><link href="http://tabidots.github.io/2019/01/squarest-root-in-babylon" rel="alternate"></link><published>2019-01-22T15:47:33+07:00</published><updated>2019-01-22T15:47:33+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-22:/2019/01/squarest-root-in-babylon</id><summary type="html">&lt;p&gt;If you thought 1 + ϵ = 1 was weird, wait till you see what ϵ² equates&amp;nbsp;to.&lt;/p&gt;</summary><content type="html">
 &lt;p&gt;In my previous post on &lt;a href="/from-zero-to-ero"&gt;&lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; (epsilon)&lt;/a&gt;, I wrote about this statement:&lt;/p&gt;
 &lt;div class="math"&gt;$$ 1 + \epsilon = 1 $$&lt;/div&gt;
 &lt;p&gt;which seemed like it came from a planet that had fallen out of orbit or something. Well, try this one on for size:&lt;/p&gt;
@@ -432,22 +583,22 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m{\Big[h_θ(x^i) - y_i\Big]}^2 \\
 $$&lt;/div&gt;
 &lt;p&gt;Spoiler alert: The answer is &lt;em&gt;yes&lt;/em&gt;!&lt;/p&gt;
 &lt;h2 id="making-the-loopless-loop-mathless-too"&gt;Making the loopless loop mathless, too?&lt;/h2&gt;
-&lt;p&gt;After much trial and error, it seems to me that &lt;code class="highlight"&gt;grad&lt;/code&gt; can only take one argument. Mathematically, this makes sense.&lt;/p&gt;
-&lt;p&gt;This will require re-working the code a little bit, since I originally wrote it in a way that was more modular but also required more variables (Clojure thinking pattern, perhaps?).&lt;/p&gt;
+&lt;p&gt;Let’s get our setup going again.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sklearn.datasets&lt;/span&gt;
 
 &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sklearn&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;datasets&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;make_regression&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;n_samples&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;500&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;n_features&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
 
 &lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;hstack&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ones&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;)),&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="c1"&gt;# padding for bias column&lt;/span&gt;
 &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vstack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# this just fixes a quirk of sklearn's output&lt;/span&gt;
-
-&lt;span class="hll"&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;cost&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-&lt;/span&gt;    &lt;span class="n"&gt;num_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-    &lt;span class="n"&gt;o&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ones&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;num_samples&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-    &lt;span class="n"&gt;errors&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
-    &lt;span class="n"&gt;cost_array&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;num_samples&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;cost_array&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;After much trial and error, it seems to me that &lt;code class="highlight"&gt;grad&lt;/code&gt; can only take one argument. Mathematically, this makes sense.&lt;/p&gt;
+&lt;p&gt;This will require re-working the code a little bit, since I originally wrote it in a way that was more modular but also required more variables (Clojure thinking pattern, perhaps?).&lt;/p&gt;
+&lt;p&gt;Also, I learned that &lt;code class="highlight"&gt;numpy&lt;/code&gt; has a built-in &lt;code class="highlight"&gt;mean()&lt;/code&gt; method, which makes it possible to simplify the cost function by quite a bit (eliminating the need for the &lt;code class="highlight"&gt;ones&lt;/code&gt; vector and the &lt;code class="highlight"&gt;num_samples&lt;/code&gt; variables), and make it very readable.&lt;/p&gt;
+&lt;p&gt;I suppose that since we’re doing automatic differentiation, we don’t need the &lt;code class="highlight"&gt;cost&lt;/code&gt; value to be divided by 2, since the original purpose of that was to make the symbolic differentiation easier.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="hll"&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;cost&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+&lt;/span&gt;    &lt;span class="n"&gt;errors&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+&lt;span class="hll"&gt;    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/span&gt;
 &lt;span class="n"&gt;dummy_weights&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
 &lt;span class="n"&gt;cost&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dummy_weights&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;     &lt;span class="c1"&gt;# a big number. I got 7177.83591830956&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
@@ -462,9 +613,7 @@ $$&lt;/div&gt;
 &lt;span class="c1"&gt;#        [  5.90183055],&lt;/span&gt;
 &lt;span class="c1"&gt;#        [ -3.48617932]])&lt;/span&gt;
 &lt;/pre&gt;&lt;/div&gt;
-&lt;p&gt;Amazing. In fact, the &lt;code class="highlight"&gt;cost(weights)&lt;/code&gt; function returns a scalar and &lt;code class="highlight"&gt;dcost(weights)&lt;/code&gt; &lt;em&gt;still&lt;/em&gt; returns a vector!&lt;/p&gt;
-&lt;p&gt;(I don’t know why this works, but when I tried to rewrite &lt;code class="highlight"&gt;cost(weights)&lt;/code&gt; to return a vector, it gave me a vector of the cost on each sample, rather than the cost of each weight.)&lt;/p&gt;
-&lt;p&gt;Now we should be able to rewrite the &lt;code class="highlight"&gt;train_model&lt;/code&gt; function a bit.&lt;/p&gt;
+&lt;p&gt;Amazing! Now we should be able to rewrite the &lt;code class="highlight"&gt;train_model&lt;/code&gt; function a bit.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;train_model&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;epsilon&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.001&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;learning_rate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.01&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
     &lt;span class="n"&gt;last_cost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
@@ -492,7 +641,7 @@ $$&lt;/div&gt;
 &lt;/pre&gt;&lt;/div&gt;
 &lt;p&gt;🔥🔥🔥&lt;/p&gt;
 &lt;p&gt;And that’s it for this post. Stay tuned for more!&lt;/p&gt;
-&lt;h2 id="summary"&gt;Summary&lt;/h2&gt;
+&lt;h1 id="summary"&gt;Summary&lt;/h1&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="hll"&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;autograd.numpy&lt;/span&gt; &lt;span class="kn"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt; &lt;span class="c1"&gt;# use instead of normal numpy&lt;/span&gt;
 &lt;/span&gt;&lt;span class="hll"&gt;&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;autograd&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;grad&lt;/span&gt;
 &lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;sklearn.datasets&lt;/span&gt;
@@ -503,14 +652,11 @@ $$&lt;/div&gt;
 &lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;vstack&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# this just fixes a quirk of sklearn's output&lt;/span&gt;
 
 &lt;span class="hll"&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;cost&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;weights&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
-&lt;/span&gt;    &lt;span class="n"&gt;num_samples&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-    &lt;span class="n"&gt;o&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ones&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;num_samples&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
-    &lt;span class="n"&gt;errors&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
-    &lt;span class="n"&gt;cost_array&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;o&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;T&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;num_samples&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;cost_array&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;][&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
-
-&lt;span class="hll"&gt;&lt;span class="n"&gt;dcost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;grad&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cost&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;# returns a new function&lt;/span&gt;
+&lt;/span&gt;    &lt;span class="n"&gt;errors&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="err"&gt;@&lt;/span&gt; &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;
+&lt;span class="hll"&gt;    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;square&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;errors&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;mean&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
 &lt;/span&gt;
+&lt;span class="n"&gt;dcost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;grad&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;cost&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;  &lt;span class="c1"&gt;# returns a new function&lt;/span&gt;
+
 &lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;train_model&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;epsilon&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.001&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;learning_rate&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.01&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
     &lt;span class="n"&gt;weights&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;zeros&lt;/span&gt;&lt;span class="p"&gt;((&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;shape&lt;/span&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;],&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;))&lt;/span&gt;
     &lt;span class="n"&gt;last_cost&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;
@@ -2265,7 +2411,7 @@ J(θ) &amp;amp;= \frac{1}{2m}\sum_{i=1}^m \Big[h_θ(x^i) - Y_i\Big]^2 \\
 &lt;h1 id="remaining-questions-for-future-posts-links-will-be-included-upon-publication"&gt;Remaining questions for future posts (links will be included upon publication)&lt;/h1&gt;
 &lt;ul&gt;
 &lt;li&gt;Are there any other simple techniques to speed this up? (Mean normalization)&lt;/li&gt;
-&lt;li&gt;Are there any complex techniques to speed this up? (Automatic differentiation)&lt;/li&gt;
+&lt;li&gt;&lt;a href="squarest-root-in-babylon"&gt;Are there any complex techniques to speed this up? (Automatic differentiation)&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="from-zero-to-ero"&gt;How do we know when we’ve reached convergence? (Epsilon)&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;How can &lt;em&gt;linear&lt;/em&gt; (as opposed to &lt;em&gt;logistic&lt;/em&gt;) regression be applied to language tasks? (General backpropagation of neural networks)&lt;/li&gt;
 &lt;/ul&gt;

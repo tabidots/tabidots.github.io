@@ -84,9 +84,9 @@
 <li><a href="#out-of-the-box-solutions">Out-of-the-box solutions</a></li>
 <li><a href="#epsilon-in-the-cost-function">\(\epsilon\) in the cost function</a></li>
 <li><a href="#making-the-loopless-loop-mathless-too">Making the loopless loop mathless, too?</a></li>
-<li><a href="#summary">Summary</a></li>
 </ul>
 </li>
+<li><a href="#summary">Summary</a></li>
 <li><a href="#references">References</a></li>
 </ul>
 </div>
@@ -525,22 +525,22 @@ J(θ) &amp;= \frac{1}{2m}\sum_{i=1}^m{\Big[h_θ(x^i) - y_i\Big]}^2 \\
 $$</div>
 <p>Spoiler alert: The answer is <em>yes</em>!</p>
 <h2 id="making-the-loopless-loop-mathless-too">Making the loopless loop mathless, too?</h2>
-<p>After much trial and error, it seems to me that <code class="highlight">grad</code> can only take one argument. Mathematically, this makes sense.</p>
-<p>This will require re-working the code a little bit, since I originally wrote it in a way that was more modular but also required more variables (Clojure thinking pattern, perhaps?).</p>
+<p>Let’s get our setup going again.</p>
 <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">sklearn.datasets</span>
 
 <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">sklearn</span><span class="o">.</span><span class="n">datasets</span><span class="o">.</span><span class="n">make_regression</span><span class="p">(</span><span class="n">n_samples</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span> <span class="n">n_features</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 
 <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">1</span><span class="p">)),</span> <span class="n">X</span><span class="p">))</span> <span class="c1"># padding for bias column</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="c1"># this just fixes a quirk of sklearn's output</span>
-
-<span class="hll"><span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
-</span>    <span class="n">num_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">num_samples</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">errors</span> <span class="o">=</span> <span class="n">X</span> <span class="err">@</span> <span class="n">weights</span> <span class="o">-</span> <span class="n">y</span>
-    <span class="n">cost_array</span> <span class="o">=</span> <span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">T</span> <span class="err">@</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">errors</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">num_samples</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">cost_array</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-
+</pre></div>
+<p>After much trial and error, it seems to me that <code class="highlight">grad</code> can only take one argument. Mathematically, this makes sense.</p>
+<p>This will require re-working the code a little bit, since I originally wrote it in a way that was more modular but also required more variables (Clojure thinking pattern, perhaps?).</p>
+<p>Also, I learned that <code class="highlight">numpy</code> has a built-in <code class="highlight">mean()</code> method, which makes it possible to simplify the cost function by quite a bit (eliminating the need for the <code class="highlight">ones</code> vector and the <code class="highlight">num_samples</code> variables), and make it very readable.</p>
+<p>I suppose that since we’re doing automatic differentiation, we don’t need the <code class="highlight">cost</code> value to be divided by 2, since the original purpose of that was to make the symbolic differentiation easier.</p>
+<div class="highlight"><pre><span></span><span class="hll"><span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
+</span>    <span class="n">errors</span> <span class="o">=</span> <span class="n">X</span> <span class="err">@</span> <span class="n">weights</span> <span class="o">-</span> <span class="n">y</span>
+<span class="hll">    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+</span>
 <span class="n">dummy_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">cost</span><span class="p">(</span><span class="n">dummy_weights</span><span class="p">)</span>     <span class="c1"># a big number. I got 7177.83591830956</span>
 </pre></div>
@@ -555,9 +555,7 @@ $$</div>
 <span class="c1">#        [  5.90183055],</span>
 <span class="c1">#        [ -3.48617932]])</span>
 </pre></div>
-<p>Amazing. In fact, the <code class="highlight">cost(weights)</code> function returns a scalar and <code class="highlight">dcost(weights)</code> <em>still</em> returns a vector!</p>
-<p>(I don’t know why this works, but when I tried to rewrite <code class="highlight">cost(weights)</code> to return a vector, it gave me a vector of the cost on each sample, rather than the cost of each weight.)</p>
-<p>Now we should be able to rewrite the <code class="highlight">train_model</code> function a bit.</p>
+<p>Amazing! Now we should be able to rewrite the <code class="highlight">train_model</code> function a bit.</p>
 <div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">train_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
     <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">last_cost</span> <span class="o">=</span> <span class="mi">0</span>
@@ -585,7 +583,7 @@ $$</div>
 </pre></div>
 <p>🔥🔥🔥</p>
 <p>And that’s it for this post. Stay tuned for more!</p>
-<h2 id="summary">Summary</h2>
+<h1 id="summary">Summary</h1>
 <div class="highlight"><pre><span></span><span class="hll"><span class="kn">import</span> <span class="nn">autograd.numpy</span> <span class="kn">as</span> <span class="nn">np</span> <span class="c1"># use instead of normal numpy</span>
 </span><span class="hll"><span class="kn">from</span> <span class="nn">autograd</span> <span class="kn">import</span> <span class="n">grad</span>
 </span><span class="kn">import</span> <span class="nn">sklearn.datasets</span>
@@ -596,14 +594,11 @@ $$</div>
 <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="c1"># this just fixes a quirk of sklearn's output</span>
 
 <span class="hll"><span class="k">def</span> <span class="nf">cost</span><span class="p">(</span><span class="n">weights</span><span class="p">):</span>
-</span>    <span class="n">num_samples</span> <span class="o">=</span> <span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="n">o</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="n">num_samples</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-    <span class="n">errors</span> <span class="o">=</span> <span class="n">X</span> <span class="err">@</span> <span class="n">weights</span> <span class="o">-</span> <span class="n">y</span>
-    <span class="n">cost_array</span> <span class="o">=</span> <span class="p">(</span><span class="n">o</span><span class="o">.</span><span class="n">T</span> <span class="err">@</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">errors</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">num_samples</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">cost_array</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-
-<span class="hll"><span class="n">dcost</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>  <span class="c1"># returns a new function</span>
+</span>    <span class="n">errors</span> <span class="o">=</span> <span class="n">X</span> <span class="err">@</span> <span class="n">weights</span> <span class="o">-</span> <span class="n">y</span>
+<span class="hll">    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">square</span><span class="p">(</span><span class="n">errors</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 </span>
+<span class="n">dcost</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="n">cost</span><span class="p">)</span>  <span class="c1"># returns a new function</span>
+
 <span class="k">def</span> <span class="nf">train_model</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
     <span class="n">weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">1</span><span class="p">))</span>
     <span class="n">last_cost</span> <span class="o">=</span> <span class="mi">0</span>

@@ -5,28 +5,35 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/</loc>
-<lastmod>2019-01-22T16:10:26-00:00</lastmod>
+<lastmod>2019-01-25T20:04:35-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/archives.html</loc>
-<lastmod>2019-01-22T16:10:26-00:00</lastmod>
+<lastmod>2019-01-25T20:04:35-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/tags.html</loc>
-<lastmod>2019-01-22T16:10:26-00:00</lastmod>
+<lastmod>2019-01-25T20:04:35-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/categories.html</loc>
-<lastmod>2019-01-22T16:10:26-00:00</lastmod>
+<lastmod>2019-01-25T20:04:35-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/2019/01/pim-notes-chapter-2-exercises</loc>
+<lastmod>2019-01-25T16:55:04+07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -89,7 +96,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/category/math</loc>
-<lastmod>2019-01-17T12:54:19+07:07</lastmod>
+<lastmod>2019-01-25T16:55:04+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -292,7 +299,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/author/justin-douglas</loc>
-<lastmod>2019-01-22T15:47:33+07:07</lastmod>
+<lastmod>2019-01-25T16:55:04+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
