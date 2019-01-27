@@ -231,7 +231,7 @@ max      100.000000     42.000000    994.000000
 <p>With those translations in mind, let’s rewrite our linear regression model as a class.</p>
 <p>Our old <code class="highlight">train_model</code> function took separate <code class="highlight">X</code> and <code class="highlight">y</code> inputs, but we should make it more user-friendly by spliting the features from truth behind the scenes (we’ll assume that the last column is truth).</p>
 <p>Let’s flesh out the class with some extra methods, <code class="highlight">test_on(dataset)</code> and <code class="highlight">predict()</code>. For <code class="highlight">test_on(dataset)</code>, let’s have it return the mean error (easier to interpret) rather than the mean squared error.</p>
-<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">autograd</span> <span class="kn">import</span> <span class="n">grad</span>
+<div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">autograd</span> <span class="kn">import</span> <span class="n">elementwise_grad</span> <span class="k">as</span> <span class="n">egrad</span>
 
 <span class="k">class</span> <span class="nc">LinRegModel</span><span class="p">:</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
@@ -253,7 +253,7 @@ max      100.000000     42.000000    994.000000
     <span class="k">def</span> <span class="nf">train</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="n">learning_rate</span><span class="o">=</span><span class="mf">0.01</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">=</span> <span class="mi">0</span> <span class="c1"># just to know the value; not critical for training</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">weights</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">X</span><span class="p">))</span>
-        <span class="n">grad_cost</span> <span class="o">=</span> <span class="n">grad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cost__</span><span class="p">)</span>
+        <span class="n">grad_cost</span> <span class="o">=</span> <span class="n">egrad</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">__cost__</span><span class="p">)</span>
         <span class="n">last_cost</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">epochs</span> <span class="o">+=</span> <span class="mi">1</span>
