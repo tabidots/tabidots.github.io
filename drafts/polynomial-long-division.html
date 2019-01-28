@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="" />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@tabidots" />
+    <meta name="twitter:creator" content="@tabidots" />
+    <meta name="twitter:title" content="Polynomial long division & GCD" />
+    <meta name="twitter:description" content="" />
+    <meta name="twitter:image:src" content="/images/selfportrait_small.png" />
+    <meta name="twitter:domain" content="judosaltgenius.com" />
+
+    <meta property="og:title" content="Polynomial long division & GCD" />
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="" />
+    <meta property="og:image" content="/images/selfportrait_small.png" />
+    <meta property="og:site_name" content="judosaltgenius.com" />
+    <meta property="og:url" content="/drafts/polynomial-long-division" />
+
+
+        <title>Polynomial long division & GCD - Judo Salt Genius</title>
+
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.css" integrity="sha384-VEnyslhHLHiYPca9KFkBB3CMeslnM9CzwjxsEbZTeA21JBm7tdLwKoZmCt3cZTYD" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.js" integrity="sha384-O4hpKqcplNCe+jLuBVEXC10Rn1QEqAmX98lKAIFBEDxZI0a+6Z2w2n8AEtQbR4CD" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/contrib/auto-render.min.js" integrity="sha384-IiI65aU9ZYub2MY9zhtKd1H2ps7xxf+eb2YFG9lX6uRqpXCvBTOidPRCXCrQ++Uc" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/theme/css/pure.css?v=0.1.0" />
+      <!-- CSS specified by the user -->
+
+
+      <link href="/assets/mystyle.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />
+
+    <!-- for pelican_dynamic plugin -->
+    <!-- end pelican_dynamic -->
+
+</head>
+
+<body>
+<div class="pure-g-r" id="layout">
+    <div class="sidebar sidebar-article pure-u">
+        <header class="header-article">
+                    <a href="/author/justin-douglas" title="See posts by Justin Douglas">
+                        <img class="avatar" alt="Justin Douglas" src="https://www.gravatar.com/avatar/74f13134596b2ed04a497936e3fdfd33?s=140">
+                    </a>
+                <h2 class="article-info">Justin Douglas</h2>
+
+
+                    <h5>Draft</h5>
+
+                <p class="article-date">Mon 28 January 2019</p>
+
+                <a class="header-article-home" href="/">&larr;Home</a>
+        </header>
+    </div>
+    <div class="pure-u">
+        <div class="content">
+            <section class="post">
+                <header class="post-header">
+                    <h1>Polynomial long division <span class="amp">&amp;</span> <span class="caps">GCD</span></h1>
+                </header>
+            </section>
+
+                <nav class="toc">
+                <div class="toc">
+<ul>
+<li><a href="#polynomial-long-division">Polynomial long division</a></li>
+<li><a href="#polynomial-greatest-common-divisor">Polynomial greatest common divisor</a></li>
+</ul>
+</div>
+                </nav>
+
+            
+<p>This is my go at Exercise 2.11 in <em>A Programmer’s Introduction to Mathematics</em>. The task was to write an implementation of the extended Euclidean algorithm to find the greatest common divisor of two polynomials.</p>
+<p>This took me way longer than it maybe should have. Implementing polynomial long division with reference to the “long division” notation was not very straightforward, and required constant checking of the intermediate output, especially because I wanted to use <code class="highlight">while</code> loops instead of keeping track of the iterations.</p>
+<h1 id="polynomial-long-division">Polynomial long division</h1>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">poly_longdiv</span><span class="p">(</span><span class="n">dividend</span><span class="p">,</span> <span class="n">divisor</span><span class="p">):</span>
+    <span class="sd">'''This function assumes the arguments are the author's implementation of</span>
+<span class="sd">    Polynomials in `Programmer's Intro to Mathematics`, which orders the terms</span>
+<span class="sd">    ascending by degree.</span>
+<span class="sd">    '''</span>
+    <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">==</span> <span class="n">Polynomial</span>
+    <span class="n">dividend</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">dividend</span><span class="o">.</span><span class="n">coefficients</span><span class="p">))</span>
+    <span class="n">divisor</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">divisor</span><span class="o">.</span><span class="n">coefficients</span><span class="p">))</span>
+    <span class="n">remainder</span> <span class="o">=</span> <span class="n">dividend</span>
+    <span class="n">quotient</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">while</span> <span class="bp">True</span><span class="p">:</span>
+        <span class="n">quo</span> <span class="o">=</span> <span class="n">remainder</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">divisor</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">quotient</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">quo</span><span class="p">)</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="p">[</span><span class="n">quo</span> <span class="o">*</span> <span class="n">term</span> <span class="k">for</span> <span class="n">term</span> <span class="ow">in</span> <span class="n">divisor</span><span class="p">]</span>
+        <span class="n">remainder</span> <span class="o">=</span> <span class="p">[</span><span class="n">top</span> <span class="o">-</span> <span class="n">bot</span> <span class="k">for</span> <span class="n">top</span><span class="p">,</span> <span class="n">bot</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">remainder</span><span class="p">,</span> <span class="n">bottom</span><span class="p">)][</span><span class="mi">1</span><span class="p">:]</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">remainder</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dividend</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="n">quotient</span><span class="p">)</span> <span class="o">+</span> <span class="nb">len</span><span class="p">(</span><span class="n">divisor</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">except</span><span class="p">(</span><span class="ne">IndexError</span><span class="p">):</span>
+            <span class="k">return</span> <span class="p">{</span><span class="s2">"quotient"</span><span class="p">:</span> <span class="n">Polynomial</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">quotient</span><span class="p">))),</span>
+                    <span class="s2">"remainder"</span><span class="p">:</span> <span class="n">Polynomial</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">remainder</span><span class="p">)))}</span>
+</pre></div>
+<p>See <a href="https://github.com/pim-book/programmers-introduction-to-mathematics/blob/master/secret-sharing/polynomial.py">here</a> for the author’s implementation of the <code class="highlight">Polynomial</code> class.</p>
+<h1 id="polynomial-greatest-common-divisor">Polynomial greatest common divisor</h1>
+<p>Meanwhile, this was pretty straightforward once I found <a href="http://www.math.ucla.edu/~radko/circles/lib/data/Handout-358-436.pdf">this super-concise explanation</a>. The Wikipedia article was incomprehensible.</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">poly_gcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">'''Find the GCD of two polynomials using the Extended Euclidean algorithm.</span>
+<span class="sd">    '''</span>
+    <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">==</span> <span class="n">Polynomial</span>
+    <span class="p">[</span><span class="n">small</span><span class="p">,</span> <span class="n">big</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="n">last_r</span> <span class="o">=</span> <span class="n">small</span>
+    <span class="n">division</span> <span class="o">=</span> <span class="n">big</span> <span class="o">/</span> <span class="n">small</span>
+    <span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">division</span><span class="p">[</span><span class="s2">"quotient"</span><span class="p">],</span> <span class="n">division</span><span class="p">[</span><span class="s2">"remainder"</span><span class="p">]</span>
+    <span class="k">while</span> <span class="n">r</span><span class="p">:</span>
+        <span class="n">big</span><span class="p">,</span> <span class="n">small</span> <span class="o">=</span> <span class="n">small</span><span class="p">,</span> <span class="n">r</span>
+        <span class="n">division</span> <span class="o">=</span> <span class="n">big</span> <span class="o">/</span> <span class="n">small</span>
+        <span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">division</span><span class="p">[</span><span class="s2">"quotient"</span><span class="p">],</span> <span class="n">division</span><span class="p">[</span><span class="s2">"remainder"</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">small</span>
+</pre></div>
+
+            <p class="post-footer">
+                // filed
+under                    <a class="post-category" href="/tag/polynomials">polynomials</a>
+                in <a class="post-category" href="/category/math-programming">Math, Programming</a>&nbsp;&nbsp;&nbsp;
+
+                <span style="display:inline-block;">
+                // share on <a href="https://twitter.com/share?text=%22Polynomial%20long%20division%20%26%20GCD%3A%22&amp;hashtags=polynomials" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i> Twitter
+                </a>
+                </span>
+            </p>
+            <div class="hr"></div>
+
+
+            <a href="#" class="go-top">Go Top</a>
+<footer class="footer">
+    <p>&copy; Justin Douglas  2019. Published with <a href="https://github.com/getpelican/pelican">Pelican</a>.<br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+</footer>        </div>
+    </div>
+</div>
+    <script>
+        renderMathInElement(document.body);
+    </script>
+
+			<!-- Script specified by the user -->
+			<script type="text/javascript"  src="/assets/tweaks.js"></script>
+
+    <!-- for pelican_dynamic plugin -->
+
+
+
+</body>
+</html>

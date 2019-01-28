@@ -334,7 +334,7 @@
                 <span class="nb">max</span><span class="p">(</span><span class="n">ctrl_xs</span><span class="p">)</span> <span class="o">+</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">8</span><span class="p">,</span>
                 <span class="nb">min</span><span class="p">(</span><span class="n">ctrl_ys</span><span class="p">)</span> <span class="o">-</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">8</span><span class="p">,</span>
                 <span class="nb">max</span><span class="p">(</span><span class="n">ctrl_ys</span><span class="p">)</span> <span class="o">+</span> <span class="n">height</span> <span class="o">/</span> <span class="mi">8</span><span class="p">]</span>
-    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ctrl_xs</span><span class="p">,</span> <span class="n">ctrl_ys</span><span class="p">,</span> <span class="s1">'C7o'</span><span class="p">)</span>                              <span class="c1"># Intermediate control points</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ctrl_xs</span><span class="p">,</span> <span class="n">ctrl_ys</span><span class="p">,</span> <span class="s1">'C7o'</span><span class="p">)</span>                             <span class="c1"># Intermediate control points</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="s1">'ko'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>     <span class="c1"># Initial control point</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span> <span class="n">points</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="s1">'ko'</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>   <span class="c1"># End control point</span>
 
@@ -385,7 +385,7 @@
 <div class="math">$$ \begin{aligned}
 \textbf B_{\textrm{linear}}(t) &amp;= (1 - t)\textbf P_0 + t \textbf P_1 \\
 \textbf B_{\textrm{quadratic}}(t) &amp;= (1 - t)^2 \textbf P_0 + 2t (1 - t) \textbf P_1 + t^2 \textbf P_2 \\
-\textbf B_{\textrm{cubic}}(t) &amp;= (1 - t)^3\textbf P_0 + 3(1 -t)^2 u \textbf P_1 + 3(1 - t)t^2 \textbf P_2 + t^3 \textbf P_3
+\textbf B_{\textrm{cubic}}(t) &amp;= (1 - t)^3\textbf P_0 + 3(1 -t)^2 t \textbf P_1 + 3(1 - t)t^2 \textbf P_2 + t^3 \textbf P_3
 \end{aligned} $$</div>
 <p>That got me this far:</p>
 <p><img alt="linear bezier" src="../../images/bezier/linear_bezier.gif" title="Linear bezier curve animation"/>
