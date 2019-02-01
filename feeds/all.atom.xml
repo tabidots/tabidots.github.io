@@ -1,5 +1,184 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Judo Salt Genius</title><link href="http://tabidots.github.io/" rel="alternate"></link><link href="http://tabidots.github.io/feeds/all.atom.xml" rel="self"></link><id>http://tabidots.github.io/</id><updated>2019-01-28T20:28:55+07:00</updated><entry><title>Polynomial long division &amp; GCD</title><link href="http://tabidots.github.io/2019/01/polynomial-long-division" rel="alternate"></link><published>2019-01-28T20:28:55+07:00</published><updated>2019-01-28T20:28:55+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-28:/2019/01/polynomial-long-division</id><summary type="html">&lt;p&gt;Exercise 2.11 in A Programmer’s Introduction to&amp;nbsp;Mathematics.&lt;/p&gt;</summary><content type="html">
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Judo Salt Genius</title><link href="http://tabidots.github.io/" rel="alternate"></link><link href="http://tabidots.github.io/feeds/all.atom.xml" rel="self"></link><id>http://tabidots.github.io/</id><updated>2019-02-01T07:35:36+07:00</updated><entry><title>The mod(ular arithmetic) squad</title><link href="http://tabidots.github.io/2019/02/mod-squad" rel="alternate"></link><published>2019-02-01T07:35:36+07:00</published><updated>2019-02-01T07:35:36+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-02-01:/2019/02/mod-squad</id><summary type="html">&lt;p&gt;Modular arithmetic is weird, cool, and generates some trippy&amp;nbsp;polynomials!&lt;/p&gt;</summary><content type="html">
+&lt;p&gt;Finally, I’m on the last of the exercises from Chapter 2 of &lt;em&gt;A Programmer’s Introduction to Mathematics&lt;/em&gt;. The exercise prompts are deceptively terse, and their connection to the material presented in the chapter is not always immediately obvious. Working through them can take entire days (for me, anyway).&lt;/p&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Write a web app that implements the distribution and reconstruction of the secret sharing protocol using the polynomial interpolation algorithm presented in this chapter, using modular arithmetic modulo and a 32-bit modulus &lt;span class="math"&gt;\(p\)&lt;/span&gt;.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;p&gt;To be honest, it took many hours before I could even understand what I was actually being asked to do. I understood&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;part of the &lt;em&gt;what&lt;/em&gt;: the concept of modulo, and&lt;/li&gt;
+&lt;li&gt;the &lt;em&gt;why&lt;/em&gt;: modular arithmetic avoids floating-point rounding errors that emerge in the &lt;span class="math"&gt;\(\frac{x - x_j}{x_i - x_j}\)&lt;/span&gt; operation of interpolating polynomials&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;But I was clueless about the rest—namely&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;how modular arithmetic relates to polynomials; do you perform &lt;span class="math"&gt;\(\mod n\)&lt;/span&gt; on all the coefficients?&lt;/li&gt;
+&lt;li&gt;how does division (fractional quantities) even work in modular arithmetic?&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;At first, I spent way too much time going down fruitless dead-ends. I tried adding in &lt;code class="highlight"&gt;mod&lt;/code&gt; in random places, but I still got floating-point rounding errors.&lt;/p&gt;
+&lt;h1 id="multiplicative-inverse"&gt;Multiplicative inverse&lt;/h1&gt;
+&lt;p&gt;Eventually, I found my way to &lt;a href="https://math.stackexchange.com/a/2924485"&gt;the key insight that got things moving&lt;/a&gt;: There is no “division” as such in modular arithmetic. Instead, there is the &lt;em&gt;multiplicative inverse&lt;/em&gt;, which is analogous in a somewhat non-obvious way to regular division.&lt;/p&gt;
+&lt;p&gt;In normal arithmetic, the inverse of a number (let’s say &lt;span class="math"&gt;\(b\)&lt;/span&gt;) is the entity that, when multiplied by &lt;span class="math"&gt;\(b\)&lt;/span&gt;, gives &lt;span class="math"&gt;\(1\)&lt;/span&gt;. That will be the reciprocal, and if &lt;span class="math"&gt;\(b\)&lt;/span&gt; is a whole number, then the inverse of &lt;span class="math"&gt;\(b\)&lt;/span&gt; can be written &lt;span class="math"&gt;\(b^{-1}\)&lt;/span&gt;.&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+b \cdot \textrm{inv} &amp;amp;= 1 \\
+\textrm{inv} &amp;amp;= \frac{1}{b} \\
+&amp;amp;= b^{-1}
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;In modular arithmetic, the multiplicative inverse of a number &lt;span class="math"&gt;\(b\)&lt;/span&gt; in &lt;span class="math"&gt;\(\mod n\)&lt;/span&gt; is also written &lt;span class="math"&gt;\(b^{-1}\)&lt;/span&gt;, and it is the integer that, when multiplied by &lt;span class="math"&gt;\(b\)&lt;/span&gt;, gives &lt;span class="math"&gt;\(1 \mod n\)&lt;/span&gt;:&lt;/p&gt;
+&lt;div class="math"&gt;$$ b \cdot b^{-1} \equiv 1 \mod n $$&lt;/div&gt;
+&lt;p&gt;Now, finding the inverse is not exactly straightforward. There is an algorithm, but let’s first explore some examples. The StackExchange answer linked above enumerates the multiplicative inverses of numbers in &lt;span class="math"&gt;\(\mod 11\)&lt;/span&gt;:&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+1^{-1} &amp;amp;= 1 &amp;amp; 1 \cdot \textcolor{red}{1} &amp;amp;= 1 &amp;amp;\equiv 1 \mod 11 \\
+2^{-1} &amp;amp;= 6 &amp;amp; 2 \cdot \textcolor{red}{6} &amp;amp;= 12 &amp;amp;\equiv 1 \mod 11 \\
+3^{-1} &amp;amp;= 4 &amp;amp; 3 \cdot \textcolor{red}{4} &amp;amp;= 12 &amp;amp;\equiv 1 \mod 11 \\
+4^{-1} &amp;amp;= 3 &amp;amp; 4 \cdot \textcolor{red}{3} &amp;amp;= 12 &amp;amp;\equiv 1 \mod 11 \\
+5^{-1} &amp;amp;= 9 &amp;amp; 5 \cdot \textcolor{red}{9} &amp;amp;= 45 &amp;amp;\equiv 1 \mod 11 \\
+6^{-1} &amp;amp;= 2 &amp;amp; 6 \cdot \textcolor{red}{2} &amp;amp;= 12 &amp;amp;\equiv 1 \mod 11 \\
+7^{-1} &amp;amp;= 8 &amp;amp; 7 \cdot \textcolor{red}{8} &amp;amp;= 56 &amp;amp;\equiv 1 \mod 11 \\
+8^{-1} &amp;amp;= 7 &amp;amp; 8 \cdot \textcolor{red}{7} &amp;amp;= 56 &amp;amp;\equiv 1 \mod 11 \\
+9^{-1} &amp;amp;= 5 &amp;amp; 9 \cdot \textcolor{red}{5} &amp;amp;= 45  &amp;amp;\equiv 1 \mod 11 \\
+10^{-1} &amp;amp;= 10 &amp;amp; 10 \cdot \textcolor{red}{10} &amp;amp;= 100 &amp;amp;\equiv 1 \mod 11
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;Back to division. In normal arithmetic, we can use the property of the inverse to rewrite fractions in a slightly awkward way: &lt;span class="math"&gt;\(\frac{a}{b} = a \cdot \frac{1}{b} = a \cdot b^{-1}\)&lt;/span&gt;.&lt;/p&gt;
+&lt;p&gt;By this logic, “division” can be performed in modular arithmetic by multiplying &lt;span class="math"&gt;\(a \cdot b^{-1} \mod n\)&lt;/span&gt; and reducing the answer you get &lt;span class="math"&gt;\(\mod n\)&lt;/span&gt;. For example, &lt;span class="math"&gt;\(\frac{7}{6}\)&lt;/span&gt; would be obtained in &lt;span class="math"&gt;\(\mod 11\)&lt;/span&gt; by:&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+7 \cdot 6^{-1} &amp;amp;= 7 \cdot 2 \\ &amp;amp;= 14 \\ &amp;amp;\equiv 3 \mod 11
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;Interestingly, for prime moduli, there is &lt;a href="https://stackoverflow.com/a/4798776/4210855"&gt;a very quick and easy way to do it natively in Python&lt;/a&gt;, which is much faster and simpler than the full algorithm for arbitrary moduli:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;mod_inv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mod&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;pow&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mod&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mod&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# Same as x ** mod-2 % mod&lt;/span&gt;
+
+&lt;span class="n"&gt;mod_inv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;11&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# 2&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;I don’t really understand the &lt;code class="highlight"&gt;-2&lt;/code&gt; part, but it seems that in &lt;span class="math"&gt;\(\mod 11\)&lt;/span&gt;, any number raised to the &lt;em&gt;ninth power&lt;/em&gt; will produce a number that is one more than a multiple of 11.&lt;/p&gt;
+&lt;h1 id="polynomial-interpolation-modularly"&gt;Polynomial interpolation, modularly&lt;/h1&gt;
+&lt;p&gt;Now, to apply this finding to polynomial interpolation. This was the original, non-modular, non-cool version:&lt;/p&gt;
+&lt;div class="math"&gt;$$ f(x) = \sum_{i=0}^n y_i \Bigg(\prod_{j \not= i} \frac{x - x_j}{x_i - x_j}\Bigg) $$&lt;/div&gt;
+&lt;p&gt;To make it modular and cool, we do this:&lt;/p&gt;
+&lt;div class="math"&gt;$$ \begin{aligned}
+f(x) &amp;amp;= \sum_{i=0}^n y_i \Bigg(\prod_{j \not= i} \textcolor{teal}{\frac{1}{x_i - x_j}}x + \textcolor{orange}{\frac{-x_j}{x_i - x_j}}\Bigg) \\
+&amp;amp;= \sum_{i=0}^n y_i \Bigg(\prod_{j \not= i} \textcolor{lightgray}{1 \cdot }\textcolor{teal}{(x_i - x_j)^{-1}} \cdot x + \textcolor{orange}{-x_j \cdot (x_i - x_j)^{-1}} \Bigg) \mod n
+\end{aligned} $$&lt;/div&gt;
+&lt;p&gt;Keeping in mind that the equivlent of modular &lt;code class="highlight"&gt;a / b&lt;/code&gt; in Python is &lt;code class="highlight"&gt;&lt;span class="n"&gt;a&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;mod_inv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mod&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;mod&lt;/span&gt;&lt;/code&gt;, this is surprisingly easy to implement in the author’s &lt;code class="highlight"&gt;single_term&lt;/code&gt; function (original code is &lt;a href="https://github.com/pim-book/programmers-introduction-to-mathematics/blob/master/secret-sharing/interpolate.py"&gt;here&lt;/a&gt;). Let’s assume a global variable &lt;code class="highlight"&gt;MOD&lt;/code&gt; that we’ll create later.&lt;/p&gt;
+&lt;div class="superfences-tabs"&gt;
+&lt;input checked="checked" id="__tab_1_0" name="__tabs_1" type="radio"/&gt;
+&lt;label for="__tab_1_0"&gt;Broke&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;theTerm&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;theTerm&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;Polynomial&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;xj&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xi&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;xj&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt;
+                                &lt;span class="mf"&gt;1.0&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xi&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;xj&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;input id="__tab_1_1" name="__tabs_1" type="radio"/&gt;
+&lt;label for="__tab_1_1"&gt;Woke&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;theTerm&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;theTerm&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;Polynomial&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;xj&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;mod_inv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xi&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;xj&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;MOD&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;MOD&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+                                &lt;span class="n"&gt;mod_inv&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xi&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;xj&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;MOD&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;MOD&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;The coefficients of the polynomial generated by the &lt;code class="highlight"&gt;interpolate&lt;/code&gt; function must also be reduced. Code-wise, that’s pretty easy:&lt;/p&gt;
+&lt;div class="superfences-tabs"&gt;
+&lt;input checked="checked" id="__tab_2_0" name="__tabs_2" type="radio"/&gt;
+&lt;label for="__tab_2_0"&gt;Broke&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;terms&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ZERO&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;input id="__tab_2_1" name="__tabs_2" type="radio"/&gt;
+&lt;label for="__tab_2_1"&gt;Woke&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;terms&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ZERO&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;MOD&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Except for one thing—the original class made no provision for the &lt;code class="highlight"&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;/code&gt; operator. So we have to add that to the class (original code is &lt;a href="https://github.com/pim-book/programmers-introduction-to-mathematics/blob/master/secret-sharing/polynomial.py"&gt;here&lt;/a&gt;):&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="fm"&gt;__mod__&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+    &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;coefficients&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;coefficients&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="bp"&gt;self&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;Finally, the value returned by &lt;code class="highlight"&gt;evaluateAt&lt;/code&gt; must also be reduced &lt;span class="math"&gt;\(\mod n\)&lt;/span&gt;:&lt;/p&gt;
+&lt;div class="superfences-tabs"&gt;
+&lt;input checked="checked" id="__tab_3_0" name="__tabs_3" type="radio"/&gt;
+&lt;label for="__tab_3_0"&gt;Broke&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;theSum&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;input id="__tab_3_1" name="__tabs_3" type="radio"/&gt;
+&lt;label for="__tab_3_1"&gt;Woke&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;theSum&lt;/span&gt; &lt;span class="o"&gt;%&lt;/span&gt; &lt;span class="n"&gt;MOD&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;For some reason, the &lt;code class="highlight"&gt;ZERO&lt;/code&gt; polynomial has to be changed slightly:&lt;/p&gt;
+&lt;div class="superfences-tabs"&gt;
+&lt;input checked="checked" id="__tab_4_0" name="__tabs_4" type="radio"/&gt;
+&lt;label for="__tab_4_0"&gt;Broke&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;ZERO&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Polynomial&lt;/span&gt;&lt;span class="p"&gt;([])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;input id="__tab_4_1" name="__tabs_4" type="radio"/&gt;
+&lt;label for="__tab_4_1"&gt;Woke&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;ZERO&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Polynomial&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;h1 id="making-floating-points-sink"&gt;Making floating points sink&lt;/h1&gt;
+&lt;p&gt;Modular arithmetic only deals with integers, or &lt;code class="highlight"&gt;int&lt;/code&gt;, so care must be taken to avoid any accidental coercion to &lt;code class="highlight"&gt;float&lt;/code&gt;s in the course of the code. Otherwise, that defeats the purpose of going through all this trouble to avoid floating-point rounding errors.&lt;/p&gt;
+&lt;p&gt;The initial value of each single term in the &lt;code class="highlight"&gt;single_term&lt;/code&gt; function is a &lt;code class="highlight"&gt;float&lt;/code&gt;, so let’s change that:&lt;/p&gt;
+&lt;div class="superfences-tabs"&gt;
+&lt;input checked="checked" id="__tab_5_0" name="__tabs_5" type="radio"/&gt;
+&lt;label for="__tab_5_0"&gt;Broke&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;theTerm&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Polynomial&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mf"&gt;1.&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;input id="__tab_5_1" name="__tabs_5" type="radio"/&gt;
+&lt;label for="__tab_5_1"&gt;Woke&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;theTerm&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;Polynomial&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;p&gt;Summing a list of &lt;code class="highlight"&gt;Polynomial&lt;/code&gt;s (or even just adding two together) produced floating-point values even when the original coefficients were integers. It turns out that the author explicitly coerced the value in the function &lt;code class="highlight"&gt;add&lt;/code&gt; of the &lt;code class="highlight"&gt;Polynomial&lt;/code&gt; class (which was loaded into the operator via &lt;code class="highlight"&gt;__add__&lt;/code&gt;). Another easy fix:&lt;/p&gt;
+&lt;div class="superfences-tabs"&gt;
+&lt;input checked="checked" id="__tab_6_0" name="__tabs_6" type="radio"/&gt;
+&lt;label for="__tab_6_0"&gt;Broke&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;zip_longest&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;fillvalue&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mf"&gt;0.&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;input id="__tab_6_1" name="__tabs_6" type="radio"/&gt;
+&lt;label for="__tab_6_1"&gt;Woke&lt;/label&gt;
+&lt;div class="superfences-content"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="nb"&gt;sum&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;zip_longest&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="bp"&gt;self&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;other&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;fillvalue&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;h1 id="modulus-prime"&gt;Modulus Prime&lt;/h1&gt;
+&lt;p&gt;Man, the word &lt;em&gt;modulus&lt;/em&gt; is such a cool word. Anyway, we need to create one.&lt;/p&gt;
+&lt;p&gt;The prompt in the book specifies the use of a 32-bit number. It just so happens that Python has a handy random number generator, &lt;code class="highlight"&gt;&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getrandbits&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;32&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;/code&gt;, that takes &lt;code class="highlight"&gt;x&lt;/code&gt; bits as an argument.&lt;/p&gt;
+&lt;p&gt;Since our simplified algorithm for modular exponentiation assumes that the modulus is prime, we also have to find some way to check for primality. &lt;code class="highlight"&gt;sympy&lt;/code&gt; has one such function; no need to reinvent the wheel. (While I am finding number theory very fascinating, I also don’t have 5 years to spend on one chapter of this book!)&lt;/p&gt;
+&lt;p&gt;So, with that information, it should be pretty easy to come up with a random 32-bit prime modulus:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;random&lt;/span&gt;
+&lt;span class="kn"&gt;from&lt;/span&gt; &lt;span class="nn"&gt;sympy.ntheory.primetest&lt;/span&gt; &lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="n"&gt;isprime&lt;/span&gt;
+
+&lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;seed&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+
+&lt;span class="k"&gt;def&lt;/span&gt; &lt;span class="nf"&gt;big_prime&lt;/span&gt;&lt;span class="p"&gt;():&lt;/span&gt;
+    &lt;span class="k"&gt;while&lt;/span&gt; &lt;span class="bp"&gt;True&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;random&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;getrandbits&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;32&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# a random 32-bit number&lt;/span&gt;
+        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;isprime&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="p"&gt;):&lt;/span&gt;
+            &lt;span class="k"&gt;break&lt;/span&gt;
+    &lt;span class="k"&gt;return&lt;/span&gt; &lt;span class="n"&gt;p&lt;/span&gt;
+
+&lt;span class="n"&gt;MOD&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;big_prime&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;This instantly gives us gigantic numbers like &lt;code class="highlight"&gt;3898342621&lt;/code&gt; that automatically satisfy two conditions: (1) Occupy 32 bits and (2) Be prime. Perfect!&lt;/p&gt;
+&lt;h1 id="the-proof-is-in-the-polynomials"&gt;The proof is in the polynomials&lt;/h1&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="n"&gt;MOD&lt;/span&gt; &lt;span class="c1"&gt;# 2606193617&lt;/span&gt;
+&lt;span class="n"&gt;points&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;7&lt;/span&gt;&lt;span class="p"&gt;)]&lt;/span&gt;
+&lt;span class="n"&gt;f&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;interpolate&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;points&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="c1"&gt;# 347492486 + 2084954895 x^1 + 173746241 x^2&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;f&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xi&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xi&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;yi&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;points&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="c1"&gt;# [5, 6, 7]&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;It works! Our interpolated polynomial is&lt;/p&gt;
+&lt;div class="math"&gt;$$ f(x) = 173746241 x^2 + 2084954895 x + 347492486 \mod 2606193617 $$&lt;/div&gt;
+&lt;p&gt;and despite the enormous coefficients, it does actually pass through the points I specified.&lt;/p&gt;
+&lt;p&gt;It should be noted that this code &lt;em&gt;does not&lt;/em&gt; work for negative numbers, as someone commented in response to the quick-and-dirty modular exponentation function I found on Stack Exchange. You can make modular arithmetic work with negative numbers, but it takes a little more fiddling.&lt;/p&gt;
+&lt;p&gt;You could also just take the lazy route and not use negative &lt;span class="math"&gt;\(y\)&lt;/span&gt; values when implementing this for secret-sharing.&lt;/p&gt;
+&lt;p&gt;Just out of curiosity, what does this modular polynomial look like, compared to the non-modular one?&lt;/p&gt;
+&lt;p&gt;&lt;img alt="polynomial interpolation" src="../../images/polynomial_interp.png"/&gt;&lt;/p&gt;
+&lt;p&gt;The modular polynomial has an interesting shape! Note that the scale on the vertical axis is &lt;code class="highlight"&gt;1e9&lt;/code&gt;, or &lt;em&gt;one billion&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;I find it so bizarre and fascinating that the floating-point coefficients are off by such a small amount, yet result in an inaccuracy that would make the result completely useless for cryptography, while the modular coefficients are so gigantic (along with the fluctuations in the graph) yet do create a polynomial that passes through the given points.&lt;/p&gt;
+&lt;p&gt;To illustrate just how small the floating-point errors are, here is a comparison between the floating-point and decimal version of the hand-interpolated polynomial:&lt;/p&gt;
+&lt;div class="math"&gt;$$\begin{gathered}
+-0.1\overline{3} x^2 + 1.4 x + 3.7\overline{3}  \\
+-0.13333333333333358 x^2 + 1.3999999999999995 x + 3.733333333333336
+\end{gathered}$$&lt;/div&gt;
+&lt;p&gt;That’s enough for this post. I’ll get on implementing this into an actual toy-cryptography web app soon!&lt;/p&gt;
+&lt;h1 id="references"&gt;References&lt;/h1&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://math.stackexchange.com/questions/2922433/how-to-compute-prod-i-1ny-i-left-prod-genfrac01j-not-ij-1"&gt;How to compute &lt;span class="math"&gt;\(\prod_{i=1}^n y'{_i}^{\big(\prod_{j \not=i, j=1}^n \frac{x_j}{x_j-x_i}\big)}\)&lt;/span&gt; with modular arithmetic for Lagrange&lt;/a&gt;, Stack Exchange Mathematics&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://stackoverflow.com/a/4798776/4210855"&gt;Modular multiplicative inverse function in Python&lt;/a&gt;, Stack Overflow&lt;/li&gt;
+&lt;/ul&gt;</content><category term="modular arithmetic"></category></entry><entry><title>Polynomial long division &amp; GCD</title><link href="http://tabidots.github.io/2019/01/polynomial-long-division" rel="alternate"></link><published>2019-01-28T20:28:55+07:00</published><updated>2019-01-28T20:28:55+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-28:/2019/01/polynomial-long-division</id><summary type="html">&lt;p&gt;Exercise 2.11 in A Programmer’s Introduction to&amp;nbsp;Mathematics.&lt;/p&gt;</summary><content type="html">
 &lt;p&gt;This is my go at Exercise 2.11 in &lt;em&gt;A Programmer’s Introduction to Mathematics&lt;/em&gt;. The task was to write an implementation of the extended Euclidean algorithm to find the greatest common divisor of two polynomials.&lt;/p&gt;
 &lt;p&gt;This took me way longer than it maybe should have. Implementing polynomial long division with reference to the “long division” notation was not very straightforward, and required constant checking of the intermediate output, especially because I wanted to use &lt;code class="highlight"&gt;while&lt;/code&gt; loops instead of keeping track of the iterations.&lt;/p&gt;
 &lt;p&gt;I hope this is somewhere in the ballpark of an elegant solution 😅&lt;/p&gt;
@@ -1800,7 +1979,7 @@ $$&lt;/div&gt;
 &lt;p&gt;&lt;code class="highlight"&gt;&lt;span class="n"&gt;Polynomial&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="n"&gt;a&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;b&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;c&lt;/span&gt;&lt;span class="p"&gt;])&lt;/span&gt;&lt;/code&gt; produces a polynomial &lt;span class="math"&gt;\(a\textcolor{lightgray}{x^0} + b\textcolor{orange}x\textcolor{lightgray}{^1} + c\textcolor{orange}{x^2}\)&lt;/span&gt;, so &lt;code class="highlight"&gt;&lt;span class="n"&gt;Polynomial&lt;/span&gt;&lt;span class="p"&gt;([&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;xj&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xi&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;xj&lt;/span&gt;&lt;span class="p"&gt;),&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;xi&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;xj&lt;/span&gt;&lt;span class="p"&gt;)])&lt;/span&gt;&lt;/code&gt; yields&lt;/p&gt;
 &lt;div class="math"&gt;$$\frac{-\textcolor{maroon}{x_j}}{\textcolor{teal}{x_i} - \textcolor{maroon}{x_j}} + \frac{1}{\textcolor{teal}{x_i} - \textcolor{maroon}{x_j}}\textcolor{orange}x = \frac{\textcolor{orange}x - \textcolor{maroon}{x_j}}{\textcolor{teal}{x_i} - \textcolor{maroon}{x_j}}$$&lt;/div&gt;
 &lt;p&gt;Ah, makes sense. It‘s easy to miss (for me, anyway), but the function &lt;span class="math"&gt;\(f(x)\)&lt;/span&gt; isn’t the only polynomial here—the term within the &lt;span class="math"&gt;\(\prod\)&lt;/span&gt; is itself also a polynomial.&lt;/p&gt;
-&lt;p&gt;At first, I thought it was just a clever trick, but the reason for factoring out the &lt;span class="math"&gt;\(x\)&lt;/span&gt; without a subscript is basically that it, unlike everything else in the entire function, &lt;em&gt;not&lt;/em&gt; being iterated over by either the &lt;span class="math"&gt;\(\prod\)&lt;/span&gt; (iterator &lt;span class="math"&gt;\(j\)&lt;/span&gt;) or &lt;span class="math"&gt;\(\sum\)&lt;/span&gt; (iterator &lt;span class="math"&gt;\(i\)&lt;/span&gt;).&lt;/p&gt;
+&lt;p&gt;At first, I thought it was just a clever trick, but the reason for factoring out the &lt;span class="math"&gt;\(x\)&lt;/span&gt; without a subscript is basically that unlike everything else in the entire function, that &lt;span class="math"&gt;\(x\)&lt;/span&gt; is &lt;em&gt;not&lt;/em&gt; being iterated over by either the &lt;span class="math"&gt;\(\prod\)&lt;/span&gt; (iterator &lt;span class="math"&gt;\(j\)&lt;/span&gt;) or &lt;span class="math"&gt;\(\sum\)&lt;/span&gt; (iterator &lt;span class="math"&gt;\(i\)&lt;/span&gt;).&lt;/p&gt;
 &lt;p&gt;It’s the general indeterminate quantity &lt;span class="math"&gt;\(\textcolor{orange}x\)&lt;/span&gt;, and not &lt;span class="math"&gt;\(\textcolor{teal}{x_i}\)&lt;/span&gt; or &lt;span class="math"&gt;\(\textcolor{maroon}{x_j}\)&lt;/span&gt; (i.e., the x-coordinate of one of the &lt;span class="math"&gt;\(n\)&lt;/span&gt; points that we provided to the function), which are actually part of the coefficients here. Incidentally, separating the static &lt;code class="highlight"&gt;x&lt;/code&gt; from the dynamic &lt;code class="highlight"&gt;x&lt;/code&gt;s was a stumbling block for me as I imagined how to tackle this.&lt;/p&gt;</content><category term="pimbook"></category></entry><entry><title>Zen Coding: A Markov chain in Clojure</title><link href="http://tabidots.github.io/2019/01/markov-chain-in-clojure" rel="alternate"></link><published>2019-01-16T21:06:57+07:00</published><updated>2019-01-16T21:06:57+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-16:/2019/01/markov-chain-in-clojure</id><summary type="html">&lt;p&gt;Clojure is so terse and Zen-like. I love it. This is the Clojure translation of the Markov chain implementation I wrote in Python&amp;nbsp;yesterday.&lt;/p&gt;</summary><content type="html">
 &lt;p&gt;I’m currently in the middle of, among learning many new things, getting back into Clojure. I never really could imagine deploying production-grade Clojure programs, but writing code in a functional paradigm is always a fascinating, challenging, and rewarding exercise.&lt;/p&gt;
 &lt;p&gt;Plus, any Lisp looks pretty cool syntactically, and such languages are always extremely terse.&lt;/p&gt;
