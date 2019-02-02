@@ -5,28 +5,35 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/</loc>
-<lastmod>2019-02-01T08:01:47-00:00</lastmod>
+<lastmod>2019-02-02T16:33:10-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/archives.html</loc>
-<lastmod>2019-02-01T08:01:47-00:00</lastmod>
+<lastmod>2019-02-02T16:33:10-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/tags.html</loc>
-<lastmod>2019-02-01T08:01:47-00:00</lastmod>
+<lastmod>2019-02-02T16:33:10-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/categories.html</loc>
-<lastmod>2019-02-01T08:01:47-00:00</lastmod>
+<lastmod>2019-02-02T16:33:10-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/2019/02/deeper-into-linear-regression</loc>
+<lastmod>2019-02-02T16:04:26+07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -152,7 +159,21 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/category/statistics-programming</loc>
-<lastmod>2019-01-19T17:32:22+07:07</lastmod>
+<lastmod>2019-02-02T16:04:26+07:07</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/tag/pandas</loc>
+<lastmod>2019-02-02T16:04:26+07:07</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/tag/automatic-differentiation</loc>
+<lastmod>2019-02-02T16:04:26+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -187,13 +208,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/tag/dual-numbers</loc>
-<lastmod>2019-01-22T15:47:33+07:07</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>http://tabidots.github.io/tag/automatic-differentiation</loc>
 <lastmod>2019-01-22T15:47:33+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
@@ -348,7 +362,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/author/justin-douglas</loc>
-<lastmod>2019-02-01T07:35:36+07:07</lastmod>
+<lastmod>2019-02-02T16:04:26+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
