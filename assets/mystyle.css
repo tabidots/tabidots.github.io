@@ -16,6 +16,10 @@ code, tt, pre {
   line-height: 1.6em;
 }
 
+p.post-footer {
+  text-align: left;
+}
+
 .toc {
   font-family: Lora, Georgia, serif;
 }
