@@ -10,9 +10,14 @@ code, tt, pre {
   font-family: 'Inconsolata', monospace, sans-serif;
 }
 
-.content p, ul {
+.content p, .content > ul, .content > ol {
   font-family: Lora, Georgia, serif;
   text-align: justify;
+  line-height: 1.6em;
+}
+
+.toc {
+  font-family: Lora, Georgia, serif;
 }
 
 .post-header h1 {
@@ -23,7 +28,7 @@ code, tt, pre {
   font-family: Lora, Georgia, serif;
 }
 
-h1, h2, h3, h4, h5, h6, p.article-date, .brand-main a, .toc {
+h1, h2, h3, h4, h5, h6, p.article-date, .brand-main a {
   font-family: 'Work Sans', Helvetica, sans-serif;
 }
 
@@ -75,6 +80,7 @@ code {
   padding: 0.25em 0.25em 0;
   margin-right: .25em;
   font-size: 100%;
+  font-family:  'Work Sans', Helvetica, sans-serif;
   cursor: pointer;
 }
 

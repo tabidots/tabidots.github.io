@@ -5,28 +5,35 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/</loc>
-<lastmod>2019-02-02T16:33:10-00:00</lastmod>
+<lastmod>2019-02-05T10:12:05-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/archives.html</loc>
-<lastmod>2019-02-02T16:33:10-00:00</lastmod>
+<lastmod>2019-02-05T10:12:05-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/tags.html</loc>
-<lastmod>2019-02-02T16:33:10-00:00</lastmod>
+<lastmod>2019-02-05T10:12:05-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/categories.html</loc>
-<lastmod>2019-02-02T16:33:10-00:00</lastmod>
+<lastmod>2019-02-05T10:12:05-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/2019/02/backpropagation</loc>
+<lastmod>2019-02-05T09:25:20+07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -131,7 +138,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/category/math-programming</loc>
-<lastmod>2019-01-28T20:28:55+07:07</lastmod>
+<lastmod>2019-02-05T09:25:20+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -160,6 +167,27 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://tabidots.github.io/category/statistics-programming</loc>
 <lastmod>2019-02-02T16:04:26+07:07</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/tag/machine-learning</loc>
+<lastmod>2019-02-05T09:25:20+07:07</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/tag/neural-networks</loc>
+<lastmod>2019-02-05T09:25:20+07:07</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/tag/backpropagation</loc>
+<lastmod>2019-02-05T09:25:20+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -208,13 +236,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/tag/dual-numbers</loc>
-<lastmod>2019-01-22T15:47:33+07:07</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>http://tabidots.github.io/tag/machine-learning</loc>
 <lastmod>2019-01-22T15:47:33+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
@@ -362,7 +383,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/author/justin-douglas</loc>
-<lastmod>2019-02-02T16:04:26+07:07</lastmod>
+<lastmod>2019-02-05T09:25:20+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
