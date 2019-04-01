@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="The first post in a new series exploring number theory in Clojure." />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@tabidots" />
+    <meta name="twitter:creator" content="@tabidots" />
+    <meta name="twitter:title" content="Number Theory in Clojure: Introduction" />
+    <meta name="twitter:description" content="The first post in a new series exploring number theory in Clojure." />
+    <meta name="twitter:image:src" content="/images/selfportrait_small.png" />
+    <meta name="twitter:domain" content="judosaltgenius.com" />
+
+    <meta property="og:title" content="Number Theory in Clojure: Introduction" />
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="The first post in a new series exploring number theory in Clojure." />
+    <meta property="og:image" content="/images/selfportrait_small.png" />
+    <meta property="og:site_name" content="judosaltgenius.com" />
+    <meta property="og:url" content="/drafts/number-theory-in-clojure-introduction" />
+
+
+        <title>Number Theory in Clojure: Introduction - Judo Salt Genius</title>
+
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.css" integrity="sha384-VEnyslhHLHiYPca9KFkBB3CMeslnM9CzwjxsEbZTeA21JBm7tdLwKoZmCt3cZTYD" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.js" integrity="sha384-O4hpKqcplNCe+jLuBVEXC10Rn1QEqAmX98lKAIFBEDxZI0a+6Z2w2n8AEtQbR4CD" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/contrib/auto-render.min.js" integrity="sha384-IiI65aU9ZYub2MY9zhtKd1H2ps7xxf+eb2YFG9lX6uRqpXCvBTOidPRCXCrQ++Uc" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/theme/css/pure.css?v=0.1.0" />
+      <!-- CSS specified by the user -->
+
+
+      <link href="/assets/mystyle.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />
+
+    <!-- for pelican_dynamic plugin -->
+    <!-- end pelican_dynamic -->
+
+</head>
+
+<body>
+<div class="pure-g-r" id="layout">
+    <div class="sidebar sidebar-article pure-u">
+        <header class="header-article">
+                    <a href="/author/justin-douglas" title="See posts by Justin Douglas">
+                        <img class="avatar" alt="Justin Douglas" src="https://www.gravatar.com/avatar/74f13134596b2ed04a497936e3fdfd33?s=140">
+                    </a>
+                <h2 class="article-info">Justin Douglas</h2>
+
+
+                    <h5>Draft</h5>
+
+                <p class="article-date">Sun 31 March 2019</p>
+
+                <a class="header-article-home" href="/">&larr;Home</a>
+        </header>
+    </div>
+    <div class="pure-u">
+        <div class="content">
+            <section class="post">
+                <header class="post-header">
+                    <h1>Number Theory in Clojure:&nbsp;Introduction</h1>
+                </header>
+            </section>
+
+                <nav class="toc">
+                <div class="toc">
+<ul></ul>
+</div>
+                </nav>
+
+            
+<p>I’ve had to hit the pause button on the blog for a bit because life got in the way, but I haven’t stopped my mathematical explorations. Actually, I got turned on to <a href="https://projecteuler.net">Project Euler</a> in the meantime, which became something of an addiction. Most people solve the problems in C/C++ or Python, but I decided to take the opportunity to sharpen my skills in Clojure (which is, let’s face it, the best-designed programming language out there 😉).</p>
+<p>Unfortunately, there is a bit of an honor system involved, and participants are asked not to share their solutions publicly. So while I have written a fair bit about my solutions, all of that is on the relevant Project Euler forum threads—and the thread for any particular problem is only accessible to those who have solved that problem.</p>
+<p>After solving about 90 problems, though, the difficulty level of new problems is starting to detract from the fun. In the beginning, the “mathematical discovery factor” increased with the difficulty, but those returns have plateaued and are now declining in relation to the diffficulty. So now it’s time to start posting about some of the cool things I’ve discovered.</p>
+
+            <p class="post-footer">
+                // filed
+under                    <a class="post-category" href="/tag/number-theory">number theory</a>
+                    <a class="post-category" href="/tag/math">math</a>
+                    <a class="post-category" href="/tag/clojure">clojure</a>
+                in <a class="post-category" href="/category/math">Math</a>&nbsp;&nbsp;&nbsp;
+
+                <span style="display:inline-block;">
+                // share on <a href="https://twitter.com/share?text=%22Number%20Theory%20in%20Clojure%3A%C2%A0Introduction%3A%20The%20first%20post%20in%20a%20new%20series%20exploring%20number%20theory%20in%C2%A0Clojure.%22&amp;hashtags=numbertheory%2Cmath%2Cclojure" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i> Twitter
+                </a>
+                </span>
+            </p>
+            <div class="hr"></div>
+
+
+            <a href="#" class="go-top">Go Top</a>
+<footer class="footer">
+    <p>&copy; Justin Douglas  2019. Published with <a href="https://github.com/getpelican/pelican">Pelican</a>.<br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+</footer>        </div>
+    </div>
+</div>
+    <script>
+        renderMathInElement(document.body);
+    </script>
+
+			<!-- Script specified by the user -->
+			<script type="text/javascript"  src="/assets/tweaks.js"></script>
+
+    <!-- for pelican_dynamic plugin -->
+
+
+
+</body>
+</html>

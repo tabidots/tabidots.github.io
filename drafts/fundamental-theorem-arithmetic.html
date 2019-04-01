@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="The first post in a new series exploring number theory in Clojure, starting with a discussion of primality testing and prime factorization." />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@tabidots" />
+    <meta name="twitter:creator" content="@tabidots" />
+    <meta name="twitter:title" content="Number Theory in Clojure: The Fundamental Theorem of Arithmetic" />
+    <meta name="twitter:description" content="The first post in a new series exploring number theory in Clojure, starting with a discussion of primality testing and prime factorization." />
+    <meta name="twitter:image:src" content="/images/selfportrait_small.png" />
+    <meta name="twitter:domain" content="judosaltgenius.com" />
+
+    <meta property="og:title" content="Number Theory in Clojure: The Fundamental Theorem of Arithmetic" />
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="The first post in a new series exploring number theory in Clojure, starting with a discussion of primality testing and prime factorization." />
+    <meta property="og:image" content="/images/selfportrait_small.png" />
+    <meta property="og:site_name" content="judosaltgenius.com" />
+    <meta property="og:url" content="/drafts/fundamental-theorem-arithmetic" />
+
+
+        <title>Number Theory in Clojure: The Fundamental Theorem of Arithmetic - Judo Salt Genius</title>
+
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.css" integrity="sha384-VEnyslhHLHiYPca9KFkBB3CMeslnM9CzwjxsEbZTeA21JBm7tdLwKoZmCt3cZTYD" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.js" integrity="sha384-O4hpKqcplNCe+jLuBVEXC10Rn1QEqAmX98lKAIFBEDxZI0a+6Z2w2n8AEtQbR4CD" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/contrib/auto-render.min.js" integrity="sha384-IiI65aU9ZYub2MY9zhtKd1H2ps7xxf+eb2YFG9lX6uRqpXCvBTOidPRCXCrQ++Uc" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/theme/css/pure.css?v=0.1.0" />
+      <!-- CSS specified by the user -->
+
+
+      <link href="/assets/mystyle.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />
+
+    <!-- for pelican_dynamic plugin -->
+    <!-- end pelican_dynamic -->
+
+</head>
+
+<body>
+<div class="pure-g-r" id="layout">
+    <div class="sidebar sidebar-article pure-u">
+        <header class="header-article">
+                    <a href="/author/justin-douglas" title="See posts by Justin Douglas">
+                        <img class="avatar" alt="Justin Douglas" src="https://www.gravatar.com/avatar/74f13134596b2ed04a497936e3fdfd33?s=140">
+                    </a>
+                <h2 class="article-info">Justin Douglas</h2>
+
+
+                    <h5>Draft</h5>
+
+                <p class="article-date">Sun 31 March 2019</p>
+
+                <a class="header-article-home" href="/">&larr;Home</a>
+        </header>
+    </div>
+    <div class="pure-u">
+        <div class="content">
+            <section class="post">
+                <header class="post-header">
+                    <h1>Number Theory in Clojure: The Fundamental Theorem of&nbsp;Arithmetic</h1>
+                </header>
+            </section>
+
+                <nav class="toc">
+                <div class="toc">
+<ul>
+<li><a href="#prime-time">Prime time</a><ul>
+<li><a href="#primes-on-trial">Primes on trial</a></li>
+<li><a href="#integer-square-root">Integer square root</a></li>
+<li><a href="#testing-primality">Testing primality</a></li>
+<li><a href="#leveraging-the-primality-test">Leveraging the primality test</a></li>
+</ul>
+</li>
+<li><a href="#prime-factorization">Prime factorization</a><ul>
+<li><a href="#regular-factorization">Regular factorization</a></li>
+<li><a href="#more-optimized-prime-factorization">More optimized prime factorization</a></li>
+<li><a href="#prime-omega-functions">Prime omega functions</a></li>
+</ul>
+</li>
+<li><a href="#prime-power-representation">Prime power representation</a><ul>
+<li><a href="#negative-exponents-too">Negative exponents too?</a></li>
+</ul>
+</li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+                </nav>
+
+            
+<p>I’ve had to hit the pause button on the blog for a bit because life got in the way, but I haven’t stopped my mathematical explorations. Actually, I got turned on to <a href="https://projecteuler.net">Project Euler</a> in the meantime, which became something of an addiction. Most people solve the problems in C/C++ or Python, but I decided to take the opportunity to sharpen my skills in Clojure (which is, let’s face it, the best-designed programming language out there 😉).</p>
+<p>In the beginning, the “mathematical discovery factor” increased with the difficulty, but after solving about 90 problems, those returns have plateaued and are now declining in relation to the diffficulty. So now it’s time to start posting about some of the cool things I’ve discovered along the way, and use this blog to explore those topics further.</p>
+<h1 id="prime-time">Prime time</h1>
+<p>Thanks to Chapter 1 of <a href="https://pimbook.org">A Programmer’s Introduction to Mathematics</a>, I had already developed an interest in number theory and cryptography. This interest was further ignited by Project Euler, in whose problems number theory factors heavily (pun intended).</p>
+<p>Number theory is basically the study of the integers, <span class="math">\(ℤ\)</span>. This in turn shines the spotlight on prime numbers, a very special category of the integers due to their many interesting properties.</p>
+<p>In order to do anything interesting in number theory, we need to find a way to <strong>test the primality</strong> of a number and to <strong>generate a sequence of prime numbers</strong>.</p>
+<p>In imperative languages, it’s typical to separate these two tasks, and approach the latter by implementing what is called a “prime sieve,” such as the <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Sieve of Eratosthenes</a>, which walks up an infinite sequence of numbers and crosses off more and more composite numbers with each iteration. You might start with an enormous array of <code class="highlight">True</code>s and switch the indices of composite numbers to <code class="highlight">False</code> as you go along.</p>
+<p>Clojure, on the other hand, is a functional language, in which mutating sequences in-place is neither idiomatic nor clean. <a href="http://clj-me.cgrand.net/2009/07/30/everybody-loves-the-sieve-of-eratosthenes/">Lazy (lazily evaluated) infinite sequences are the way to go</a>.</p>
+<p>As the above link shows, it is possible to implement a Sieve of Eratosthenes in Clojure, but it’s quite difficult to read, and in any less than expert hands, <a href="http://www.learningclojure.com/2009/11/sieve-of-eratosthenes.html">quite ugly</a> as well. Meanwhile, I’ve found that it’s simpler to <code class="highlight">filter</code> primes in Clojure than sieving them, which also conveniently integrates the task of testing primality as well.</p>
+<p>This approach is highly readable and, when memoized, its performance does not catastrophically degrade until you start needing primes greater than 1 million or so. Obviously, actual cryptographic applications would require a more industrial-strength implementation, as real-world cryptography deals with integers that could be as large as 256 bits (hundreds of digits long), but for armchair explorations of number theory, this approach will suffice.</p>
+<h2 id="primes-on-trial">Primes on trial</h2>
+<p>This method is called “trial division,” since it involves dividing <span class="math">\(n\)</span> by numbers in a range to test for divisibility. First, we have to define divisibility. A dividend <span class="math">\(n\)</span> is divisible by a divisor <span class="math">\(d\)</span> if no remainder is left after the division, or in other words, if <span class="math">\(n\)</span> is a multiple of <span class="math">\(d\)</span>.</p>
+<p>In terms of modular arithmetic, this is conveniently expressed as a <em>congruence</em>: <span class="math">\(n \equiv 0 \mod d\)</span>.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">divisible?</span> <span class="p">[</span><span class="nv">n</span> <span class="nv">d</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">zero? </span><span class="p">(</span><span class="nf">mod</span> <span class="nv">n</span> <span class="nv">d</span><span class="p">)))</span>
+</pre></div>
+<p>The most naïve, brute-force approach is to literally divide <span class="math">\(n\)</span> by all numbers in <span class="math">\([1, n)\)</span> and return <code class="highlight">true</code> (<span class="math">\(n\)</span> is prime) if <span class="math">\(n\)</span> is divisible by <em>none</em> of those numbers:</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">brute-force-prime?</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">not-any? </span><span class="p">(</span><span class="nb">partial </span><span class="nv">divisible?</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nb">range </span><span class="mi">2</span> <span class="nv">n</span><span class="p">)))</span>
+</pre></div>
+<p>This is extremely slow, though. For a number like <span class="math">\(45565962173\)</span>, this is completely intractable, but even  generating primes up to <span class="math">\(100000\)</span> is impractical with this method.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nb">doall </span><span class="p">(</span><span class="nb">filter </span><span class="nv">brute-force-prime?</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">100000</span><span class="p">))))</span>
+<span class="c1">;; Elapsed time: 67653.900002 msecs</span>
+</pre></div>
+<p>A smarter way to do this starts with noticing that only potential divisors up to <span class="math">\(\sqrt{n}\)</span> need to be tried, because any divisor less than that will have a complementary divisor on the other side of <span class="math">\(\sqrt{n}\)</span>. For example, <span class="math">\(\sqrt{28} \approx 5.3\)</span>. <span class="math">\(28\)</span> is divisible by <span class="math">\(2\)</span>, and this division yields the complementary divisor <span class="math">\(14\)</span>. Likewise, <span class="math">\(4\)</span> yields <span class="math">\(7\)</span>.</p>
+<h2 id="integer-square-root">Integer square root</h2>
+<p>An <a href="https://en.wikipedia.org/wiki/Integer_square_root">upper integer bound <span class="math">\(\lfloor \sqrt{n} \rfloor\)</span></a> capable of handling fairly large numbers can be implemented quite simply as <code class="highlight"><span class="p">(</span><span class="nf">bigint</span> <span class="p">(</span><span class="nf">Math/sqrt</span> <span class="nv">n</span><span class="p">))</span></code>, taking advantage of Java interop.</p>
+<p>This has been effective for all of the Project Euler problems I’ve solved so far, though it is true that a proper arithmetical solution would not involve floating-point numbers. For sufficiently large <span class="math">\(n\)</span>, rounding errors would yield an upper bound that is too low to find all possible factors, especially in the worst case (where a very large <span class="math">\(n\)</span> is the product of two very large primes that are similar but not equal in value).</p>
+<p>I use the <a href="https://github.com/clojure/math.numeric-tower">clojure.math.numeric-tower</a> library here as
+using Java interop for exponentiation (<code class="highlight"><span class="p">(</span><span class="nf">Math/pow</span> <span class="nv">n</span> <span class="nv">e</span><span class="p">)</span></code>) similarly introduces floating-point numbers, and <code class="highlight"><span class="p">(</span><span class="nf">tower/expt</span> <span class="nv">n</span> <span class="nv">e</span><span class="p">)</span></code> is ever-so-slightly faster than <code class="highlight"><span class="p">(</span><span class="nb">reduce </span><span class="nv">*</span><span class="o">'</span> <span class="p">(</span><span class="nb">repeat </span><span class="nv">e</span> <span class="nv">n</span><span class="p">))</span></code>.</p>
+<p>Here is a bulletproof integer square root function, which uses the simpler, faster method for <span class="math">\(n &lt; 10^24\)</span> and a <a href="https://cs.stackexchange.com/a/30383">more sophisticated algorithm</a> (which I don’t really understand) for larger numbers.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">require</span> <span class="o">'</span><span class="p">[</span><span class="nv">clojure.math.numeric-tower</span> <span class="ss">:as</span> <span class="nv">tower</span><span class="p">])</span>
+
+<span class="p">(</span><span class="kd">defn </span><span class="nv">isqrt</span>
+  <span class="s">"floor(√n). When incremented, provides an upper bound for factorization."</span>
+  <span class="c1">;; Java interop is super fast but not accurate for n &gt; 1E24 (approx) due to</span>
+  <span class="c1">;; floating-point rounding. Uses a slightly slower but pinpoint-precise method for n &gt; 1E24.</span>
+  <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&lt; </span><span class="nv">n</span> <span class="mi">1</span><span class="nv">E24</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">-&gt; </span><span class="p">(</span><span class="nf">Math/sqrt</span> <span class="nv">n</span><span class="p">)</span> <span class="nv">bigint</span><span class="p">)</span>
+    <span class="c1">;; https://cs.stackexchange.com/a/30383</span>
+    <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">half-bit-length</span> <span class="p">(</span><span class="nb">quot </span><span class="p">(</span><span class="nf">.bitLength</span> <span class="p">(</span><span class="nf">bigint</span> <span class="nv">n</span><span class="p">))</span> <span class="mi">2</span><span class="p">)]</span>
+      <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">a</span> <span class="p">(</span><span class="nf">tower/expt</span> <span class="mi">2</span> <span class="nv">half-bit-length</span><span class="p">)</span>
+             <span class="nv">b</span> <span class="nv">a</span>
+             <span class="nv">c</span> <span class="p">(</span><span class="nf">*</span><span class="o">'</span> <span class="nv">a</span> <span class="nv">a</span><span class="p">)]</span>
+        <span class="p">(</span><span class="nf">cond</span>
+          <span class="p">(</span><span class="nb">zero? </span><span class="nv">b</span><span class="p">)</span> <span class="nv">a</span>
+          <span class="p">(</span><span class="nb">&gt; </span><span class="nv">c</span> <span class="nv">n</span><span class="p">)</span>   <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">-</span><span class="o">'</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nb">quot </span><span class="nv">b</span> <span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">c</span> <span class="p">(</span><span class="nf">*</span><span class="o">'</span> <span class="mi">-2</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nf">*</span><span class="o">'</span> <span class="nv">b</span> <span class="nv">b</span><span class="p">)))</span>
+          <span class="ss">:else</span>     <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nf">+</span><span class="o">'</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nb">quot </span><span class="nv">b</span> <span class="mi">2</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">c</span> <span class="p">(</span><span class="nf">*</span><span class="o">'</span> <span class="mi">2</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nf">*</span><span class="o">'</span> <span class="nv">b</span> <span class="nv">b</span><span class="p">))))))))</span>
+</pre></div>
+<h2 id="testing-primality">Testing primality</h2>
+<p>Next, let’s implement some basic checks to eliminate the need to do any calculations in the majority of cases. When testing for primality, we generally only consider <span class="math">\(ℤ\)</span>, the positive integers. Furthermore, <span class="math">\(1\)</span> is <em>not</em> considered prime. So <span class="math">\(n \leq 1\)</span> is <code class="highlight">false</code> right off the bat. Next, all primes are odd except <span class="math">\(2\)</span>, so make an exception for <span class="math">\(2\)</span> and return <code class="highlight">false</code> for all <code class="highlight">even?</code> numbers.</p>
+<p>Clojure’s built-in <code class="highlight">even?</code> function has the added bonus of throwing an exception for <code class="highlight">Ratio</code>s and <code class="highlight">float</code>s.</p>
+<p>This leaves all odd numbers <span class="math">\(\geq 3\)</span>. Weeding out all even numbers means that there is no need to check for even divisors (odd numbers only have odd divisors).</p>
+<p>The most idiomatic way to write this would be:</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">cond</span>
+  <span class="p">(</span><span class="nb">&lt;= </span><span class="nv">n</span> <span class="mi">1</span><span class="p">)</span>  <span class="nv">false</span>
+  <span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)</span>   <span class="nv">true</span>
+  <span class="p">(</span><span class="nf">even?</span> <span class="nv">n</span><span class="p">)</span> <span class="nv">false</span> <span class="c1">;; Will also weed out non-integers</span>
+  <span class="ss">:else</span>     <span class="p">(</span><span class="nb">not-any? </span><span class="o">#</span><span class="p">(</span><span class="nf">divisible?</span> <span class="nv">n</span> <span class="nv">%</span><span class="p">)</span> <span class="p">(</span><span class="nb">range </span><span class="mi">3</span> <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nf">isqrt</span> <span class="nv">n</span><span class="p">))</span> <span class="mi">2</span><span class="p">)))</span>
+</pre></div>
+<p>but this is actually about 1.5x as slow as a more verbose translation using <code class="highlight">loop</code>/<code class="highlight">recur</code>:</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">naive-prime?</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+  <span class="p">(</span><span class="nf">cond</span>
+    <span class="p">(</span><span class="nb">&lt;= </span><span class="nv">n</span> <span class="mi">1</span><span class="p">)</span>  <span class="nv">false</span>
+    <span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">2</span><span class="p">)</span>   <span class="nv">true</span>
+    <span class="p">(</span><span class="nf">even?</span> <span class="nv">n</span><span class="p">)</span> <span class="nv">false</span> <span class="c1">;; Will also weed out non-integers</span>
+    <span class="ss">:else</span>     <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">lim</span> <span class="p">(</span><span class="nf">int-root</span> <span class="nv">n</span><span class="p">)]</span>
+                <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">i</span> <span class="mi">3</span><span class="p">]</span>
+                  <span class="p">(</span><span class="nf">cond</span>
+                    <span class="p">(</span><span class="nb">&gt;= </span><span class="nv">i</span> <span class="nv">lim</span><span class="p">)</span>       <span class="nv">true</span>
+                    <span class="p">(</span><span class="nf">divisible?</span> <span class="nv">n</span> <span class="nv">i</span><span class="p">)</span> <span class="nv">false</span>
+                    <span class="ss">:else</span>            <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">i</span> <span class="mi">2</span><span class="p">)))))))</span>
+
+<span class="p">(</span><span class="k">def </span><span class="nv">prime?</span> <span class="p">(</span><span class="nf">memoize</span> <span class="nv">naive-prime?</span><span class="p">))</span>
+</pre></div>
+<p>whose performance, non-memoized and memoized, is leaps and bounds above the original brute-force trial division function:</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">require</span> <span class="o">'</span><span class="p">[</span><span class="nv">criterium.core</span> <span class="ss">:as</span> <span class="nv">c</span><span class="p">])</span>
+
+<span class="p">(</span><span class="nf">c/quick-bench</span> <span class="p">(</span><span class="nf">naive-prime?</span> <span class="mi">45565962173</span><span class="p">))</span>
+<span class="c1">;; Execution time mean : 16.516873 ms</span>
+<span class="c1">;; Execution time std-deviation : 1.053979 ms</span>
+
+<span class="p">(</span><span class="nf">c/quick-bench</span> <span class="p">(</span><span class="nf">prime?</span> <span class="mi">45565962173</span><span class="p">))</span>
+<span class="c1">;; Execution time mean : 340.284934 ns</span>
+<span class="c1">;; Execution time std-deviation : 10.658400 ns</span>
+</pre></div>
+<h2 id="leveraging-the-primality-test">Leveraging the primality test</h2>
+<p>This may not exactly be an industrial-strength method, but for my current purposes, it arguably allows more idiomatic and readable ways to accomplish tasks such as <code class="highlight">filter</code>, <code class="highlight">take</code>, and <code class="highlight">nth</code>.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">c/quick-bench</span> <span class="p">(</span><span class="nb">doall </span><span class="p">(</span><span class="nb">filter </span><span class="nv">naive-prime?</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">100000</span><span class="p">))))</span>
+<span class="c1">;; Execution time mean : 265.236965 ms</span>
+<span class="c1">;; Execution time std-deviation : 6.784358 ms</span>
+
+<span class="p">(</span><span class="nf">c/quick-bench</span> <span class="p">(</span><span class="nb">doall </span><span class="p">(</span><span class="nb">filter </span><span class="nv">prime?</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">100000</span><span class="p">))))</span>
+<span class="c1">;; Execution time mean : 83.140024 ms</span>
+<span class="c1">;; Execution time std-deviation : 1.655784 ms</span>
+
+<span class="p">(</span><span class="nf">c/quick-bench</span> <span class="p">(</span><span class="nb">take </span><span class="mi">500</span> <span class="p">(</span><span class="nb">filter </span><span class="nv">prime?</span> <span class="p">(</span><span class="nf">range</span><span class="p">))))</span>
+<span class="c1">;; Execution time mean : 88.645751 ns</span>
+<span class="c1">;; Execution time std-deviation : 27.586353 ns</span>
+
+<span class="c1">;; (dec n) gets the nth prime, because the sequence is zero-indexed</span>
+<span class="p">(</span><span class="nf">c/quick-bench</span> <span class="p">(</span><span class="nb">nth </span><span class="p">(</span><span class="nb">filter </span><span class="nv">prime?</span> <span class="p">(</span><span class="nf">range</span><span class="p">))</span> <span class="p">(</span><span class="nb">dec </span><span class="mi">500</span><span class="p">)))</span>
+<span class="c1">;; Execution time mean : 2.473162 ms</span>
+<span class="c1">;; Execution time std-deviation : 123.136771 µs</span>
+</pre></div>
+<h1 id="prime-factorization">Prime factorization</h1>
+<p>With that out of the way, we come to the cornerstone of number theory:</p>
+<p><em>All integers greater than 1 are either a prime number or can be expressed as a unique product of prime numbers.</em></p>
+<p>The algorithm to find the prime factors of an integer <span class="math">\(n\)</span> is surprisingly simple to implement. Start with an empty list of factors and an infinite list of primes. Begin with the first prime (that is, <span class="math">\(2\)</span>) and divide <span class="math">\(n\)</span> by <span class="math">\(2\)</span> until you can’t anymore. Each time you divide, add a <span class="math">\(2\)</span> to your list of factors.</p>
+<p>Then, proceed to the next prime (<span class="math">\(3\)</span>) and repeat up the list, adding factors, until the result of your division is <span class="math">\(1\)</span>.</p>
+<p>Let’s try <span class="math">\(168 = 2 \times 2 \times 2 \times 3 \times 7\)</span>.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">n</span>       <span class="mi">168</span>
+       <span class="nv">primes</span>  <span class="p">(</span><span class="nb">filter </span><span class="nv">prime?</span> <span class="p">(</span><span class="nf">range</span><span class="p">))</span>
+       <span class="nv">factors</span> <span class="p">[]]</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">k</span> <span class="p">(</span><span class="nb">first </span><span class="nv">primes</span><span class="p">)]</span>
+    <span class="p">(</span><span class="nf">cond</span>
+      <span class="p">(</span><span class="nb">= </span><span class="mi">1</span> <span class="nv">n</span><span class="p">)</span>          <span class="nv">factors</span>
+      <span class="p">(</span><span class="nf">divisible?</span> <span class="nv">n</span> <span class="nv">k</span><span class="p">)</span> <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nb">/ </span><span class="nv">n</span> <span class="nv">k</span><span class="p">)</span> <span class="nv">primes</span> <span class="p">(</span><span class="nb">conj </span><span class="nv">factors</span> <span class="nv">k</span><span class="p">))</span>
+      <span class="ss">:else</span>            <span class="p">(</span><span class="nf">recur</span> <span class="nv">n</span> <span class="p">(</span><span class="nb">rest </span><span class="nv">primes</span><span class="p">)</span> <span class="nv">factors</span><span class="p">))))</span>
+
+<span class="c1">;; [2 2 2 3 7]</span>
+</pre></div>
+<p>Checks out. You can try a bunch of random numbers and you’ll instantly get its prime factorization, which is something like a fingerprint, since it’s unique for every number. Pretty cool!</p>
+<p>But again, a ridiculously large number like <span class="math">\(245454537724879\)</span> is too much for a simple algorithm. Actually, it’s not so much that the number is too large, but that it has very large prime factors, so it takes a very long time to iterate that far up the list of primes.</p>
+<p>This can be worked around <em>somewhat</em> if we find the factors of <span class="math">\(n\)</span> first, then <code class="highlight">filter</code> the <code class="highlight">prime?</code> ones.</p>
+<h2 id="regular-factorization">Regular factorization</h2>
+<p>This will look a bit like our initial foray into primality testing. Rather than checking if <span class="math">\(n\)</span> has no (that is, <code class="highlight">not-any?</code>) divisors <span class="math">\(1 &lt; d &lt; n\)</span>, we just filter all divisors <span class="math">\(1 \leq d &lt; n\)</span>.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">brute-force-factors</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">filter </span><span class="p">(</span><span class="nb">partial </span><span class="nv">divisible?</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="nv">n</span><span class="p">)))</span>
+</pre></div>
+<p>As you can imagine, since this is running through every possible number, this will take way too long for large <span class="math">\(n\)</span>. We can use the same upper bound as before, although that means that for every positive result, we have to add not only <span class="math">\(d\)</span>, but <span class="math">\(\frac{n}{d}\)</span> as well.</p>
+<p>Here is a clean way of doing that:</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">factors</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+  <span class="p">(</span><span class="nf">-&gt;&gt;</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nf">isqrt</span> <span class="nv">n</span><span class="p">)))</span>
+       <span class="p">(</span><span class="nb">filter </span><span class="o">#</span><span class="p">(</span><span class="nf">divisible?</span> <span class="nv">n</span> <span class="nv">%</span><span class="p">))</span>
+       <span class="p">(</span><span class="nb">mapcat </span><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">d</span><span class="p">]</span> <span class="p">[</span><span class="nv">d</span> <span class="p">(</span><span class="nb">/ </span><span class="nv">n</span> <span class="nv">d</span><span class="p">)]))</span>
+       <span class="p">(</span><span class="nb">into </span><span class="p">(</span><span class="nf">sorted-set</span><span class="p">))))</span>
+</pre></div>
+<h2 id="more-optimized-prime-factorization">More optimized prime factorization</h2>
+<p>With this, we can now improve the performance of our prime factorization function by checking the size of the number first. If <span class="math">\(n\)</span> is smaller than some threshold (let’s say 1 million), then iterate up an infinite list of primes as before. If <span class="math">\(n\)</span> is larger than the threshold, though, then <code class="highlight">filter</code> the <code class="highlight">prime?</code> <code class="highlight">factors</code> first, and iterate up <em>that</em> list instead.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">prime-factorization</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+  <span class="s">"Returns the prime factorization of an integer, e.g., 168 -&gt; [2 2 2 3 7]."</span>
+  <span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">and </span><span class="p">(</span><span class="nf">integer?</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nb">pos? </span><span class="nv">n</span><span class="p">))</span>   <span class="c1">;; Sanity check</span>
+    <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">n</span>       <span class="nv">n</span>
+           <span class="nv">primes</span>  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">n</span> <span class="mi">1000000</span><span class="p">)</span>
+                     <span class="p">(</span><span class="nb">filter </span><span class="nv">prime?</span> <span class="p">(</span><span class="nf">factors</span> <span class="nv">n</span><span class="p">))</span>
+                     <span class="p">(</span><span class="nb">filter </span><span class="nv">prime?</span> <span class="p">(</span><span class="nf">range</span><span class="p">)))</span>
+           <span class="nv">factors</span> <span class="p">[]]</span>
+      <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">k</span> <span class="p">(</span><span class="nb">first </span><span class="nv">primes</span><span class="p">)]</span>
+        <span class="p">(</span><span class="nf">cond</span>
+          <span class="p">(</span><span class="nb">= </span><span class="mi">1</span> <span class="nv">n</span><span class="p">)</span>          <span class="nv">factors</span>
+          <span class="p">(</span><span class="nf">divisible?</span> <span class="nv">n</span> <span class="nv">k</span><span class="p">)</span> <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nb">/ </span><span class="nv">n</span> <span class="nv">k</span><span class="p">)</span> <span class="nv">primes</span> <span class="p">(</span><span class="nb">conj </span><span class="nv">factors</span> <span class="nv">k</span><span class="p">))</span>
+          <span class="ss">:else</span>            <span class="p">(</span><span class="nf">recur</span> <span class="nv">n</span> <span class="p">(</span><span class="nb">rest </span><span class="nv">primes</span><span class="p">)</span> <span class="nv">factors</span><span class="p">))))))</span>
+</pre></div>
+<p>This isn’t a perfect heuristic, as large numbers do not necessarily have large prime factors. For example, 12 bazillion-gajillion (<span class="math">\(12 \times 10^{??}\)</span>) still has only <span class="math">\((2, 3, 5)\)</span> as prime factors, just like <span class="math">\(120\)</span>. But at least it can reduce the time required for difficult cases, such as <span class="math">\(n = 23897538974893789\)</span>, and make them tractable.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">time </span><span class="p">(</span><span class="nf">prime-factorization</span> <span class="mi">23897538974893789</span><span class="p">))</span>
+<span class="c1">;; Elapsed time: 30579.928312 msecs</span>
+<span class="c1">;; [211 23357 4849016507]</span>
+</pre></div>
+<p>(The brute-force version didn’t finish even after 5 minutes, so I abandoned it.)</p>
+<h2 id="prime-omega-functions">Prime omega functions</h2>
+<p>There are a couple arithmetic that look and sound really impressive but are trivial to implement in code once you can factor an integer into primes.</p>
+<p>One is the little omega function <span class="math">\(\omega(n)\)</span>, which counts the number of distinct prime factors of <span class="math">\(n\)</span>.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">count </span><span class="p">(</span><span class="nb">distinct </span><span class="p">(</span><span class="nf">prime-factorization</span> <span class="nv">n</span><span class="p">)))</span>
+</pre></div>
+<p>The other is the big omega function <span class="math">\(\Omega(n)\)</span>, which counts the number of prime factors of <span class="math">\(n\)</span> with multiplicity (i.e., if <span class="math">\(2\)</span> appears more than once, count both instances).</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">count </span><span class="p">(</span><span class="nf">prime-factorization</span> <span class="nv">n</span><span class="p">))</span>
+</pre></div>
+<h1 id="prime-power-representation">Prime power representation</h1>
+<p>Given the prime factorization of a number, we can use this information to formulate its unique representation as a product of prime powers.</p>
+<div class="math">$$ n = p_{1}^{e_{1}}p_{2}^{e_{2}}\cdots p_{k}^{e_{k}}
+     = \prod_{i=1}^{k}p_{i}^{e_{i}} $$</div>
+<p>Returning to our simple example <span class="math">\(168 = 2 \times 2 \times 2 \times 3 \times 7\)</span> above, this can be written more succinctly as</p>
+<div class="math">$$ 168 = 2^3 \times 3 \times 7 $$</div>
+<p>which is also called its <strong>canonical representation</strong> or <strong>standard form</strong>.</p>
+<p>If we fill in the missing primes above with <span class="math">\(p_{i}^{0}\)</span>, which doesn’t affect the final product, then the sequence of <span class="math">\(e_1 \cdots e_k\)</span> in the above notation can also be extracted from the prime factorization, which gives us an <strong>exponent vector</strong> (or <em>unique prime signature</em>). For <span class="math">\(168\)</span>, this would be</p>
+<div class="math">$$ 168 = 2^{\color{red}{3}} \times 3^{\color{red}{1}} \times 5^{\color{red}{0}} \times 7^{\color{red}{1}}
+       = \begin{bmatrix}3 &amp; 1 &amp; 0 &amp; 1\end{bmatrix}$$</div>
+<p>Here’s a simple way to implement that:</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">prime-powers-integer</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+  <span class="s">"Returns the exponent vector for the prime power representation of an integer,</span>
+<span class="s">  e.g., 168 = 2*2*2*3*7 = 2^3 * 3^1 * 5^0 * 7^1 -&gt; (3 1 0 1)"</span>
+  <span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">and </span><span class="p">(</span><span class="nf">integer?</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nb">pos? </span><span class="nv">n</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="mi">1</span><span class="p">)</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+      <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">pf</span>      <span class="p">(</span><span class="nf">prime-factorization</span> <span class="nv">n</span><span class="p">)</span>
+            <span class="nv">primes</span>  <span class="p">(</span><span class="nb">filter </span><span class="nv">prime?</span> <span class="p">(</span><span class="nb">range </span><span class="p">(</span><span class="nb">inc </span><span class="p">(</span><span class="nb">peek </span><span class="nv">pf</span><span class="p">))))</span>
+            <span class="nv">freqs</span>   <span class="p">(</span><span class="nf">frequencies</span> <span class="nv">pf</span><span class="p">)</span>
+            <span class="nv">get-exp</span> <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">p</span><span class="p">]</span> <span class="p">(</span><span class="nb">if-let </span><span class="p">[</span><span class="nv">exp</span> <span class="p">(</span><span class="nb">get </span><span class="nv">freqs</span> <span class="nv">p</span><span class="p">)]</span>
+                              <span class="nv">exp</span> <span class="mi">0</span><span class="p">))]</span>
+        <span class="p">(</span><span class="nb">map </span><span class="nv">get-exp</span> <span class="nv">primes</span><span class="p">)))))</span>
+</pre></div>
+<p>For <span class="math">\(n = 168\)</span>, the procedure works like this:</p>
+<div class="highlight"><pre><span></span><span class="nv">pf</span> <span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">2</span> <span class="mi">2</span> <span class="mi">3</span> <span class="mi">7</span><span class="p">]</span>
+<span class="nv">primes</span> <span class="nv">=&gt;</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">3</span> <span class="mi">5</span> <span class="mi">7</span><span class="p">]</span> <span class="c1">;; one of each prime up to the last prime in pf</span>
+<span class="nv">freqs</span> <span class="nv">=&gt;</span> <span class="p">{</span><span class="mi">2</span> <span class="mi">3</span>, <span class="mi">3</span> <span class="mi">1</span>, <span class="mi">7</span> <span class="mi">1</span><span class="p">}</span>
+<span class="p">(</span><span class="nb">map </span><span class="nv">get-exp</span> <span class="nv">primes</span><span class="p">)</span> <span class="nv">=&gt;</span> <span class="p">(</span><span class="nb">map </span><span class="nv">get-exp</span> <span class="p">[</span><span class="mi">2</span> <span class="mi">3</span> <span class="mi">5</span> <span class="mi">7</span><span class="p">])</span> <span class="nv">=&gt;</span> <span class="p">(</span><span class="mi">3</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">)</span>
+</pre></div>
+<p>This works fine when the prime factors are small, but it isn’t the cleanest approach. Namely, one list of primes may already be generated by <code class="highlight"><span class="p">(</span><span class="nf">prime-factorization</span> <span class="nv">n</span><span class="p">)</span></code>, so generating another (for the purpose of determining that <span class="math">\(87\)</span> is the <span class="math">\(i\)</span>th prime, for example) is not very efficient. If we limited the <code class="highlight">prime-factorization</code> function to the iterative approach, we could generate a map containing <code class="highlight"><span class="p">{</span><span class="ss">:i</span> <span class="mi">2</span> <span class="ss">:p</span> <span class="mi">3</span> <span class="ss">:e</span> <span class="mi">3</span><span class="p">}</span></code> for each prime, which is a starting point for generating both the canonical representation and the exponent vector.</p>
+<p>However, since this is mostly for curiosity’s sake than actual applications, I’m leaving it at that. For cryptographic applications, what is more important than generating exponent vectors are:</p>
+<ol>
+<li>Finding the factors (prime or otherwise) of an integer themselves, and</li>
+<li>Specialized techniques for factoring specific types of numbers, such as semiprimes.</li>
+</ol>
+<p>Now, for completeness’ sake, let’s write a function to convert an exponent vector back to an integer.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">prime-powers-&gt;num</span> <span class="p">[</span><span class="nv">pp</span><span class="p">]</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">primes</span> <span class="p">(</span><span class="nb">filter </span><span class="nv">prime?</span> <span class="p">(</span><span class="nf">range</span><span class="p">))]</span>
+    <span class="p">(</span><span class="nb">reduce </span><span class="nv">*</span><span class="o">'</span> <span class="p">(</span><span class="nb">map </span><span class="nv">tower/expt</span> <span class="nv">primes</span> <span class="nv">pp</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="nf">prime-powers-&gt;num</span> <span class="p">[</span><span class="mi">3</span> <span class="mi">1</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">])</span>
+<span class="c1">;; 168</span>
+</pre></div>
+<h2 id="negative-exponents-too">Negative exponents too?</h2>
+<p>While writing this, I learned that allowing negative exponents in prime factorizations enables you to represent not only all the integers (<span class="math">\(n \in ℤ\)</span>), but all the rationals (<span class="math">\(n \in ℚ\)</span>) as well.</p>
+<p>For some rational number <span class="math">\(q = \frac{a}{b}\)</span>, let <span class="math">\(\vec a, \vec b\)</span> be the exponent vectors for the integers <span class="math">\(a, b\)</span>. The exponent vector for <span class="math">\(q\)</span> is then <span class="math">\(\vec q = \vec a - \vec b\)</span>. For example,</p>
+<div class="math">$$\begin{gathered}
+q = \frac{171}{98} \\[0.8em]
+\begin{aligned}
+a = 171 = 3^2 \times 19^1 \\
+b = 98 = 2^1 \times 7^2 \\[0.8em]
+\end{aligned} \\
+\begin{aligned}
+\vec a &amp;= \begin{bmatrix}\; \; \; 0 &amp; 2 &amp; 0 &amp; \; \; \; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 1\end{bmatrix} \\
+\vec b &amp;= \begin{bmatrix}\; \; \; 1 &amp; 0 &amp; 0 &amp; \; \; \; 2 &amp; \textcolor{#bbb}{0} &amp; \textcolor{#bbb}{0} &amp; \textcolor{#bbb}{0} &amp; \textcolor{#bbb}{0}\end{bmatrix} \\
+\vec q &amp;= \begin{bmatrix}-1 &amp; 2 &amp; 0 &amp; -2 &amp; 0 &amp; 0 &amp; 0 &amp; 1\end{bmatrix} \\[0.8em]
+\end{aligned} \\
+\begin{aligned}
+q &amp;= 2^{-1} \times 3^2 \times 7^{-2} \times 19^1 \\
+  &amp;= \frac{1}{2} \times 9 \times \frac{1}{49} \times 19
+\end{aligned}
+\end{gathered}$$</div>
+<p>The following code is something I scratched up quickly as Clojure does not have a simple way to implement something like <code class="highlight">map-longest</code>. That is, a way to map over multiple collections, filling in dummy values to make each collection the same size as the largest—in this case, the light gray <span class="math">\(\textcolor{#bbb}{0}\)</span> in <span class="math">\(\vec b\)</span> above.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">prime-powers-rational</span> <span class="p">[</span><span class="nv">q</span><span class="p">]</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">r</span> <span class="p">(</span><span class="nf">rationalize</span> <span class="nv">q</span><span class="p">)]</span>
+    <span class="c1">;; Sanity check to accept decimal representations of rational numbers</span>
+    <span class="c1">;; while still rejecting irrational numbers</span>
+    <span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">or </span><span class="p">(</span><span class="nf">ratio?</span> <span class="nv">q</span><span class="p">)</span> <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nb">double </span><span class="nv">r</span><span class="p">)</span> <span class="p">(</span><span class="nb">double </span><span class="nv">q</span><span class="p">)))</span>
+      <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">n</span> <span class="p">(</span><span class="nf">prime-powers-integer</span> <span class="p">(</span><span class="nf">numerator</span> <span class="nv">r</span><span class="p">))</span>
+            <span class="nv">d</span> <span class="p">(</span><span class="nf">prime-powers-integer</span> <span class="p">(</span><span class="nf">denominator</span> <span class="nv">r</span><span class="p">))</span>
+            <span class="nv">pn</span> <span class="p">(</span><span class="nb">concat </span><span class="nv">n</span> <span class="p">(</span><span class="nb">repeat </span><span class="p">(</span><span class="nb">count </span><span class="nv">d</span><span class="p">)</span> <span class="mi">0</span><span class="p">))</span>
+            <span class="nv">pd</span> <span class="p">(</span><span class="nb">concat </span><span class="nv">d</span> <span class="p">(</span><span class="nb">repeat </span><span class="p">(</span><span class="nb">count </span><span class="nv">n</span><span class="p">)</span> <span class="mi">0</span><span class="p">))]</span>
+        <span class="p">(</span><span class="nf">-&gt;&gt;</span> <span class="p">(</span><span class="nb">map - </span><span class="nv">pn</span> <span class="nv">pd</span><span class="p">)</span>
+             <span class="nv">reverse</span>
+             <span class="p">(</span><span class="nb">drop-while </span><span class="nv">zero?</span><span class="p">)</span> <span class="c1">;; truncate zeros from the end</span>
+             <span class="nv">reverse</span><span class="p">)))))</span>
+
+<span class="p">(</span><span class="nf">prime-powers-rational</span> <span class="mi">171</span><span class="nv">/98</span><span class="p">)</span>
+<span class="c1">;; (-1 2 0 -2 0 0 0 1)</span>
+
+<span class="p">(</span><span class="nf">prime-powers-&gt;num</span> <span class="p">[</span><span class="mi">-1</span> <span class="mi">2</span> <span class="mi">0</span> <span class="mi">-2</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">0</span> <span class="mi">1</span><span class="p">])</span>
+<span class="c1">;; 171/98</span>
+</pre></div>
+<p>Pretty cool!</p>
+<p>While the rational version doesn’t reside strictly within the confines of number theory, as it goes beyond the integers, it is still mathematically interesting and can be wrapped up neatly in a bulletproof <code class="highlight">prime-powers</code> function that can handle both integer and rational inputs.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">prime-powers</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">pos? </span><span class="nv">n</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">integer?</span> <span class="nv">n</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">prime-powers-integer</span> <span class="nv">n</span><span class="p">)</span>
+      <span class="p">(</span><span class="nf">prime-powers-rational</span> <span class="nv">n</span><span class="p">))))</span>
+</pre></div>
+<p>Apparently, this can be <a href="https://math.stackexchange.com/questions/873455/factorization-of-rational-powers-of-rational-numbers">extended to rational powers of rational numbers</a> as well, which would seem to allow irrational numbers to be represented as well, though that is starting to get a little deep for me 😅</p>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/Fundamental_theorem_of_arithmetic">Fundamental theorem of arithmetic</a>, Wikipedia</li>
+<li><a href="https://oeis.org/wiki/Prime_factorization">Prime factorization</a>, <span class="caps">OEIS</span> Wiki</li>
+</ul>
+
+            <p class="post-footer">
+                // filed
+under                    <a class="post-category" href="/tag/number-theory">number theory</a>
+                    <a class="post-category" href="/tag/math">math</a>
+                    <a class="post-category" href="/tag/clojure">clojure</a>
+                in <a class="post-category" href="/category/math">Math</a>&nbsp;&nbsp;&nbsp;
+
+                <span style="display:inline-block;">
+                // share on <a href="https://twitter.com/share?text=%22Number%20Theory%20in%20Clojure%3A%20The%20Fundamental%20Theorem%20of%C2%A0Arithmetic%3A%20The%20first%20post%20in%20a%20new%20series%20exploring%20number%20theory%20in%20Clojure%2C%20starting%20with%20a%20discussion%20of%20primality%20testing%20and%20prime%C2%A0factorization.%22&amp;hashtags=numbertheory%2Cmath%2Cclojure" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i> Twitter
+                </a>
+                </span>
+            </p>
+            <div class="hr"></div>
+
+
+            <a href="#" class="go-top">Go Top</a>
+<footer class="footer">
+    <p>&copy; Justin Douglas  2019. Published with <a href="https://github.com/getpelican/pelican">Pelican</a>.<br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+</footer>        </div>
+    </div>
+</div>
+    <script>
+        renderMathInElement(document.body);
+    </script>
+
+			<!-- Script specified by the user -->
+			<script type="text/javascript"  src="/assets/tweaks.js"></script>
+
+    <!-- for pelican_dynamic plugin -->
+
+
+
+</body>
+</html>

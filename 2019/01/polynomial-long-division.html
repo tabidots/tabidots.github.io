@@ -81,12 +81,13 @@
 <p>This took me way longer than it maybe should have. Implementing polynomial long division with reference to the “long division” notation was not very straightforward, and required constant checking of the intermediate output, especially because I wanted to use <code class="highlight">while</code> loops instead of keeping track of the iterations.</p>
 <p>I hope this is somewhere in the ballpark of an elegant solution 😅</p>
 <h1 id="polynomial-long-division">Polynomial long division</h1>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">poly_longdiv</span><span class="p">(</span><span class="n">dividend</span><span class="p">,</span> <span class="n">divisor</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">typing</span>
+
+<span class="k">def</span> <span class="nf">poly_longdiv</span><span class="p">(</span><span class="n">dividend</span><span class="p">:</span> <span class="n">Polynomial</span><span class="p">,</span> <span class="n">divisor</span><span class="p">:</span> <span class="n">Polynomial</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Polynomial</span><span class="p">:</span>
     <span class="sd">'''This function assumes the arguments are the author's implementation of</span>
 <span class="sd">    Polynomials in `Programmer's Intro to Mathematics`, which orders the terms</span>
 <span class="sd">    ascending by degree.</span>
 <span class="sd">    '''</span>
-    <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">==</span> <span class="n">Polynomial</span>
     <span class="n">dividend</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">dividend</span><span class="o">.</span><span class="n">coefficients</span><span class="p">))</span>
     <span class="n">divisor</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">reversed</span><span class="p">(</span><span class="n">divisor</span><span class="o">.</span><span class="n">coefficients</span><span class="p">))</span>
     <span class="n">remainder</span> <span class="o">=</span> <span class="n">dividend</span>
@@ -105,12 +106,10 @@
 <p>See <a href="https://github.com/pim-book/programmers-introduction-to-mathematics/blob/master/secret-sharing/polynomial.py">here</a> for the author’s implementation of the <code class="highlight">Polynomial</code> class.</p>
 <h1 id="polynomial-greatest-common-divisor">Polynomial greatest common divisor</h1>
 <p>Meanwhile, this was pretty straightforward once I found <a href="http://www.math.ucla.edu/~radko/circles/lib/data/Handout-358-436.pdf">this super-concise explanation</a>. The Wikipedia article was incomprehensible.</p>
-<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">poly_gcd</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">poly_gcd</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">Polynomial</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">Polynomial</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Polynomial</span><span class="p">:</span>
     <span class="sd">'''Find the GCD of two polynomials using the Extended Euclidean algorithm.</span>
 <span class="sd">    '''</span>
-    <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="o">==</span> <span class="nb">type</span><span class="p">(</span><span class="n">b</span><span class="p">)</span> <span class="o">==</span> <span class="n">Polynomial</span>
     <span class="p">[</span><span class="n">small</span><span class="p">,</span> <span class="n">big</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-    <span class="n">last_r</span> <span class="o">=</span> <span class="n">small</span>
     <span class="n">division</span> <span class="o">=</span> <span class="n">big</span> <span class="o">/</span> <span class="n">small</span>
     <span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">division</span><span class="p">[</span><span class="s2">"quotient"</span><span class="p">],</span> <span class="n">division</span><span class="p">[</span><span class="s2">"remainder"</span><span class="p">]</span>
     <span class="k">while</span> <span class="n">r</span><span class="p">:</span>
@@ -118,6 +117,24 @@
         <span class="n">division</span> <span class="o">=</span> <span class="n">big</span> <span class="o">/</span> <span class="n">small</span>
         <span class="n">q</span><span class="p">,</span> <span class="n">r</span> <span class="o">=</span> <span class="n">division</span><span class="p">[</span><span class="s2">"quotient"</span><span class="p">],</span> <span class="n">division</span><span class="p">[</span><span class="s2">"remainder"</span><span class="p">]</span>
     <span class="k">return</span> <span class="n">small</span>
+</pre></div>
+<p>Update: And just for completeness, regular <span class="caps">GCD</span> with integers (copied from <a href="https://www.geeksforgeeks.org/gcd-in-python/">Geeks for Geeks</a>):</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">gcd</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+    <span class="sd">'''Find the GCD of two integers using the Extended Euclidean algorithm.</span>
+<span class="sd">    '''</span>
+    <span class="p">[</span><span class="n">small</span><span class="p">,</span> <span class="n">big</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span>
+    <span class="k">while</span> <span class="n">small</span><span class="p">:</span>
+        <span class="n">big</span><span class="p">,</span> <span class="n">small</span> <span class="o">=</span> <span class="n">small</span><span class="p">,</span> <span class="n">big</span> <span class="o">%</span> <span class="n">small</span>
+    <span class="k">return</span> <span class="n">big</span>
+</pre></div>
+<p>Rewriting my answer:</p>
+<div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">poly_gcd</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="n">Polynomial</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="n">Polynomial</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Polynomial</span><span class="p">:</span>
+    <span class="sd">'''Find the GCD of two polynomials using the Extended Euclidean algorithm.</span>
+<span class="sd">    '''</span>
+    <span class="p">[</span><span class="n">small</span><span class="p">,</span> <span class="n">big</span><span class="p">]</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">([</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">],</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+    <span class="k">while</span> <span class="n">small</span><span class="p">:</span>
+        <span class="n">big</span><span class="p">,</span> <span class="n">small</span> <span class="o">=</span> <span class="n">small</span><span class="p">,</span> <span class="p">(</span><span class="n">big</span> <span class="o">/</span> <span class="n">small</span><span class="p">)[</span><span class="s2">"remainder"</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">big</span>
 </pre></div>
 
             <p class="post-footer">
