@@ -1,0 +1,494 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="The AKS test is an award-winning algorithm for proving whether an integer is prime, though I realized too late that it is too slow to be of any practical use. Writing the code itself was useful, though." />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@tabidots" />
+    <meta name="twitter:creator" content="@tabidots" />
+    <meta name="twitter:title" content="Number Theory in Clojure: AKS primality test" />
+    <meta name="twitter:description" content="The AKS test is an award-winning algorithm for proving whether an integer is prime, though I realized too late that it is too slow to be of any practical use. Writing the code itself was useful, though." />
+    <meta name="twitter:image:src" content="/images/selfportrait_small.png" />
+    <meta name="twitter:domain" content="judosaltgenius.com" />
+
+    <meta property="og:title" content="Number Theory in Clojure: AKS primality test" />
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="The AKS test is an award-winning algorithm for proving whether an integer is prime, though I realized too late that it is too slow to be of any practical use. Writing the code itself was useful, though." />
+    <meta property="og:image" content="/images/selfportrait_small.png" />
+    <meta property="og:site_name" content="judosaltgenius.com" />
+    <meta property="og:url" content="/drafts/number-theory-in-clojure-aks-primality-test" />
+
+
+        <title>Number Theory in Clojure: AKS primality test - Judo Salt Genius</title>
+
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.css" integrity="sha384-VEnyslhHLHiYPca9KFkBB3CMeslnM9CzwjxsEbZTeA21JBm7tdLwKoZmCt3cZTYD" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.js" integrity="sha384-O4hpKqcplNCe+jLuBVEXC10Rn1QEqAmX98lKAIFBEDxZI0a+6Z2w2n8AEtQbR4CD" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/contrib/auto-render.min.js" integrity="sha384-IiI65aU9ZYub2MY9zhtKd1H2ps7xxf+eb2YFG9lX6uRqpXCvBTOidPRCXCrQ++Uc" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="/theme/css/pure.css?v=0.1.0" />
+      <!-- CSS specified by the user -->
+
+
+      <link href="/assets/mystyle.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" />
+
+    <!-- for pelican_dynamic plugin -->
+    <!-- end pelican_dynamic -->
+
+</head>
+
+<body>
+<div class="pure-g-r" id="layout">
+    <div class="sidebar sidebar-article pure-u">
+        <header class="header-article">
+                    <a href="/author/justin-douglas" title="See posts by Justin Douglas">
+                        <img class="avatar" alt="Justin Douglas" src="https://www.gravatar.com/avatar/74f13134596b2ed04a497936e3fdfd33?s=140">
+                    </a>
+                <h2 class="article-info">Justin Douglas</h2>
+
+
+                    <h5>Draft</h5>
+
+                <p class="article-date">Thu 04 April 2019</p>
+
+                <a class="header-article-home" href="/">&larr;Home</a>
+        </header>
+    </div>
+    <div class="pure-u">
+        <div class="content">
+            <section class="post">
+                <header class="post-header">
+                    <h1>Number Theory in Clojure: <span class="caps">AKS</span> primality&nbsp;test</h1>
+                </header>
+            </section>
+
+                <nav class="toc">
+                <div class="toc">
+<ul>
+<li><a href="#the-aks-primality-test">The <span class="caps">AKS</span> primality test</a></li>
+<li><a href="#perfect-powers">Perfect powers</a><ul>
+<li><a href="#highest-possible-power">Highest possible power?</a></li>
+<li><a href="#floating-point-fun">Floating-point fun</a></li>
+<li><a href="#epsilon-to-the-rescue">Epsilon to the rescue</a></li>
+<li><a href="#testing-wholeness">Testing wholeness</a></li>
+<li><a href="#testing-perfect-power-ness">Testing perfect power-ness</a></li>
+</ul>
+</li>
+<li><a href="#r-u-ready">\(r\) u ready?</a><ul>
+<li><a href="#multiplicative-order-in-brief">Multiplicative order (in brief)</a></li>
+<li><a href="#eulers-totient-varphi-phi-function">Euler’s totient (\(\varphi\) phi) function</a></li>
+</ul>
+</li>
+<li><a href="#the-crazy-polynomial-part">The crazy polynomial part</a><ul>
+<li><a href="#polynomials-in-clojure">Polynomials in Clojure</a></li>
+<li><a href="#low-hanging-fruit">Low-hanging fruit</a></li>
+<li><a href="#modular-exponentiation-of-polynomials">Modular exponentiation of polynomials</a></li>
+<li><a href="#polynomial-remainder-shortcut">Polynomial remainder (shortcut)</a></li>
+<li><a href="#polynomial-long-division">Polynomial long division</a></li>
+</ul>
+</li>
+<li><a href="#prime-time">Prime time</a></li>
+<li><a href="#gotcha">Gotcha!</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+                </nav>
+
+            
+<p>After my <a href="/2019/03/fundamental-theorem-arithmetic">previous post on the fundamental theorem of arithmetic</a>, I had intended to move on to modular arithmetic, but I ended up getting pulled down a primality-testing rabbit hole. That ended up involving a return to <a href="/2019/01/polynomial-long-division">polynomial long division</a>, except this time in Clojure.</p>
+<h1 id="the-aks-primality-test">The <span class="caps">AKS</span> primality test</h1>
+<p>In the quest to discover a better method for testing the primality of very large numbers, I came across the <a href="https://en.wikipedia.org/wiki/AKS_primality_test"><span class="caps">AKS</span> primality test</a>, which is relatively new and has won many awards.</p>
+<p>This “unconditional deterministic polynomial-time algorithm that determines whether
+an input number is prime or composite” is of great theoretical significance and the algorithm has “only” 5 steps, so I thought it would be worth trying to implement. Plus, when I saw the phrase <em>multiplicative order</em>, I thought, “Hey, I know what that is” and got excited.</p>
+<p>The original paper has a pretty bold, simple title: <a href="https://www.cse.iitk.ac.in/users/manindra/algebra/primality_v6.pdf"><em><span class="caps">PRIMES</span> is in P</em></a>, but good luck understanding the contents.</p>
+<p>The essence of the algorithm—which I have <em>absolutely zero intuition for</em>—is as follows. Given an integer <span class="math">\(n &gt; 1\)</span>:</p>
+<ol>
+<li>If <span class="math">\(n\)</span> is a perfect power (i.e., <span class="math">\(n = a^b\)</span> for any <span class="math">\(a, b \in ℤ\)</span>), return <strong>composite</strong>.</li>
+<li>Find the smallest <span class="math">\(r\)</span> coprime to <span class="math">\(n\)</span> such that <span class="math">\(\textrm{ord}_r(n) &gt; (\log_2 n)^2\)</span>.</li>
+<li>If <span class="math">\(n\)</span> is divisible by <span class="math">\(a\)</span> for any <span class="math">\(2 \leq a \leq \min (r, n - 1)\)</span>, return <strong>composite</strong>.</li>
+<li>If <span class="math">\(n \leq r\)</span>, return <strong>prime</strong>.</li>
+<li>If <span class="math">\((X + a)^n \not= X^n + a \mod (X^r - 1, n)\)</span> for any <span class="math">\(1 \leq a \leq \lfloor \sqrt{\varphi(r)} \log_2(n) \rfloor\)</span>, return <strong>composite</strong>. Else return <strong>prime</strong>.</li>
+</ol>
+<h1 id="perfect-powers">Perfect powers</h1>
+<p>I knew I was in for a bit of a slog when I tried to implement the first step of the algorithm.</p>
+<p>What is the best way to determine if a number <span class="math">\(n = a^b\)</span> for some <span class="math">\(a, b \in ℤ\)</span>? You <em>could</em> brute-force it, sure. But primality tests are usually concerned with really large numbers, so trying every possible combination of <span class="math">\(a, b\)</span> might take a lifetime or two.</p>
+<p>I decided to try a technique I learned from doing many, many Project Euler problems: flip the problem on its side and solve <em>that</em> problem instead.</p>
+<p>Since we don’t need to know the <em>value</em> of <span class="math">\(a\)</span> and are only concerned with whether or not <span class="math">\(a \in ℤ\)</span> (i.e., it is a whole number), we can test the <span class="math">\(b\)</span>th roots of <span class="math">\(n\)</span> up to some upper bound.</p>
+<h2 id="highest-possible-power">Highest possible power?</h2>
+<p>First problem: How do you determine the upper bound? The answer is surprisingly simple.</p>
+<p><span class="math">\(a \in ℤ\)</span>, but <span class="math">\(a\)</span> cannot be <span class="math">\(1\)</span> because <span class="math">\(1^k = 1\)</span> for any <span class="math">\(k\)</span>. So <span class="math">\(2\)</span> is the lower bound for <span class="math">\(a\)</span>, and will necessarily have the highest possible <span class="math">\(b\)</span>, because if <span class="math">\(2^b = n\)</span>, then <span class="math">\(3^b &gt; n\)</span>.</p>
+<p>We can thus find the highest possible <span class="math">\(b\)</span> by solving <span class="math">\(2^b = n\)</span> for <span class="math">\(b\)</span>, or in other words, <span class="math">\(\log_2(n)\)</span>.</p>
+<p>Since all composite powers can be broken down into prime powers, we only need to look at prime powers up to and including <span class="math">\(b\)</span>. Of course, since this is in the context of a primality-testing algorithm, it would be silly to use a prime sieve here. Testing <span class="math">\(2\)</span> and then all odd <span class="math">\(b\)</span> up to <span class="math">\(\log_2(n)\)</span> is sufficient.</p>
+<h2 id="floating-point-fun">Floating-point fun</h2>
+<p>Second problem: When dealing with large numbers, floating-point errors can trick the computer into thinking a number is an integer when it shouldn’t be. For example, despite the obvious fact that <span class="math">\(\sqrt{n}^2 = n\)</span>, the following returns <code class="highlight">false</code>:</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">n</span> <span class="mi">923849028343489238498324908928349028490829058</span><span class="nv">N</span><span class="p">])</span>
+  <span class="p">(</span><span class="nb">= </span><span class="nv">n</span> <span class="p">(</span><span class="nf">Math/pow</span> <span class="p">(</span><span class="nf">Math/sqrt</span> <span class="nv">n</span><span class="p">)</span> <span class="mi">2</span><span class="p">))</span>
+  <span class="c1">;; false</span>
+</pre></div>
+<p>This is because Java’s built-in math functions return <code class="highlight">Double</code>s. What we need here is a way to determine the <span class="math">\(n\)</span>th root of a number to an arbitrary degree of precision.</p>
+<p>I wrote about the Babylonian square root algorithm <a href="/2019/01/squarest-root-in-babylon">previously</a>, and it can be adapted to compute <span class="math">\(n\)</span>th roots without too much trouble. The square root algorithm <span class="math">\(t := \frac{t + \frac{x}{t}}{2}\)</span> is actually:</p>
+<div class="math">$$ t := \frac{(\textcolor{red}{2} - 1)t + \frac{x}{t^{\textcolor{red}{2} - 1}}}{\textcolor{red}{2}} $$</div>
+<p>So the <span class="math">\(n\)</span>th root algorithm is:</p>
+<div class="math">$$ t := \frac{(n - 1)t + \frac{x}{t^{n - 1}}}{n} $$</div>
+<p>To maintain a little more control over the intermediate values, we can use <code class="highlight">reduce</code>d multiplication (<code class="highlight"><span class="p">(</span><span class="nb">reduce * </span><span class="p">(</span><span class="nb">repeat </span><span class="nv">exp</span><span class="p">)</span> <span class="nv">base</span><span class="p">)</span></code>) instead of <code class="highlight"><span class="p">(</span><span class="nf">Math/pow</span> <span class="nv">base</span> <span class="nv">exp</span><span class="p">)</span></code>, and <code class="highlight">reduce</code>d addition instead of multiplication.</p>
+<p>The result of that looks like this:</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">naive-bab-nth-root</span>
+  <span class="p">[</span><span class="nv">n</span> <span class="nv">root</span><span class="p">]</span>
+  <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">t</span> <span class="mf">1.0</span> <span class="nv">iters</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&gt;= </span><span class="nv">iters</span> <span class="mi">100</span><span class="p">)</span> <span class="nv">t</span>
+      <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">ts</span> <span class="p">(</span><span class="nb">repeat </span><span class="p">(</span><span class="nb">- root </span><span class="mi">1</span><span class="p">)</span> <span class="nv">t</span><span class="p">)]</span>
+        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nb">-&gt; </span><span class="p">(</span><span class="nb">/ </span><span class="nv">n</span> <span class="p">(</span><span class="nb">reduce * </span><span class="nv">ts</span><span class="p">))</span>
+                   <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nb">reduce + </span><span class="nv">ts</span><span class="p">))</span>
+                   <span class="p">(</span><span class="nb">/ </span><span class="nv">root</span><span class="p">))</span>
+               <span class="p">(</span><span class="nb">inc </span><span class="nv">iters</span><span class="p">))))))</span>
+</pre></div>
+<p>However, the sticking point is the type, which is set by the initial approximation <code class="highlight">t</code>. Roots of integers are generally either integers or irrational numbers, so you can’t just slap an <code class="highlight">M</code> on it (coerce it to <code class="highlight">BigDecimal</code>) and call it a day:</p>
+<div class="highlight"><pre><span></span>Execution error (ArithmeticException) at java.math.BigDecimal/divide (BigDecimal.java:1690).
+Non-terminating decimal expansion; no exact representable decimal result.
+</pre></div>
+<p>You have to specify some level of precision (decimal places).</p>
+<p>Let’s think about this a bit more. This algorithm returns increasingly accurate values with each successive iteration. But due to <strong><a href="/2019/01/from-zero-to-ero">floating-point rounding errors</a></strong>, the algorithm might never converge on a true whole number.</p>
+<p>This means that replacing the current stopping condition (based on iterations, <code class="highlight"><span class="p">(</span><span class="nb">&gt;= </span><span class="nv">iters</span> <span class="mi">100</span><span class="p">)</span></code>) with one based on a simple heuristic like <code class="highlight"><span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nf">Math/floor</span> <span class="nv">t</span><span class="p">)</span> <span class="nv">t</span><span class="p">)</span></code> or <code class="highlight"><span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nf">bigint</span> <span class="nv">t</span><span class="p">)</span> <span class="nv">t</span><span class="p">)</span></code> will produce lots of false negatives (for small inputs) and false positives (for large inputs). No bueno.</p>
+<h2 id="epsilon-to-the-rescue">Epsilon to the rescue</h2>
+<p>My first encounter with floating-point rounding errors happened in the context of training a machine learning algorithm (detailed in the link above). Can we apply the same logic here?</p>
+<p>If we define an error threshold <span class="math">\(\epsilon\)</span>, then we can use that in our stopping condition. Let’s start with using a ridiculously small <code class="highlight">BigDecimal</code> value for our threshold. This should surely give us a whole number when the answer <span class="math">\(\sqrt[b]{n} = a\)</span> is actually a whole number—or at least enough zeroes after the decimal point that we can declare with confidence that it is a whole number.</p>
+<div class="superfences-tabs">
+<input checked="checked" id="__tab_1_0" name="__tabs_1" type="radio"/>
+<label for="__tab_1_0">1. Fast but bad</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">more-precise-bab-nth-root</span>
+  <span class="p">[</span><span class="nv">n</span> <span class="nv">root</span><span class="p">]</span>
+<span class="hll">  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">eps</span> <span class="mf">0.000000000000000000000000000000000000000001</span><span class="nv">M</span><span class="p">]</span>
+</span>    <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">t</span> <span class="mf">1.0</span><span class="nv">M</span> <span class="nv">iters</span> <span class="mi">0</span><span class="p">]</span>
+      <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">ts</span>  <span class="p">(</span><span class="nb">repeat </span><span class="p">(</span><span class="nb">- root </span><span class="mi">1</span><span class="p">)</span> <span class="nv">t</span><span class="p">)</span>
+<span class="hll">            <span class="nv">nxt</span> <span class="p">(</span><span class="nf">with-precision</span> <span class="mi">100</span> <span class="p">(</span><span class="nb">-&gt; </span><span class="p">(</span><span class="nb">/ </span><span class="nv">n</span> <span class="p">(</span><span class="nb">reduce </span><span class="nv">*</span><span class="o">'</span> <span class="nv">ts</span><span class="p">))</span>
+</span>                                        <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nb">reduce </span><span class="nv">+</span><span class="o">'</span> <span class="nv">ts</span><span class="p">))</span>
+                                        <span class="p">(</span><span class="nb">/ </span><span class="nv">root</span><span class="p">)))]</span>
+        <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">or </span><span class="p">(</span><span class="nb">&gt;= </span><span class="nv">iters</span> <span class="mi">100</span><span class="p">)</span>
+<span class="hll">                <span class="p">(</span><span class="nb">&lt; </span><span class="p">(</span><span class="nf">.abs</span> <span class="p">(</span><span class="nb">- </span><span class="nv">nxt</span> <span class="nv">t</span><span class="p">))</span> <span class="nv">eps</span><span class="p">))</span> <span class="nv">t</span>
+</span>          <span class="p">(</span><span class="nf">recur</span> <span class="nv">nxt</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">iters</span><span class="p">)))))))</span>
+</pre></div></div>
+<input id="__tab_1_1" name="__tabs_1" type="radio"/>
+<label for="__tab_1_1">2. Better but slow</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">naive-bigdec-nth-root</span>
+  <span class="p">[</span><span class="nv">n</span> <span class="nv">root</span><span class="p">]</span>
+<span class="hll">  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">eps</span> <span class="mf">0.000000000000000000000000000000000000000001</span><span class="nv">M</span><span class="p">]</span>
+</span><span class="hll">    <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">t</span> <span class="mf">1.0</span><span class="nv">M</span><span class="p">]</span>
+</span>      <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">ts</span>  <span class="p">(</span><span class="nb">repeat </span><span class="p">(</span><span class="nb">- root </span><span class="mi">1</span><span class="p">)</span> <span class="nv">t</span><span class="p">)</span>
+            <span class="nv">nxt</span> <span class="p">(</span><span class="nf">with-precision</span> <span class="mi">100</span> <span class="p">(</span><span class="nb">-&gt; </span><span class="p">(</span><span class="nb">/ </span><span class="nv">n</span> <span class="p">(</span><span class="nb">reduce </span><span class="nv">*</span><span class="o">'</span> <span class="nv">ts</span><span class="p">))</span>
+                                        <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nb">reduce </span><span class="nv">+</span><span class="o">'</span> <span class="nv">ts</span><span class="p">))</span>
+                                        <span class="p">(</span><span class="nb">/ </span><span class="nv">root</span><span class="p">)))]</span>
+<span class="hll">        <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&lt; </span><span class="p">(</span><span class="nf">.abs</span> <span class="p">(</span><span class="nb">- </span><span class="nv">nxt</span> <span class="nv">t</span><span class="p">))</span> <span class="nv">eps</span><span class="p">)</span> <span class="nv">t</span>
+</span>          <span class="p">(</span><span class="nf">recur</span> <span class="nv">nxt</span><span class="p">))))))</span>
+</pre></div></div>
+<input id="__tab_1_2" name="__tabs_1" type="radio"/>
+<label for="__tab_1_2">3. Best</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">require</span> <span class="o">'</span><span class="p">[</span><span class="nv">clojure.numeric-tower</span> <span class="ss">:as</span> <span class="nv">tower</span><span class="p">]</span><span class="o">'</span><span class="p">)</span>
+
+<span class="p">(</span><span class="kd">defn </span><span class="nv">babylonian-root</span>
+  <span class="s">"High-precision BigDecimal nth-root using the Babylonian algorithm,</span>
+<span class="s">  with a close initial approximation for ridiculously fast convergence."</span>
+  <span class="p">[</span><span class="nv">n</span> <span class="nv">root</span><span class="p">]</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">eps</span> <span class="mf">0.000000000000000000000000000000000000000001</span><span class="nv">M</span><span class="p">]</span>
+<span class="hll">    <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">t</span> <span class="p">(</span><span class="nf">bigdec</span> <span class="p">(</span><span class="nf">tower/expt</span> <span class="nv">n</span> <span class="p">(</span><span class="nb">/ </span><span class="nv">root</span><span class="p">)))]</span> <span class="c1">;; rough initial approx</span>
+</span>      <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">ts</span>  <span class="p">(</span><span class="nb">repeat </span><span class="p">(</span><span class="nb">- root </span><span class="mi">1</span><span class="p">)</span> <span class="nv">t</span><span class="p">)</span>
+            <span class="nv">nxt</span> <span class="p">(</span><span class="nf">with-precision</span> <span class="mi">100</span> <span class="p">(</span><span class="nb">-&gt; </span><span class="p">(</span><span class="nb">/ </span><span class="nv">n</span> <span class="p">(</span><span class="nb">reduce </span><span class="nv">*</span><span class="o">'</span> <span class="nv">ts</span><span class="p">))</span>
+                                        <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nb">reduce </span><span class="nv">+</span><span class="o">'</span> <span class="nv">ts</span><span class="p">))</span>
+                                        <span class="p">(</span><span class="nb">/ </span><span class="nv">root</span><span class="p">)))]</span>
+        <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&lt; </span><span class="p">(</span><span class="nf">.abs</span> <span class="p">(</span><span class="nb">- </span><span class="nv">nxt</span> <span class="nv">t</span><span class="p">))</span> <span class="nv">eps</span><span class="p">)</span> <span class="nv">t</span>
+          <span class="p">(</span><span class="nf">recur</span> <span class="nv">nxt</span><span class="p">))))))</span>
+
+<span class="p">(</span><span class="nf">babylonian-root</span> <span class="mi">92709463147897837085761925410587</span> <span class="mi">67</span><span class="p">)</span>
+<span class="c1">;; 3.000000000000000000000000000000000000000000000000000000000034073599999999794044017777778109595749154M</span>
+</pre></div></div>
+</div>
+<p>(Note, the apostrophes in <code class="highlight">*'</code> and <code class="highlight">+'</code> allow values to silently overflow from <code class="highlight">long</code> to <code class="highlight">BigInteger</code> if necessary.)</p>
+<p>In <em>1. Fast but bad</em>, I used both iterations and epsilon as stopping conditions, thinking that a perfect power would stop the loop early and speed up computation. It did, but at the expense of accuracy. Even-numbered roots returned <em>really</em> strange outputs (unrealistically large numbers). This is similar to gradient descent overshooting the minimum of the cost function in training a neural network because the learning rate is too high.</p>
+<p>That means that in some cases, more than 100 iterations were required for the algorithm to converge. So my next attempt was <em>2. Better but slow</em>, in which I removed the iterations as a stopping condition, and let the algorithm run until the difference fell under the error threshold.</p>
+<p>That worked, but it was <em>slow</em>. Try using it to calculate <span class="math">\(\sqrt[67]{92709463147897837085761925410587}\)</span>—it’s not very fast. Since this is just part of step one of a very complex algorithm, it should ideally happen in an instant.</p>
+<p>Then it occurred to me that the algorithm should not take so many iterations to converge. To be exact, the number of iterations required is a direct consequence of how accurate the initial approximation is. This matters less for small inputs, but makes a colossal difference with large inputs.</p>
+<p>There is probably a formula to determine a good initial guess without resorting to floating-point arithmetic, but doing so turned out to be a very fast and good enough solution nonetheless. Simply express <span class="math">\(\sqrt[b]{n}\)</span> as <span class="math">\(n^{\frac{1}{b}}\)</span>.</p>
+<p>In Clojure, that looks like <code class="highlight"><span class="p">(</span><span class="nf">tower/expt</span> <span class="nv">n</span> <span class="p">(</span><span class="nb">/ </span><span class="nv">root</span><span class="p">))</span></code>. (I prefer using <code class="highlight">tower/expt</code>, but you could certainly use built-in Java interop to do this with <code class="highlight">Math/pow</code> instead.) And voilà! We have arrived at <em>3. Best</em>. It converges instantly and returns a highly accurate result.</p>
+<h2 id="testing-wholeness">Testing wholeness</h2>
+<p>As we intended, the values returned by <code class="highlight">babylonian-root</code> have a ridiculous amount of decimal places, and we can safely assume that a result like</p>
+<div class="highlight"><pre><span></span>(scroll right ======&gt;&gt;&gt;&gt;&gt;)
+3.000000000000000000000000000000000000000000000000000000000034073599999999794044017777778109595749154M
+</pre></div>
+<p>is, with 99.9% certainty, a whole number. But there are still non-zero digits after the decimal point <em>at some point</em>, which means simply using <code class="highlight"><span class="p">(</span><span class="nb">= </span><span class="nv">x</span> <span class="p">(</span><span class="nf">Math/floor</span> <span class="nv">x</span><span class="p">))</span></code> won’t work here either.</p>
+<p>The best way to be sure if our <span class="math">\(n\)</span>th root is an integer is to <code class="highlight">Math/floor</code> it, then raise it to the <span class="math">\(n\)</span>th power and see if it equals our input value. Both values must be coerced to the same type in order to test equality, and coercing to <code class="highlight">bigint</code> ensures that small and large values will be accommodated equally well. (Using <code class="highlight">*'</code> will only cause values to overflow to <code class="highlight">bigint</code> if they are large enough.)</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">nth-root-is-integer?</span>
+  <span class="s">"Tests if the nth root of x is an integer in the mathematical</span>
+<span class="s">  (not programming) sense—i.e., if it is a whole number.)."</span>
+  <span class="p">[</span><span class="nv">x</span> <span class="nv">n</span><span class="p">]</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">floor</span> <span class="p">(</span><span class="nf">bigint</span> <span class="p">(</span><span class="nf">Math/floor</span> <span class="p">(</span><span class="nf">babylonian-root</span> <span class="nv">x</span> <span class="nv">n</span><span class="p">)))</span>
+        <span class="nv">exp</span>   <span class="p">(</span><span class="nf">bigint</span> <span class="p">(</span><span class="nb">reduce </span><span class="nv">*</span><span class="o">'</span> <span class="p">(</span><span class="nb">repeat </span><span class="nv">n</span> <span class="nv">floor</span><span class="p">)))]</span>
+    <span class="p">(</span><span class="nb">= </span><span class="nv">x</span> <span class="nv">exp</span><span class="p">)))</span>
+</pre></div>
+<h2 id="testing-perfect-power-ness">Testing perfect power-ness</h2>
+<p>Finally, we’re ready to bring it all together. To test for a perfect power, we iterate through all possible <span class="math">\(b\)</span> up to the upper bound we established earlier and return <code class="highlight">true</code>, terminating early, if any <span class="math">\(\sqrt[b]{n} = \lfloor \sqrt[b]{n} \rfloor\)</span>. Otherwise, return <code class="highlight">false.</code></p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">perfect-power?</span> <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">max-power</span> <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nf">Math/log</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nf">Math/log</span> <span class="mi">2</span><span class="p">))</span>
+        <span class="nv">powers</span>    <span class="p">(</span><span class="nb">cons </span><span class="mi">2</span> <span class="p">(</span><span class="nb">filter </span><span class="nv">odd?</span> <span class="p">(</span><span class="nb">range </span><span class="mi">3</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">max-power</span><span class="p">))))]</span>
+    <span class="p">(</span><span class="nb">some </span><span class="p">(</span><span class="nb">partial </span><span class="nv">nth-root-is-integer?</span> <span class="nv">n</span><span class="p">)</span> <span class="nv">powers</span><span class="p">)))</span>
+</pre></div>
+<p>In Clojure, it is more idiomatic to use <code class="highlight">some</code>, although this will technically return the first non-<code class="highlight">nil</code> value rather than <code class="highlight">true</code>.</p>
+<p>Phew! That was a lot of work just for a minor part of the algorithm. Let’s move on.</p>
+<h1 id="r-u-ready"><span class="math">\(r\)</span> u ready?</h1>
+<p>The next few steps of the algorithm revolve around some number <span class="math">\(r\)</span> that satisfies certain criteria.</p>
+<p>The first step draws on a concept called <em>multiplicative order</em>, which comes from modular arithmetic. I don’t want to cover it in full detail here, as I’m planning to write future posts on modular arithmetic in this series, so I will present just the functions and a simple explanation here.</p>
+<p>After we find <span class="math">\(r\)</span>, the next steps are pretty straightforward.</p>
+<h2 id="multiplicative-order-in-brief">Multiplicative order (in brief)</h2>
+<p>It’s similar to the concept of <em>multiplicative inverse</em>, which <a href="/2019/01/mod-squad">I have covered before</a>, although instead of looking for a number that is congruent to <span class="math">\(1\)</span> after multiplication, we are looking for a number that is congruent to <span class="math">\(1\)</span> after exponentiation.</p>
+<p>Implementing a multiplicative order function in code takes a few steps. If I were to explain them in full here, this blog post would become overwhelming, so I am just going to leave the code here and revisit modular arithmetic more thoroughly in future posts. I’ll provide a link here when those posts are ready.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">mod-pow</span>
+  <span class="c1">;; Adapted from https://en.wikipedia.org/wiki/Modular_exponentiation</span>
+  <span class="s">"Quickly calculates a ^ b % m. Useful when a and b are very large integers."</span>
+  <span class="p">[</span><span class="nv">base</span> <span class="nv">exp</span> <span class="nv">m</span><span class="p">]</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">or </span><span class="p">(</span><span class="nb">= </span><span class="nv">m</span> <span class="mi">1</span><span class="p">)</span> <span class="p">(</span><span class="nb">= </span><span class="nv">base</span> <span class="nv">m</span><span class="p">))</span> <span class="mi">0</span>
+    <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">base</span> <span class="p">(</span><span class="nf">mod</span> <span class="nv">base</span> <span class="nv">m</span><span class="p">)</span> <span class="nv">e</span> <span class="nv">exp</span> <span class="nv">res</span> <span class="mi">1</span><span class="p">]</span>
+      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">zero? </span><span class="nv">e</span><span class="p">)</span> <span class="nv">res</span>
+        <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nb">-&gt; </span><span class="p">(</span><span class="nf">*</span><span class="o">'</span> <span class="nv">base</span> <span class="nv">base</span><span class="p">)</span> <span class="p">(</span><span class="nf">mod</span> <span class="nv">m</span><span class="p">))</span>
+               <span class="p">(</span><span class="nb">bit-shift-right </span><span class="nv">e</span> <span class="mi">1</span><span class="p">)</span>
+               <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">odd?</span> <span class="nv">e</span><span class="p">)</span>
+                 <span class="p">(</span><span class="nb">-&gt; </span><span class="p">(</span><span class="nf">*</span><span class="o">'</span> <span class="nv">res</span> <span class="nv">base</span><span class="p">)</span> <span class="p">(</span><span class="nf">mod</span> <span class="nv">m</span><span class="p">))</span>
+                 <span class="nv">res</span><span class="p">))))))</span>
+
+<span class="p">(</span><span class="kd">defn </span><span class="nv">powers-of-a-mod-n</span>
+  <span class="s">"a^k (mod n) for all 0 ≦ k &lt; n, where k ∈ ℤ."</span>
+  <span class="p">[</span><span class="nv">a</span> <span class="nv">n</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">mod-pow</span> <span class="nv">a</span> <span class="nv">%</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nb">range </span><span class="nv">n</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="kd">defn </span><span class="nv">multiplicative-order</span>
+  <span class="s">"ord_n(a), the smallest positive integer k such that a^k ≡ 1 (mod n) where</span>
+<span class="s">  a is coprime to n. a^0 ≡ 1 (mod n) for any n, so the quick way to find k</span>
+<span class="s">  is to count the distinct powers of a (mod n)."</span>
+  <span class="p">[</span><span class="nv">a</span> <span class="nv">n</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nf">coprime?</span> <span class="nv">a</span> <span class="nv">n</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">count </span><span class="p">(</span><span class="nb">distinct </span><span class="p">(</span><span class="nf">powers-of-a-mod-n</span> <span class="nv">a</span> <span class="nv">n</span><span class="p">)))))</span>
+</pre></div>
+<p><span class="math">\(\textrm{ord}_r(n)\)</span> is read “the multiplicative order of <span class="math">\(n \pmod r\)</span>”. In the math notation, the modulus comes first, but when you read it aloud, the modulus comes last, so I have written the function with the arguments in the latter order.</p>
+<h2 id="eulers-totient-varphi-phi-function">Euler’s totient (<span class="math">\(\varphi\)</span> phi) function</h2>
+<p>The (very complicated) last step of the algorithm requires first calculating <span class="math">\(\varphi(r)\)</span>, which is the number of integers less than <span class="math">\(r\)</span> that are coprime to it. That is, their greatest common divisor is <span class="math">\(1\)</span> (<span class="math">\(4\)</span> and <span class="math">\(9\)</span> are coprime to each other, for example.)</p>
+<p>For any prime number <span class="math">\(p\)</span>, <span class="math">\(\varphi(p)\)</span> is <span class="math">\(p - 1\)</span>. Of course, since we don’t know if our target number is prime, that doesn’t help us much in this case.</p>
+<p>There is another way to optimize the totient function using Euler’s product rule, but because that requires factorizing the number, that is also of little help here.</p>
+<p>So, let’s proceed with the most naïve, simplistic version of the function.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">naive-phi</span>
+  <span class="s">"Naive version of Euler's totient function that only uses gcd, since</span>
+<span class="s">  the optimized version requires factoring n first."</span>
+  <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">count </span><span class="p">(</span><span class="nb">filter </span><span class="o">#</span><span class="p">(</span><span class="nb">= </span><span class="mi">1</span> <span class="p">(</span><span class="nf">tower/gcd</span> <span class="nv">n</span> <span class="nv">%</span><span class="p">))</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="nv">n</span><span class="p">))))</span>
+</pre></div>
+<h1 id="the-crazy-polynomial-part">The crazy polynomial part</h1>
+<p>Now we come to the most formidable part of the algorithm. It took a while to even understand the notation at first. We have to find</p>
+<div class="math">$$\textcolor{#1f77b4}{(X + a)^n} \stackrel{?}{=} \textcolor{#e377c2}{X^n + a} \mod (\textcolor{mediumpurple}{X^r - 1}, \textcolor{orange}{n}), 1 \leq a \leq \lfloor \sqrt{\varphi(r)} \log_2(n) \rfloor$$</div>
+<p>The capital letter <span class="math">\(X\)</span> is apparently a convention from abstract algebra. This way of notating polynomials reflects the fact that we are not concerned with actually filling in the value of <span class="math">\(x\)</span> in a given polynomial, as if it were a function; it is just a symbol.</p>
+<p>When I first saw this, the “double modulus” was the part I found most confusing. I’m still not sure of the correct terminology for what is going on here, but essentially, this is what we need to compare:</p>
+<ul>
+<li>Left-hand side: Take the remainder of <span class="math">\(\frac{\textcolor{#1f77b4}{(X + a)^n}}{\textcolor{mediumpurple}{X^r - 1}}\)</span>, then reduce all coefficients <span class="math">\(\mod \textcolor{orange}{n}\)</span>.</li>
+<li>Right-hand side: Take the remainder of <span class="math">\(\frac{\textcolor{#e377c2}{X^n + a}}{\textcolor{mediumpurple}{X^r - 1}}\)</span>, then reduce all coefficients <span class="math">\(\mod \textcolor{orange}{n}\)</span>.</li>
+</ul>
+<p>This requires polynomial long division. Brace yourself.</p>
+<h2 id="polynomials-in-clojure">Polynomials in Clojure</h2>
+<p>Thanks to <em>A Programmer’s Introduction to Mathematics</em>, I was already familiar with the convention of representing polynomials in code as an array of coefficients, where the index of a coefficient represents the power of its associated term. For example, <span class="math">\(x^3 - 2x^2 + 17\)</span> would be <code class="highlight">[17, 0, -2, 1]</code>.</p>
+<p>Trying to port this exact representation from Python (or Java, or some other C-type language) to Clojure got a bit messy as soon as I tried to implement an addition function, because Clojure does not have a built-in <code class="highlight">map-longest</code> function, or a clean way of writing one. Some helpful folks on the awesome <a href="https://clojurians.slack.com">Clojurians Slack group</a> advised me to try representing polynomials as a map instead, with the powers as keywords: <code class="highlight"><span class="p">{</span><span class="mi">0</span> <span class="mi">17</span>, <span class="mi">2</span> <span class="mi">-2</span>, <span class="mi">3</span> <span class="mi">1</span><span class="p">}</span></code>.</p>
+<p>In addition to being easier to manipulate in Clojure, this way of organizing the data has the added bonus of being order-agnostic and not being sensitive to omitted zero coefficients.</p>
+<p>Well, in order to <em>ensure</em> that the zero coefficients don’t matter way or the other, we should write a “trim” function to save us from possibly pulling out our hair:</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">poly-trim-</span>
+  <span class="s">"Removes terms with zero coefficients from a polynomial."</span>
+  <span class="p">[</span><span class="nv">pnml</span><span class="p">]</span>
+  <span class="p">(</span><span class="nf">-&gt;&gt;</span> <span class="p">(</span><span class="nb">filter </span><span class="o">#</span><span class="p">(</span><span class="nb">zero? </span><span class="p">(</span><span class="nb">get </span><span class="nv">pnml</span> <span class="nv">%</span><span class="p">))</span> <span class="p">(</span><span class="nb">keys </span><span class="nv">pnml</span><span class="p">))</span>
+       <span class="p">(</span><span class="nb">reduce </span><span class="o">#</span><span class="p">(</span><span class="nb">dissoc </span><span class="nv">%1</span> <span class="nv">%2</span><span class="p">)</span> <span class="nv">pnml</span><span class="p">)))</span>
+</pre></div>
+<p>It’s an intuitively simple idea that requires a slightly roundabout functional implementation. Get the keys of the map (powers of the polynomial) whose coefficient is zero, then successively <code class="highlight">dissoc</code> (remove) those key-val pairs from the map.</p>
+<h2 id="low-hanging-fruit">Low-hanging fruit</h2>
+<p>Let’s nail the low-hanging fruit first. Reducing the coefficients of a polynomial <span class="math">\(\mod n\)</span> is pretty easy:</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">poly-mod</span>
+  <span class="s">"Reduces the terms of a given polynomial mod n."</span>
+  <span class="p">[</span><span class="nv">pnml</span> <span class="nv">n</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">zipmap </span><span class="p">(</span><span class="nb">keys </span><span class="nv">pnml</span><span class="p">)</span> <span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">mod</span> <span class="nv">%</span> <span class="nv">m</span><span class="p">)</span> <span class="p">(</span><span class="nb">vals </span><span class="nv">pnml</span><span class="p">))))</span>
+</pre></div>
+<p>Next, the right-hand-side term: <span class="math">\(\textcolor{#e377c2}{X^n + a}\)</span>. Since <code class="highlight">n</code> is the initial input to the algorithm and <code class="highlight">a</code> will be taken from a range, we can treat them as constants. We can thus write this as <code class="highlight"><span class="p">{</span><span class="nv">n</span> <span class="mi">1</span>, <span class="mi">0</span> <span class="nv">a</span><span class="p">}</span></code>.</p>
+<p>Then, the polynomial modulus: <span class="math">\(\textcolor{mediumpurple}{X^r - 1}\)</span>. <code class="highlight">r</code> will have been defined in a previous step, so we can treat it as a constant. We can thus write this as <code class="highlight"><span class="p">{</span><span class="nv">r</span> <span class="mi">1</span>, <span class="mi">0</span> <span class="mi">-1</span><span class="p">}</span></code>.</p>
+<p>That leaves two (rather tedious) things: Expanding <span class="math">\(\textcolor{#1f77b4}{(X + a)^n}\)</span>, which should be done using modular exponentiation to prevent the coefficients from exploding; and implementing polynomial long division.</p>
+<h2 id="modular-exponentiation-of-polynomials">Modular exponentiation of polynomials</h2>
+<p>Exponentiation requires multiplication, which requires addition.</p>
+<p>Representing polynomials as hash-maps allows us to add polynomials extremely concisely using <code class="highlight">merge-with</code>:</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">add</span>
+  <span class="s">"Adds two polynomials."</span>
+  <span class="p">[</span><span class="nv">p1</span> <span class="nv">p2</span><span class="p">]</span>
+  <span class="p">(</span><span class="nf">poly-trim-</span> <span class="p">(</span><span class="nb">merge-with + </span><span class="nv">p1</span> <span class="nv">p2</span><span class="p">)))</span>
+</pre></div>
+<p>To multiply polynomials, we take every pair of terms with non-zero coefficients, add their powers, and multiply their coefficients to obtain the new terms. If there are multiple terms with the same power, add those coefficients.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">mul</span>
+  <span class="s">"Multiplies two polynomials."</span>
+  <span class="p">[</span><span class="nv">p1</span> <span class="nv">p2</span><span class="p">]</span>
+  <span class="p">(</span><span class="nf">-&gt;&gt;</span> <span class="p">(</span><span class="nb">for </span><span class="p">[</span><span class="nv">powers1</span> <span class="p">(</span><span class="nb">keys </span><span class="nv">p1</span><span class="p">)</span> <span class="nv">powers2</span> <span class="p">(</span><span class="nb">keys </span><span class="nv">p2</span><span class="p">)]</span>
+         <span class="p">{(</span><span class="nb">+ </span><span class="nv">powers1</span> <span class="nv">powers2</span><span class="p">)</span>
+          <span class="p">(</span><span class="nb">* </span><span class="p">(</span><span class="nb">get </span><span class="nv">p1</span> <span class="nv">powers1</span><span class="p">)</span> <span class="p">(</span><span class="nb">get </span><span class="nv">p2</span> <span class="nv">powers2</span><span class="p">))})</span>
+       <span class="p">(</span><span class="nb">reduce </span><span class="o">#</span><span class="p">(</span><span class="nb">merge-with + </span><span class="nv">%1</span> <span class="nv">%2</span><span class="p">)</span> <span class="p">{})</span>
+       <span class="nv">poly-trim-</span><span class="p">))</span>
+</pre></div>
+<p>To exponentiate polynomials, just <code class="highlight">reduce</code>!</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">exp</span>
+  <span class="s">"Exponentiation of a polynomial, [p(x)]^e."</span>
+  <span class="p">[</span><span class="nv">pnml</span> <span class="nv">e</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">reduce </span><span class="nv">mul</span> <span class="p">(</span><span class="nb">repeat </span><span class="nv">e</span> <span class="nv">pnml</span><span class="p">)))</span>
+</pre></div>
+<p>However, in this case, we need to exponentiate our polynomial <span class="math">\(\mod n\)</span>, so in order to keep the coefficients from exploding (because the values will quickly become astronomical, especially when testing very large numbers), let’s reduce the coefficients <span class="math">\(\mod n\)</span> after every multiplication.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">mod-exp</span>
+  <span class="s">"Slightly faster version of [p(x)]^e (mod m), where p(x) is a polynomial.</span>
+<span class="s">  Reduces the result of each multiplication mod m with every iteration, rather</span>
+<span class="s">  than only once at the end, in order to keep the intermediate coefficients</span>
+<span class="s">  from exploding."</span>
+  <span class="p">[</span><span class="nv">pnml</span> <span class="nv">e</span> <span class="nv">m</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">reduce </span><span class="o">#</span><span class="p">(</span><span class="nf">poly-mod</span> <span class="p">(</span><span class="nf">mul</span> <span class="nv">%1</span> <span class="nv">%2</span><span class="p">)</span> <span class="nv">m</span><span class="p">)</span> <span class="p">(</span><span class="nb">repeat </span><span class="nv">e</span> <span class="nv">pnml</span><span class="p">)))</span>
+</pre></div>
+<h2 id="polynomial-remainder-shortcut">Polynomial remainder (shortcut)</h2>
+<p>Interestingly, the particular polynomial divisor <span class="math">\(\textcolor{mediumpurple}{X^r - 1}\)</span> used in this algorithm seems to have some kind of special property related to <em>cyclotomic polynomials</em>. I have no idea what those are, but someone who implemented the algorithm in JavaScript has found <a href="https://medium.com/@sibu.it13/aks-primality-test-f184cf6365a1">an interesting shortcut</a> to finding the remainder after dividing any polynomial by that divisor.</p>
+<p>I don’t know <em>why</em> it works, but I was able to implement it pretty quickly in Clojure. Check out the Medium post linked above for an explanation of <em>how</em> it works.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">quick-poly-rem</span>
+  <span class="s">"Shortcut to finding the remainder of p(x) / (x^r - 1)."</span>
+  <span class="p">[</span><span class="nv">pnml</span> <span class="nv">r</span><span class="p">]</span>
+  <span class="p">(</span><span class="nf">poly-trim-</span> <span class="p">(</span><span class="nf">reduce-kv</span> <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">res</span> <span class="nv">power</span> <span class="nv">coeff</span><span class="p">]</span>
+                           <span class="p">(</span><span class="nb">merge-with + </span><span class="nv">res</span> <span class="p">{(</span><span class="nf">mod</span> <span class="nv">power</span> <span class="nv">r</span><span class="p">)</span> <span class="nv">coeff</span><span class="p">}))</span>
+                         <span class="p">{}</span> <span class="nv">pnml</span><span class="p">)))</span>
+</pre></div>
+<h2 id="polynomial-long-division">Polynomial long division</h2>
+<p>However, I tend not to be satisfied with these hand-wavy magic tricks (or at least, it <em>seems</em> hand-wavy because the author of that article didn’t provide the source of the “trick”). So I decided to roll up my sleeves and implement polynomial long division from scratch (ugh).</p>
+<p>Having done it once in Python, I was not looking forward to doing it again.</p>
+<p>First, we need to implement subtraction, because otherwise the intermediate steps of the division will get messy (because of the <span class="caps">LISP</span> syntax). We have multiplication already, so this is easy. Just multiply the polynomial by <code class="highlight"><span class="p">{</span><span class="mi">0</span> <span class="mi">-1</span><span class="p">}</span></code>, a constant of <span class="math">\(-1\)</span>.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">sub</span>
+  <span class="s">"Subtracts polynomial p2(x) from polynomial p1(x)."</span>
+  <span class="p">[</span><span class="nv">p1</span> <span class="nv">p2</span><span class="p">]</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">neg-p2</span> <span class="p">(</span><span class="nf">mul</span> <span class="nv">p2</span> <span class="p">{</span><span class="mi">0</span> <span class="mi">-1</span><span class="p">})]</span>
+    <span class="p">(</span><span class="nf">poly-trim-</span> <span class="p">(</span><span class="nf">add</span> <span class="nv">p1</span> <span class="nv">neg-p2</span><span class="p">))))</span>
+</pre></div>
+<p>From there, it’s just a matter of translating the algorithm into Clojure. I found it easier to read and translate <a href="http://www.math.ucla.edu/~radko/circles/lib/data/Handout-358-436.pdf">the long-hand procedure from English prose</a> than translating pre-cooked implementations in other programming languages.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">degree</span>
+  <span class="s">"Finds the degree (power of highest-power term) of a polynomial."</span>
+  <span class="p">[</span><span class="nv">pnml</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">apply max </span><span class="p">(</span><span class="nb">keys </span><span class="nv">pnml</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="kd">defn </span><span class="nv">lc</span>
+  <span class="s">"Leading coefficient (coefficient of highest-power term) of a polynomial."</span>
+  <span class="p">[</span><span class="nv">pnml</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">get </span><span class="nv">pnml</span> <span class="p">(</span><span class="nf">degree</span> <span class="nv">pnml</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="kd">defn </span><span class="nv">poly-quot-</span>
+  <span class="s">"The quotient of a polynomial p1(x) divided by another p2(x).</span>
+<span class="s">  Returns nil if p2 is of a higher degree than p1."</span>
+  <span class="p">[</span><span class="nv">p1</span> <span class="nv">p2</span><span class="p">]</span>
+  <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">d1</span> <span class="p">(</span><span class="nf">degree</span> <span class="nv">p1</span><span class="p">)</span> <span class="nv">d2</span> <span class="p">(</span><span class="nf">degree</span> <span class="nv">p2</span><span class="p">)]</span>
+    <span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">&gt;= </span><span class="nv">d1</span> <span class="nv">d2</span><span class="p">)</span>
+      <span class="p">{(</span><span class="nb">- </span><span class="nv">d1</span> <span class="nv">d2</span><span class="p">)</span>                <span class="c1">;; power = difference in degree</span>
+       <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nf">lc</span> <span class="nv">p1</span><span class="p">)</span> <span class="p">(</span><span class="nf">lc</span> <span class="nv">p2</span><span class="p">))})))</span>  <span class="c1">;; coeff = quotient of lc's</span>
+
+<span class="p">(</span><span class="kd">defn </span><span class="nv">div</span>
+  <span class="s">"Polynomial long division of p1(x) / p2(x).</span>
+<span class="s">  Returns nil if p2 is of a higher degree than p1."</span>
+  <span class="c1">;; http://www.math.ucla.edu/~radko/circles/lib/data/Handout-358-436.pdf</span>
+  <span class="p">[</span><span class="nv">p1</span> <span class="nv">p2</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">when-let </span><span class="p">[</span><span class="nv">q</span> <span class="p">(</span><span class="nf">poly-quot-</span> <span class="nv">p1</span> <span class="nv">p2</span><span class="p">)]</span>               <span class="c1">;; sanity check</span>
+    <span class="p">(</span><span class="k">loop </span><span class="p">[</span><span class="nv">qs</span> <span class="nv">q</span> <span class="nv">r</span> <span class="p">(</span><span class="nf">-&gt;&gt;</span> <span class="nv">q</span> <span class="p">(</span><span class="nf">mul</span> <span class="nv">p2</span><span class="p">)</span> <span class="p">(</span><span class="nf">sub</span> <span class="nv">p1</span><span class="p">))]</span>
+      <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">empty?</span> <span class="nv">r</span><span class="p">)</span> <span class="p">{</span><span class="ss">:quotient</span> <span class="nv">qs</span> <span class="ss">:remainder</span> <span class="nv">r</span><span class="p">}</span> <span class="c1">;; divides evenly</span>
+        <span class="p">(</span><span class="nb">if-let </span><span class="p">[</span><span class="nv">new-q</span> <span class="p">(</span><span class="nf">poly-quot-</span> <span class="nv">r</span> <span class="nv">p2</span><span class="p">)]</span>
+          <span class="p">(</span><span class="nf">recur</span> <span class="p">(</span><span class="nb">conj </span><span class="nv">qs</span> <span class="nv">new-q</span><span class="p">)</span>                 <span class="c1">;; divides with remainder</span>
+                 <span class="p">(</span><span class="nf">-&gt;&gt;</span> <span class="nv">new-q</span> <span class="p">(</span><span class="nf">mul</span> <span class="nv">p2</span><span class="p">)</span> <span class="p">(</span><span class="nf">sub</span> <span class="nv">r</span><span class="p">)))</span>
+          <span class="p">{</span><span class="ss">:quotient</span> <span class="nv">qs</span> <span class="ss">:remainder</span> <span class="nv">r</span><span class="p">})))))</span>       <span class="c1">;; can't divide anymore</span>
+
+<span class="p">(</span><span class="kd">defn </span><span class="nv">poly-rem</span>
+  <span class="s">"Remainder after dividing two polynomials, p1(x) / p2(x)."</span>
+  <span class="p">[</span><span class="nv">p1</span> <span class="nv">p2</span><span class="p">]</span>
+  <span class="p">(</span><span class="ss">:remainder</span> <span class="p">(</span><span class="nf">div</span> <span class="nv">p1</span> <span class="nv">p2</span><span class="p">)))</span>
+</pre></div>
+<h1 id="prime-time">Prime time</h1>
+<p>Finally, it’s time to combine all of the above into an implementation of the <span class="caps">AKS</span> algorithm. To reiterate, the algorithm is as follows:</p>
+<ol>
+<li>If <span class="math">\(n\)</span> is a perfect power (i.e., <span class="math">\(n = a^b\)</span> for any <span class="math">\(a, b \in ℤ\)</span>), return <strong>composite</strong>.</li>
+<li>Find the smallest <span class="math">\(r\)</span> coprime to <span class="math">\(n\)</span> such that <span class="math">\(\textrm{ord}_r(n) &gt; (\log_2 n)^2\)</span>.</li>
+<li>If <span class="math">\(n\)</span> is divisible by <span class="math">\(a\)</span> for any <span class="math">\(2 \leq a \leq \min (r, n - 1)\)</span>, return <strong>composite</strong>.</li>
+<li>If <span class="math">\(n \leq r\)</span>, return <strong>prime</strong>.</li>
+<li>If <span class="math">\((X + a)^n \not= X^n + a \mod (X^r - 1, n)\)</span> for any <span class="math">\(1 \leq a \leq \lfloor \sqrt{\varphi(r)} \log_2(n) \rfloor\)</span>, return <strong>composite</strong>. Else return <strong>prime</strong>.</li>
+</ol>
+<p>Taking advantage of Clojure’s <code class="highlight">when</code> to keep things concise, here is my implementation, which returns <code class="highlight">true</code> if the input is prime, <code class="highlight">nil</code> if the input is proven composite before the final step, and <code class="highlight">false</code> if the input is proven composite in the last step.</p>
+<p>On my local version of this code, I’ve split the modular arithmetic and polynomial functions into different namespaces to keep things tidy. <code class="highlight">tower</code>, <code class="highlight">ma</code>, <code class="highlight">h</code>, and <code class="highlight">p</code> denote the namespaces <code class="highlight">numeric-tower</code>, <code class="highlight">modular-arithmetic</code>, <code class="highlight">helpers</code>, and <code class="highlight">polynomial</code> respectively.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">aks-prime?</span>
+  <span class="s">"Uses the Agrawal–Kayal–Saxena primality test to determine if an integer n</span>
+<span class="s">  is prime. Returns true if prime, nil or false otherwise."</span>
+  <span class="p">[</span><span class="nv">n</span><span class="p">]</span>
+  <span class="c1">;; 1. Check if n is a perfect power</span>
+  <span class="p">(</span><span class="nb">when-not </span><span class="p">(</span><span class="nf">perfect-power?</span> <span class="nv">n</span><span class="p">)</span>
+    <span class="c1">;; 2. Find the smallest r such that ord_r(n) &gt; (log_2 n)^2.</span>
+    <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">log</span> <span class="p">(</span><span class="nb">-&gt; </span><span class="p">(</span><span class="nf">Math/log</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nf">Math/log</span> <span class="mi">2</span><span class="p">))</span> <span class="p">(</span><span class="nf">tower/expt</span> <span class="mi">2</span><span class="p">))</span>
+          <span class="nv">r</span>   <span class="p">(</span><span class="nb">first </span><span class="p">(</span><span class="nf">keep</span> <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">r</span><span class="p">]</span> <span class="p">(</span><span class="nb">when-let </span><span class="p">[</span><span class="nv">ord</span> <span class="p">(</span><span class="nf">ma/multiplicative-order</span> <span class="nv">n</span> <span class="nv">r</span><span class="p">)]</span>
+                                     <span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">ord</span> <span class="nv">log</span><span class="p">)</span> <span class="nv">r</span><span class="p">)))</span>
+                           <span class="p">(</span><span class="nf">range</span><span class="p">)))</span>
+          <span class="nv">lim</span> <span class="p">(</span><span class="nb">min </span><span class="nv">r</span> <span class="p">(</span><span class="nb">- </span><span class="nv">n</span> <span class="mi">1</span><span class="p">))]</span>
+      <span class="c1">;; 3. For all 2 ≤ a ≤ min(r, n−1), check that a does not divide n</span>
+      <span class="c1">;; (composite if so)</span>
+      <span class="p">(</span><span class="nb">when </span><span class="p">(</span><span class="nb">not-any? </span><span class="p">(</span><span class="nb">partial </span><span class="nv">h/divisible?</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nb">range </span><span class="mi">2</span> <span class="p">(</span><span class="nb">inc </span><span class="nv">lim</span><span class="p">)))</span>
+        <span class="c1">;; 4. If n ≤ r, output prime.</span>
+        <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&lt;= </span><span class="nv">n</span> <span class="nv">r</span><span class="p">)</span> <span class="nv">true</span>
+          <span class="p">(</span><span class="k">let </span><span class="p">[</span><span class="nv">log2n</span> <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nf">Math/log</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nf">Math/log</span> <span class="mi">2</span><span class="p">))</span>
+                <span class="nv">lim</span>   <span class="p">(</span><span class="nf">-&gt;&gt;</span> <span class="p">(</span><span class="nf">tower/sqrt</span> <span class="p">(</span><span class="nf">naive-phi</span> <span class="nv">r</span><span class="p">))</span> <span class="p">(</span><span class="nb">* </span><span class="nv">log2n</span><span class="p">)</span> <span class="nv">bigint</span><span class="p">)</span>
+                <span class="nv">lhs</span>   <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">a</span><span class="p">]</span> <span class="p">(</span><span class="nf">p/poly-rem</span> <span class="p">(</span><span class="nf">p/mod-exp</span> <span class="p">{</span><span class="mi">1</span> <span class="mi">1</span>, <span class="mi">0</span> <span class="nv">a</span><span class="p">}</span> <span class="nv">n</span> <span class="nv">n</span><span class="p">)</span>
+                                          <span class="p">{</span><span class="nv">r</span> <span class="mi">1</span>, <span class="mi">0</span> <span class="mi">-1</span><span class="p">}))</span>
+                <span class="nv">rhs</span>   <span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">a</span><span class="p">]</span> <span class="p">(</span><span class="nf">p/poly-rem</span> <span class="p">{</span><span class="nv">n</span> <span class="mi">1</span>, <span class="mi">0</span> <span class="nv">a</span><span class="p">}</span>
+                                          <span class="p">{</span><span class="nv">r</span> <span class="mi">1</span>, <span class="mi">0</span> <span class="mi">-1</span><span class="p">}))]</span>
+            <span class="c1">;; 5. If (X+a)^n != (X^n)+a (mod X^r − 1,n) for ANY a from 1 to lim,</span>
+            <span class="c1">;; n is composite.</span>
+            <span class="c1">;; In other words, prime? = true iff (X+a)^n = (X^n)+a (mod X^r − 1,n)</span>
+            <span class="c1">;; for ALL a from 1 to lim</span>
+            <span class="p">(</span><span class="nb">every? </span><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">a</span><span class="p">]</span> <span class="p">(</span><span class="nb">= </span><span class="p">(</span><span class="nf">lhs</span> <span class="nv">a</span><span class="p">)</span> <span class="p">(</span><span class="nf">rhs</span> <span class="nv">a</span><span class="p">)))</span> <span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="nv">lim</span><span class="p">))))))))</span>
+</pre></div>
+<h1 id="gotcha">Gotcha!</h1>
+<p>Congrats! You made it this far.</p>
+<p>If you test this function, though, you might be a bit disappointed with the results. Namely, it’s very slow, even for small inputs. The lag becomes apparent even with prime number inputs as small as <span class="math">\(n = 37\)</span>, and skyrockets exponentially as the size of <span class="math">\(n\)</span> increases.</p>
+<p>Indeed, despite all the groundbreaking features of the algorithm, <a href="https://cs.stackexchange.com/questions/23260/when-is-the-aks-primality-test-actually-faster-than-other-tests/23360#23360">speed and practicality are not among them</a>. Ordinarily, I would be inclined to call coding all of this a waste of time and curse myself for not having bothered to research this earlier, but since I learned a fair bit of Clojure and math in the process, I can’t quite call it a waste.</p>
+<p>However, it does mean I need to study up on elliptic curves!</p>
+<h1 id="references">References</h1>
+<ul>
+<li><a href="https://en.wikipedia.org/wiki/AKS_primality_test"><span class="caps">AKS</span> primality test</a>, Wikipedia</li>
+<li><a href="http://www.math.ucla.edu/~radko/circles/lib/data/Handout-358-436.pdf">Long division of polynomials</a>, Olga Radko, <span class="caps">UCLA</span></li>
+<li><a href="https://cs.stackexchange.com/questions/23260/when-is-the-aks-primality-test-actually-faster-than-other-tests/23360#23360">When is the <span class="caps">AKS</span> primality test actually faster than other tests?</a>, <span class="caps">CS</span> Stack Exchange</li>
+</ul>
+
+            <p class="post-footer">
+                // filed
+under                    <a class="post-category" href="/tag/number-theory">number theory</a>
+                    <a class="post-category" href="/tag/clojure">clojure</a>
+                    <a class="post-category" href="/tag/algorithms">algorithms</a>
+                in <a class="post-category" href="/category/math">Math</a>&nbsp;&nbsp;&nbsp;
+
+                <span style="display:inline-block;">
+                // share on <a href="https://twitter.com/share?text=%22Number%20Theory%20in%20Clojure%3A%20AKS%20primality%C2%A0test%3A%20The%20AKS%20test%20is%20an%20award-winning%20algorithm%20for%20proving%20whether%20an%20integer%20is%20prime%2C%20though%20I%20realized%20too%20late%20that%20it%20is%20too%20slow%20to%20be%20of%20any...%22&amp;hashtags=numbertheory%2Cclojure%2Calgorithms" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i> Twitter
+                </a>
+                </span>
+            </p>
+            <div class="hr"></div>
+
+
+            <a href="#" class="go-top">Go Top</a>
+<footer class="footer">
+    <p>&copy; Justin Douglas  2019. Published with <a href="https://github.com/getpelican/pelican">Pelican</a>.<br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+</footer>        </div>
+    </div>
+</div>
+    <script>
+        renderMathInElement(document.body);
+    </script>
+
+			<!-- Script specified by the user -->
+			<script type="text/javascript"  src="/assets/tweaks.js"></script>
+
+    <!-- for pelican_dynamic plugin -->
+
+
+
+</body>
+</html>

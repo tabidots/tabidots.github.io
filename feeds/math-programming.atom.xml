@@ -874,7 +874,7 @@ $$&lt;/div&gt;
 &lt;li&gt;&lt;a href="http://luthuli.cs.uiuc.edu/~daf/courses/cs-419/Week-12/Interpolation-2013.pdf"&gt;Interpolating Curves&lt;/a&gt;, &lt;span class="caps"&gt;CS&lt;/span&gt; 419, &lt;span class="caps"&gt;UIUC&lt;/span&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="http://www.cs.huji.ac.il/course/2005/cg/lectures/08-CurvesSurfaces.pdf"&gt;Curves and Surfaces&lt;/a&gt;, Computer Graphics, Benin School of Computer Science&lt;/li&gt;
 &lt;/ul&gt;</content><category term="matplotlib"></category><category term="bézier curves"></category></entry><entry><title>The squarest root in Babylon and automatic differentiation</title><link href="http://tabidots.github.io/2019/01/squarest-root-in-babylon" rel="alternate"></link><published>2019-01-22T15:47:33+07:00</published><updated>2019-01-22T15:47:33+07:00</updated><author><name>Justin Douglas</name></author><id>tag:tabidots.github.io,2019-01-22:/2019/01/squarest-root-in-babylon</id><summary type="html">&lt;p&gt;If you thought 1 + ϵ = 1 was weird, wait till you see what ϵ² equates&amp;nbsp;to.&lt;/p&gt;</summary><content type="html">
-&lt;p&gt;In my previous post on &lt;a href="/from-zero-to-ero"&gt;&lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; (epsilon)&lt;/a&gt;, I wrote about this statement:&lt;/p&gt;
+&lt;p&gt;In my previous post on &lt;a href="/2019/01/from-zero-to-ero"&gt;&lt;span class="math"&gt;\(\epsilon\)&lt;/span&gt; (epsilon)&lt;/a&gt;, I wrote about this statement:&lt;/p&gt;
 &lt;div class="math"&gt;$$ 1 + \epsilon = 1 $$&lt;/div&gt;
 &lt;p&gt;which seemed like it came from a planet that had fallen out of orbit or something. Well, try this one on for size:&lt;/p&gt;
 &lt;div class="math"&gt;$$ \epsilon^2 = 0 $$&lt;/div&gt;
