@@ -5,28 +5,35 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/</loc>
-<lastmod>2019-04-08T22:36:40-00:00</lastmod>
+<lastmod>2019-05-30T20:11:09-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/archives.html</loc>
-<lastmod>2019-04-08T22:36:40-00:00</lastmod>
+<lastmod>2019-05-30T20:11:09-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/tags.html</loc>
-<lastmod>2019-04-08T22:36:40-00:00</lastmod>
+<lastmod>2019-05-30T20:11:09-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>http://tabidots.github.io/categories.html</loc>
-<lastmod>2019-04-08T22:36:40-00:00</lastmod>
+<lastmod>2019-05-30T20:11:09-00:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/2019/05/introduction-to-modular-arithmetic</loc>
+<lastmod>2019-05-30T20:08:24+07:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -145,7 +152,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/category/math</loc>
-<lastmod>2019-04-08T22:34:04+07:07</lastmod>
+<lastmod>2019-05-30T20:08:24+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -181,6 +188,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://tabidots.github.io/category/statistics-programming</loc>
 <lastmod>2019-02-02T16:04:26+07:07</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>http://tabidots.github.io/tag/modular-arithmetic</loc>
+<lastmod>2019-05-30T20:08:24+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -244,13 +258,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>http://tabidots.github.io/tag/automatic-differentiation</loc>
 <lastmod>2019-02-02T16:04:26+07:07</lastmod>
-<changefreq>monthly</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>http://tabidots.github.io/tag/modular-arithmetic</loc>
-<lastmod>2019-02-01T07:35:36+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -418,7 +425,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>http://tabidots.github.io/author/justin-douglas</loc>
-<lastmod>2019-04-08T22:34:04+07:07</lastmod>
+<lastmod>2019-05-30T20:08:24+07:07</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>

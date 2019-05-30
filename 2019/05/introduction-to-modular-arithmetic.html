@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Though modular arithmetic is rather obscure, we actually use it every day—primarily when we tell time. And if you’re a programmer, you have probably used the % operator before. However, there is much more to modular arithmetic, and the way it seems to turn normal math on its head is very fascinating." />
+
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@tabidots" />
+    <meta name="twitter:creator" content="@tabidots" />
+    <meta name="twitter:title" content="Introduction to Modular Arithmetic, with examples in Clojure" />
+    <meta name="twitter:description" content="Though modular arithmetic is rather obscure, we actually use it every day—primarily when we tell time. And if you’re a programmer, you have probably used the % operator before. However, there is much more to modular arithmetic, and the way it seems to turn normal math on its head is very fascinating." />
+    <meta name="twitter:image:src" content="../../images/selfportrait_small.png" />
+    <meta name="twitter:domain" content="judosaltgenius.com" />
+
+    <meta property="og:title" content="Introduction to Modular Arithmetic, with examples in Clojure" />
+    <meta property="og:type" content="article" />
+    <meta property="og:description" content="Though modular arithmetic is rather obscure, we actually use it every day—primarily when we tell time. And if you’re a programmer, you have probably used the % operator before. However, there is much more to modular arithmetic, and the way it seems to turn normal math on its head is very fascinating." />
+    <meta property="og:image" content="../../images/selfportrait_small.png" />
+    <meta property="og:site_name" content="judosaltgenius.com" />
+    <meta property="og:url" content="../../2019/05/introduction-to-modular-arithmetic" />
+
+        <link rel="alternate"  href="http://tabidots.github.io/feeds/all.atom.xml" type="application/atom+xml" title="Judo Salt Genius Full Atom Feed"/>
+
+        <title>Introduction to Modular Arithmetic, with examples in Clojure - Judo Salt Genius</title>
+
+
+    <!-- KaTeX -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.css" integrity="sha384-VEnyslhHLHiYPca9KFkBB3CMeslnM9CzwjxsEbZTeA21JBm7tdLwKoZmCt3cZTYD" crossorigin="anonymous" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/katex.min.js" integrity="sha384-O4hpKqcplNCe+jLuBVEXC10Rn1QEqAmX98lKAIFBEDxZI0a+6Z2w2n8AEtQbR4CD" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.9.0-beta1/contrib/auto-render.min.js" integrity="sha384-IiI65aU9ZYub2MY9zhtKd1H2ps7xxf+eb2YFG9lX6uRqpXCvBTOidPRCXCrQ++Uc" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.1.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" href="../../theme/css/pure.css?v=0.1.0" />
+      <!-- CSS specified by the user -->
+
+
+      <link href="../../assets/mystyle.css" type="text/css" rel="stylesheet" />
+    <link rel="stylesheet" href="../../theme/css/pygments.css" />
+
+    <!-- for pelican_dynamic plugin -->
+    <!-- end pelican_dynamic -->
+
+</head>
+
+<body>
+<div class="pure-g-r" id="layout">
+    <div class="sidebar sidebar-article pure-u">
+        <header class="header-article">
+                    <a href="../../author/justin-douglas" title="See posts by Justin Douglas">
+                        <img class="avatar" alt="Justin Douglas" src="https://www.gravatar.com/avatar/74f13134596b2ed04a497936e3fdfd33?s=140">
+                    </a>
+                <h2 class="article-info">Justin Douglas</h2>
+
+
+
+                <p class="article-date">Thu 30 May 2019</p>
+
+                <a class="header-article-home" href="/">&larr;Home</a>
+        </header>
+    </div>
+    <div class="pure-u">
+        <div class="content">
+            <section class="post">
+                <header class="post-header">
+                    <h1>Introduction to Modular Arithmetic, with examples in&nbsp;Clojure</h1>
+                </header>
+            </section>
+
+                <nav class="toc">
+                <div class="toc">
+<ul>
+<li><a href="#counting-in-a-circle">Counting in a circle</a></li>
+<li><a href="#reduction-modulo-n">Reduction modulo \(n\)</a></li>
+<li><a href="#when-is-not">When <span class="nv">%</span> is not <span class="nv">%</span></a></li>
+<li><a href="#congruence">Congruence</a></li>
+<li><a href="#mathbbz_n">\(\mathbb{Z}_n\)</a><ul>
+<li><a href="#addition-subtraction-and-negative-numbers">Addition, subtraction, and negative numbers</a></li>
+<li><a href="#multiplication-and-efficiency">Multiplication and efficiency</a></li>
+<li><a href="#order-of-operations">Order of operations</a></li>
+</ul>
+</li>
+<li><a href="#going-beyond">Going beyond</a></li>
+</ul>
+</div>
+                </nav>
+
+            
+<p>Nowadays, we take encryption on the internet for granted, but have you ever wondered how it works? Advances in cryptography since the mid-20th century have relied on an area of mathematics called <strong>modular arithmetic</strong> to guarantee the security of everything from your WhatsApp conversations and credit card information.</p>
+<p>Though modular arithmetic is rather obscure, we actually use it every day—primarily when we tell time. And if you’re a programmer, you have probably used the <code class="highlight"><span class="nv">%</span></code> operator before. However, there is much more to modular arithmetic, and the way it seems to turn normal math on its head is very fascinating.</p>
+<p>In this post, I’ll cover the very basics of modular arithmetic.</p>
+<h1 id="counting-in-a-circle">Counting in a circle</h1>
+<p>Modular arithmetic can be described as “counting in a circle.” It is also called “clock arithmetic,” which gives a hint as to how the concept works. We all know that if you go somewhere at 2 o’clock for 4 hours, it will be 6 o’clock when you return, but if you go somewhere at 11 o’clock for 4 hours, it will be 3 o’clock when you return—<em>not</em> 15 o’clock (assuming you use the 12-hour clock).</p>
+<p>This is because the numbers of the clock <em>wrap around</em>:</p>
+<div class="math">$$ 1,2,3,4,5,6,7,8,9,10,11,12,1,2,3,4,5,6,7,8,9,10,11,12 \cdots $$</div>
+<p>We can imitate this in Clojure with the <code class="highlight">cycle</code> function (don’t actually run this, though, because it will go on forever and lock up your <span class="caps">REPL</span>):</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">cycle </span><span class="p">(</span><span class="nb">range </span><span class="mi">1</span> <span class="mi">13</span><span class="p">))</span> <span class="c1">;; 13 because range excludes the endpoint</span>
+</pre></div>
+<p>If you are a musician, you can relate this to many areas of music as well: the names of the notes in the scale, such as <span class="caps">ABCDEFG</span>—or <em>sa re ga ma pa dha ni</em>, if you like—repeat indefinitely. (That doesn’t mean the notes themselves are the same; more on that later.) There is no such note as “J,” for example.</p>
+<p>In fact, it is predominantly only Western culture and music that conceptualizes music (and time) linearly. For example, Indian classical music, flamenco, and Javanese gamelan music are three forms of world music that are well-known for their explicit use of cyclic representations of form and rhythm. But that’s going beyond the scope of this post 😅</p>
+<p>Back to numbers. If we stretch the clock cycle out into a number line, you will never encounter a number greater than 12 no matter how far you go along the line. Or rather, once you go beyond 12, you find that the result is 12 less than the “normal” number:</p>
+<div class="highlight"><pre><span></span>1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20...
+1 2 3 4 5 6 7 8 9 10 11 12  1  2  3  4  5  6  7  8...
+</pre></div>
+<h1 id="reduction-modulo-n">Reduction modulo <span class="math">\(n\)</span></h1>
+<p>As the time-telling example shows, addition in modular arithmetic is similar to regular old addition, except with one extra step. If the result is greater than our upper limit (in this case 12), then we can keep subtracting the limit until we get a result that is less than the limit.</p>
+<p>To be more precise, this upper limit is called the <strong>modulus</strong>, and our final answer represents the <em>remainder after dividing</em> the initial result by the modulus. The transformation of our initial result into the final answer is called <strong>reduction <em>modulo</em></strong> <span class="math">\(n\)</span>.</p>
+<p>Ordinary arithmetic:</p>
+<div class="math">$$
+\begin{aligned}
+2 + 2 &amp;= 4 \\
+11 + 4 &amp;= 15
+\end{aligned}
+$$</div>
+<p>Modular arithmetic:</p>
+<div class="math">$$
+\begin{aligned}
+2 + 2 &amp;\equiv 4 \mod 12 \\
+11 + 4 &amp; \textcolor{red}{\not= 15} \\
+&amp; \textcolor{green}{\equiv 3 \mod 12}
+\end{aligned}
+$$</div>
+<p>because 12 goes into 15 one time and leaves a remainder of 3. In other words, the <strong>quotient</strong> is 1 and the remainder is 3.</p>
+<p>Remainders, then, are absolutely central to modular arithmetic. Nowadays, remainders and long division are things that basically nobody bothers with after elementary school, but evidently <a href="https://en.wikipedia.org/wiki/Carl_Friedrich_Gauss">Gauss</a> was fascinated enough with remainders to use them as the basis for an entire mathematical treatise, the <a href="Disquisitiones Arithmeticae"><em>Disquisitiones Arithmeticae</em></a>. And that’s why we have modular arithmetic and ultimately, now, encrypted WhatsApp messages 😄</p>
+<p>But wait—what’s that <span class="math">\(\equiv\)</span> sign? Does that mean two things are “even more” equal? No, <span class="math">\(\equiv\)</span> indicates <strong>congruence</strong> and is read “is congruent to.” Two numbers are congruent to each other if they have the same remainder after division by a given modulus.</p>
+<p>I’ll come back to that in a bit. But first, some code.</p>
+<h1 id="when-is-not">When <code class="highlight"><span class="nv">%</span></code> is not <code class="highlight"><span class="nv">%</span></code></h1>
+<p>If you have used the <code class="highlight"><span class="nv">%</span></code> operator in programming before, note that the mathematical way of writing modular arithmetic statements is a little different. The math notation focuses on statements of congruence, and treats <span class="math">\(\mod n\)</span> as a prepositional phrase. That is, <span class="math">\(a \equiv b \mod n\)</span> communicates the idea that <span class="math">\(a\)</span> is congruent to <span class="math">\(b\)</span> in the “world” of modulo <span class="math">\(n\)</span>.</p>
+<p>Programming languages, on the other hand, approach modular arithmetic with an emphasis on the operation (action) of reducing a number modulo another number, where <code class="highlight"><span class="n">a</span> <span class="o">%</span> <span class="n">n</span></code> means <em>reduce</em> <code class="highlight">a</code> <em>(in the world of) modulo</em> <code class="highlight">n</code>.</p>
+<p>Instead of <em>declaring</em> congruence, you would perform a Boolean test for it. In Python, <span class="math">\(a \overset{?}{\equiv} b \mod n\)</span> becomes <code class="highlight"><span class="n">a</span> <span class="o">%</span> <span class="n">n</span> <span class="o">==</span> <span class="n">b</span></code>, which returns <code class="highlight">True</code> or <code class="highlight">False</code>. (I am including Python here because it follows the convention of using <code class="highlight"><span class="nv">%</span></code>, like most programming languages.)</p>
+<p>In Clojure, the symbol <code class="highlight"><span class="nv">%</span></code> is reserved for variables in anonymous functions, so <code class="highlight">mod</code> is used instead.</p>
+<div class="superfences-tabs">
+<input checked="checked" id="__tab_1_0" name="__tabs_1" type="radio"/>
+<label for="__tab_1_0">Python</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span><span class="o">&gt;&gt;&gt;</span> <span class="mi">3</span> <span class="o">%</span> <span class="mi">12</span> <span class="c1"># This returns the remainder after division</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">11</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span>
+<span class="mi">3</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="mi">15</span> <span class="o">//</span> <span class="mi">12</span> <span class="c1"># This means integer division and returns the quotient</span>
+<span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">(</span><span class="mi">11</span> <span class="o">+</span> <span class="mi">4</span><span class="p">)</span> <span class="o">%</span> <span class="mi">12</span> <span class="o">==</span> <span class="mi">3</span>
+<span class="bp">True</span>
+</pre></div></div>
+<input id="__tab_1_1" name="__tabs_1" type="radio"/>
+<label for="__tab_1_1">Clojure</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span><span class="p">(</span><span class="nf">mod</span> <span class="mi">3</span> <span class="mi">12</span><span class="p">)</span>
+<span class="nv">=&gt;</span> <span class="mi">3</span>
+<span class="p">(</span><span class="nf">mod</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">11</span> <span class="mi">4</span><span class="p">)</span> <span class="mi">12</span><span class="p">)</span>
+<span class="nv">=&gt;</span> <span class="mi">3</span>
+<span class="p">(</span><span class="nb">quot </span><span class="mi">15</span> <span class="mi">12</span><span class="p">)</span> <span class="c1">;; Integer division in Clojure</span>
+<span class="nv">=&gt;</span> <span class="mi">1</span>
+<span class="p">(</span><span class="nb">= </span><span class="mi">3</span> <span class="p">(</span><span class="nf">mod</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">11</span> <span class="mi">4</span><span class="p">)</span> <span class="mi">12</span><span class="p">))</span>
+<span class="nv">=&gt;</span> <span class="nv">true</span>
+<span class="c1">;; Using the arrow to reorder the expressions can let you write them</span>
+<span class="c1">;; a bit more like you'd write them in imperative languages, hence easier to read</span>
+<span class="p">(</span><span class="nb">-&gt; </span><span class="mi">11</span> <span class="p">(</span><span class="nb">+ </span><span class="mi">4</span><span class="p">)</span> <span class="p">(</span><span class="nf">mod</span> <span class="mi">12</span><span class="p">))</span>
+<span class="nv">=&gt;</span> <span class="mi">3</span>
+</pre></div></div>
+</div>
+<h1 id="congruence">Congruence</h1>
+<p>In our example above, we saw that not only are 3 and 15 congruent with each other, but by the definition of congruence, so is every number of the form <span class="math">\(12k + 3\)</span>, where <span class="math">\(k\)</span> is an integer. Thus, all of the following are congruent:</p>
+<div class="math">$$ \cdots -21, -9, 3, 15, 27, 39, 51 \cdots $$</div>
+<p>We can see that this is true by reducing all of those numbers mod 12:</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">map </span><span class="o">#</span><span class="p">(</span><span class="nf">mod</span> <span class="nv">%</span> <span class="mi">12</span><span class="p">)</span> <span class="p">[</span><span class="mi">-24</span> <span class="mi">-9</span> <span class="mi">3</span> <span class="mi">15</span> <span class="mi">27</span> <span class="mi">39</span> <span class="mi">51</span><span class="p">])</span>
+<span class="nv">=&gt;</span> <span class="p">(</span><span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span> <span class="mi">3</span><span class="p">)</span>
+</pre></div>
+<p>The infinite set of integers that share this property is called the <strong>congruence class</strong> of <span class="math">\(3 \mod 12\)</span>. An alternative name is <em>residue class</em>, residue being synonymous with remainder.</p>
+<p>(Note that negative integers are perfectly allowed in modular arithmetic, although in practice, most work is done on non-negative integers only. Negative moduli, on the other hand, are not a thing.)</p>
+<p>What this means is that <span class="math">\(\mathbb Z\)</span>, the integers, can be sorted into different “boxes” based on their remainder <span class="math">\(\mod n\)</span>. For every <span class="math">\(0 \le a &lt; n\)</span>, there is a unique congruence class <span class="math">\(\bar{a}_n\)</span>, also notated <span class="math">\(\lbrack a \rbrack_n\)</span> or <span class="math">\(\bold a_n\)</span> (though the latter notation could cause confusion with vectors), which can be defined in set-builder notation as</p>
+<div class="math">$$ \bar{a}_n = \{ z \in Z \space | \space z = kn + a \space \forall \space k \in \mathbb Z \} $$</div>
+<p>That is, the congruence class <span class="math">\(\bar{a}_n\)</span> is the set of integers <span class="math">\(z\)</span> given by <span class="math">\(kn + a\)</span> for all integers <span class="math">\(k\)</span>.</p>
+<p>While no programming language can actually process infinite sets, at least Clojure gives you a way to write them. I’m leaving this here merely to show the Clojure translation of this mathematical definition. If you try to run it, it will freeze your <span class="caps">REPL</span>. You’ve been warned.</p>
+<div class="superfences-tabs">
+<input checked="checked" id="__tab_2_0" name="__tabs_2" type="radio"/>
+<label for="__tab_2_0">Simple</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">congruence-class-posint</span>
+  <span class="s">"Returns an infinite sequence of the positive integers belonging to</span>
+<span class="s">  the congruence class a mod n."</span>
+  <span class="p">[</span><span class="nv">a</span> <span class="nv">n</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">map </span><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">k</span><span class="p">]</span> <span class="p">(</span><span class="nb">-&gt; </span><span class="p">(</span><span class="nb">* </span><span class="nv">k</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">a</span><span class="p">))</span> <span class="p">(</span><span class="nf">range</span><span class="p">))))</span>
+</pre></div></div>
+<input id="__tab_2_1" name="__tabs_2" type="radio"/>
+<label for="__tab_2_1">Complete</label>
+<div class="superfences-content"><div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">congruence-class</span>
+  <span class="s">"Returns an infinite sequence of all integers belonging to the congruence class a mod n."</span>
+  <span class="p">[</span><span class="nv">a</span> <span class="nv">n</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">mapcat </span><span class="p">(</span><span class="k">fn </span><span class="p">[</span><span class="nv">k</span><span class="p">]</span> <span class="p">[(</span><span class="nb">-&gt; </span><span class="p">(</span><span class="nb">* </span><span class="nv">k</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">a</span><span class="p">))</span>
+                   <span class="p">(</span><span class="nb">-&gt; </span><span class="p">(</span><span class="nb">* </span><span class="p">(</span><span class="nb">- </span><span class="nv">k</span><span class="p">)</span> <span class="nv">n</span><span class="p">)</span> <span class="p">(</span><span class="nb">+ </span><span class="nv">a</span><span class="p">))]</span> <span class="c1">;; We need negative k values as well!</span>
+          <span class="p">(</span><span class="nf">range</span><span class="p">))))</span>
+</pre></div></div>
+</div>
+<h1 id="mathbbz_n"><span class="math">\(\mathbb{Z}_n\)</span></h1>
+<p>Actually, the whole congruence class notation is just a mathematical formality. In practice, any single member of a given congruence class can stand in for the entire class.</p>
+<p>Bearing in mind that <span class="math">\(n \equiv 0 \mod n\)</span>, this effectively means that in the “world” of modulo <span class="math">\(n\)</span>, we only have to consider the integers from <span class="math">\(0\)</span> to <span class="math">\(n - 1\)</span>. (The clock analogy breaks down a little bit here because in real life, we use 1 through 12 rather than 0 through 11, but it is still a good starting point.)</p>
+<p>Since this is just an introduction, I’ll skip the bit about residue systems and leave the discussion of ring theory for another post.</p>
+<p>We can use the symbol <span class="math">\(\mathbb{Z}_n\)</span> to denote this subset of the integers. In code, it’s equally simple:</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="nb">set </span><span class="p">(</span><span class="nb">range </span><span class="nv">n</span><span class="p">))</span>
+</pre></div>
+<p>Now, what do we <em>do</em> with these numbers?</p>
+<h2 id="addition-subtraction-and-negative-numbers">Addition, subtraction, and negative numbers</h2>
+<p>Addition, as we have already seen, is basically the same as in normal arithmetic, except the numbers wrap around. Outside the context of telling time, you might be surprised to get a “sum” that is smaller than the numbers you added together.</p>
+<p>The same is true for subtraction:</p>
+<div class="math">$$ 5 - 8 = -3 \equiv 9 \mod 12$$</div>
+<p>The “difference” we obtained is <em>greater</em> than the terms we started with.</p>
+<p>Also note that negative numbers now denote counting down from <span class="math">\(n\)</span> rather than <span class="math">\(0\)</span>. If you are familiar with Python, this should make intuitive sense to you, since you can access the last <code class="highlight">n</code>th item in a list by writing <code class="highlight"><span class="n">my_list</span><span class="p">[</span><span class="o">-</span><span class="n">n</span><span class="p">]</span></code>.</p>
+<h2 id="multiplication-and-efficiency">Multiplication and efficiency</h2>
+<p>Multiplication also works the same as in normal arithmetic, although again, it can be surprising to obtain a product that is smaller than what you started with.</p>
+<p>Normally, when dealing with even somewhat large numbers, products can ”explode” fairly quickly. That is, it doesn’t take much for multiplication to quickly result in really large numbers that can slow down computation, even for a computer.</p>
+<p>If you are working in a more bare-bones language such as C++ or JavaScript, you might find it need to implement a tried-and-true modular multiplication algorithm such as <a href="https://en.wikipedia.org/wiki/Montgomery_modular_multiplication">Montgomery multiplication</a>.</p>
+<p>However, I have found that higher-level languages like Python and Clojure come “batteries included” in this respect, so I won’t go into detail about the low-level implementation. You might want to write a helper function to make modular multiplication more convenient to write, though.</p>
+<div class="highlight"><pre><span></span><span class="p">(</span><span class="kd">defn </span><span class="nv">mod-mul</span>
+  <span class="p">[</span><span class="nv">a</span> <span class="nv">b</span> <span class="nv">m</span><span class="p">]</span>
+  <span class="p">(</span><span class="nb">-&gt; </span><span class="p">(</span><span class="nf">*</span><span class="o">'</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span> <span class="p">(</span><span class="nf">mod</span> <span class="nv">m</span><span class="p">)))</span>
+  <span class="c1">;; the ' means avoid integer overflow by using bigintegers if necessary</span>
+
+<span class="p">(</span><span class="nf">mod-mul</span> <span class="mi">78</span> <span class="mi">99</span> <span class="mi">123</span><span class="p">)</span>
+<span class="nv">=&gt;</span> <span class="mi">96</span>
+</pre></div>
+<h2 id="order-of-operations">Order of operations</h2>
+<p>Because each integer in <span class="math">\(\mathbb{Z}_n\)</span> is a representative of its entire congruence class, this means that in an expression like <span class="math">\(a + b \mod n\)</span>, either <span class="math">\(a\)</span> and <span class="math">\(b\)</span> (or both) can be reduced before adding if it makes the calculation easier.</p>
+<div class="math">$$
+\begin{gathered}
+\textcolor{teal}{12309} + \textcolor{maroon}{235301} \equiv \space ? \mod 12 \\
+\textcolor{teal}{12309} \equiv \textcolor{skyblue}{9} \mod 12 \qquad \textcolor{maroon}{235301} \equiv \textcolor{mediumpurple}{5} \mod 12 \\
+\textcolor{skyblue}{9} + \textcolor{mediumpurple}{5} = 14 \equiv \textcolor{orange}{2} \mod 12
+\end{gathered}
+$$</div>
+<p>And indeed,</p>
+<div class="math">$$ \textcolor{teal}{12309} + \textcolor{maroon}{235301} = 247610 \equiv \textcolor{orange}{2} \mod 12 $$</div>
+<p>This isn’t really that useful for addition and subtraction, but for iterative processes like multiplication (which is just repeated addition) and exponentiation (which is just repeated multiplication), reducing the result after each iteration can speed up computation dramatically, because computers prefer working with smaller numbers.</p>
+<p>Specifically, in Java (on which Clojure is based), the maximum value for an <code class="highlight">int</code>eger  is <code class="highlight">2147483647</code> and the maximum value for a <code class="highlight">long</code> integer is <code class="highlight">9223372036854775807</code>. These are the two so-called primitive data types for integers, which yield optimal computational performance.</p>
+<p>If you want a bigger number, you need to use either Clojure’s <code class="highlight">bigint</code> type (or use the auto-promoting <code class="highlight">+' -' *' inc' dec'</code> to safeguard against overflow) or Java’s <code class="highlight">BigInteger</code> type. However, computers treat <code class="highlight">biginteger</code>s as objects rather than numbers, so they have to work a bit harder (or use more memory) to manipulate them.</p>
+<p>(Side note: To coerce a number to <code class="highlight">BigInteger</code>, use the native Clojure function <code class="highlight">biginteger</code>. Camel-cased <code class="highlight">BigInteger.</code> with a period, is a Java invocation you can use to <em>create</em> an instance of a <code class="highlight">BigInteger</code> object. This opens the doors to other features unavailable in the Clojure standard library, such as generating a random integer that is larger than the maximum <code class="highlight">long</code> value. More on this in upcoming posts.)</p>
+<h1 id="going-beyond">Going beyond</h1>
+<p>Of course, there is more to arithmetic than just addition, subtraction, and multiplication. What about the rest of the primitive operations?</p>
+<ul>
+<li><strong>Division</strong>: So far, you may notice that I have left out division. That’s because unlike addition, subtraction, and multiplication, there is no ”division” in modular arithmetic, at least not in the everyday sense. I will leave that for the next post.</li>
+<li><strong>Exponentiation</strong>: I also hinted at modular exponentiation. Since it is merely repeated multiplication, the mechanics of it are not hard to understand. However, it opens the door to a whole host of interesting larger mathematical concepts that are worth at least a couple more posts.</li>
+<li><strong>Roots</strong>: On the other hand, “undoing” exponentiation by taking a root <span class="math">\(\mod n\)</span> is much, much more involved than you would expect, given how simple exponentiation is. This works quite differently than roots in regular arithmetic.</li>
+<li><strong>Logarithms</strong>: Going one step further, logarithms in modular arithmetic, also called <em>discrete logarithms</em>, are even more different and difficult than their normal counterparts, although the underlying concept remains the same. However, it is precisely this difficulty that ensures the security of modern math-based encryption schemes.</li>
+</ul>
+<p>Stay tuned for upcoming posts in this series!</p>
+
+            <p class="post-footer">
+                // filed
+under                    <a class="post-category" href="../../tag/modular-arithmetic">modular arithmetic</a>
+                in <a class="post-category" href="../../category/math">Math</a>&nbsp;&nbsp;&nbsp;
+
+                <span style="display:inline-block;">
+                // share on <a href="https://twitter.com/share?text=%22Introduction%20to%20Modular%20Arithmetic%2C%20with%20examples%20in%C2%A0Clojure%3A%20Though%20modular%20arithmetic%20is%20rather%20obscure%2C%20we%20actually%20use%20it%20every%20day%E2%80%94primarily%20when%20we%20tell%20time.%20And%20if%20you%E2%80%99re%20a%20programmer%2C%20you...%22&amp;hashtags=modulararithmetic" target="_blank">
+                    <i class="fa fa-twitter fa-lg"></i> Twitter
+                </a>
+                </span>
+            </p>
+            <div class="hr"></div>
+
+
+            <a href="#" class="go-top">Go Top</a>
+<footer class="footer">
+    <p>&copy; Justin Douglas  2019. Published with <a href="https://github.com/getpelican/pelican">Pelican</a>.<br />This work is licensed under a <a rel="license" href="https://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</p>
+</footer>        </div>
+    </div>
+</div>
+    <script>
+        renderMathInElement(document.body);
+    </script>
+
+			<!-- Script specified by the user -->
+			<script type="text/javascript"  src="../../assets/tweaks.js"></script>
+
+    <!-- for pelican_dynamic plugin -->
+
+
+
+</body>
+</html>
